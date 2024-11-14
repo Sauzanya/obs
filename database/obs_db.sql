@@ -85,16 +85,15 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customerid`, `name`, `address`) VALUES
+INSERT INTO `customers` (`customerid`, `name`, `address`, `city`, `zip_code`, `country`) VALUES
 (1, 'a', 'a', 'a', 'a', 'a'),
 (2, 'b', 'b', 'b', 'b', 'b'),
-(3, 'test', '123 test'),
-(4, 'Meet Dahal', 'Sample Street'),
-(5, 'Shriti', 'Sample Street'),
-(6, 'Rachu Rizal', 'Lalitpur'),
-(7, 'Mark Cooper', 'Laltpur'),
-(8, 'Samantha Miller', 'Sample Street');
-
+(3, 'test', '123 test', 'test city', '12345', 'test country'),
+(4, 'Meet Dahal', 'Sample Street', 'Sample City', '12345', 'Sample Country'),
+(5, 'Shriti', 'Sample Street', 'Sample City', '12345', 'Sample Country'),
+(6, 'Rachu Rizal', 'Lalitpur', 'Lalitpur City', '12345', 'Nepal'),
+(7, 'Mark Cooper', 'Laltpur', 'Lalitpur City', '12345', 'Nepal'),
+(8, 'Samantha Miller', 'Sample Street', 'Sample City', '12345', 'Sample Country');
 -- --------------------------------------------------------
 
 --
