@@ -1,4 +1,5 @@
 <?php
+// updated
 	// the shopping cart needs sessions, to start one
 	/*
 		Array of session(
@@ -74,17 +75,9 @@
 							<input type="text" name="address" class="form-control rounded-0">
 						</div>
 						<div class="mb-3">
-							<label for="Contact" class="control-label">City</label>
+							<label for="Contact" class="control-label">Contact</label>
 							<input type="text" name="Contact" class="form-control rounded-0">
 						</div>
-						<!-- <div class="mb-3">
-							<label for="zip_code" class="control-label">Zip Code</label>
-							<input type="text" name="zip_code" class="form-control rounded-0">
-						</div> -->
-						<!-- <div class="mb-3">
-							<label for="country" class="control-label">Country</label>
-							<input type="text" name="country" class="form-control rounded-0">
-						</div> -->
 						<div class="mb-3 d-grid">
 							<input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
 						</div>
