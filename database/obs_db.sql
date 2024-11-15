@@ -74,26 +74,21 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid, created_at) VALUES
-('978-99933-527-9', 'Karnali Blues', 'Shankar Lamichhane', 'karnali_blues.jpg', 'A powerful and emotional story about the relationship between a father and son, set in the backdrop of the Karnali region of Nepal.', '20.00', 1, '2024-11-15'),
-('978-99933-527-8', 'Palpasa Cafe', 'Narayan Wagle', 'palpasa_cafe.jpg', 'Palpasa Cafe is a gripping tale set against the backdrop of the Maoist insurgency in Nepal, with love, politics, and personal loss interwoven throughout.', '20.00', 2, '2024-11-15'),
-('978-99933-527-7', 'Seto Dharti', 'Jhamak Ghimire', 'seto_dharti.jpg', 'Seto Dharti tells the story of a woman’s struggles against the societal norms and her fight for identity and independence in a male-dominated society.', '20.00', 3, '2024-11-15'),
-('978-99933-527-6', 'Shirishko Phool', 'Parijat', 'shirishko_phool.jpg', 'This is a psychological novel about the struggles and alienation faced by a woman in a patriarchal society in Nepal.', '20.00', 4, '2024-11-15'),
-('978-99933-527-5', 'Jeevan Antim', 'Parijat', 'jeevan_antim.jpg', 'Jeevan Antim is another powerful tale by Parijat, a heart-wrenching story about love, life, and death.', '20.00', 4, '2024-11-15'),
-('978-0-999-23456-7', 'Sambodhan', 'Buddhiman Shrestha', 'sambodhan.jpg', 'Sambodhan is a philosophical novel that explores the deeper meanings of life, death, and human nature through introspective characters and reflective dialogue.', '20.00', 6, '2024-11-15'),
-('978-0-999-23456-8', 'Jeevan Katha', 'Sujan Poudel', 'jeevan_katha.jpg', 'Jeevan Katha is a personal narrative that dives into the challenges of identity, survival, and the pursuit of meaning in a changing world.', '20.00', 7, '2024-11-15'),
-('978-0-999-23456-9', 'Raatko Paat Jhaar', 'Hari Bansha Acharya', 'raatko_paat.jpg', 'Raatko Paat Jhaar is a contemporary novel that highlights the internal struggles of a young man, reflecting on the broader societal and personal challenges in Nepal.', '20.00', 9, '2024-11-15'),
-('978-0-999-23457-0', 'Dhauko Manchhe', 'Bishnu Kumari Waiba', 'dhauko_manchhe.jpg', 'Dhauko Manchhe explores themes of love, human emotions, and relationships, set in the rural backdrop of Nepal.', '20.00', 10, '2024-11-15'),
-('978-0-999-23457-1', 'Chhiso Paani', 'Bishnu Kumari Waiba', 'chhiso_paani.jpg', 'Chhiso Paani is another beautiful work by Bishnu Kumari Waiba that delves into human emotions, particularly dealing with familial ties and struggles.', '20.00', 10, '2024-11-15'),
-('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', '20.00', 1, '2024-11-15'),
-('978-99933-527-3', 'Basain', 'Lil Bahadur Chhetri', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', '20.00', 2, '2024-11-15'),
-('978-99933-527-2', 'Rupa Rani', 'Nepal Bhasa', 'rupa_rani.jpg', 'Rupa Rani tells a story of a woman’s fight for love, social acceptance, and freedom in a society burdened by restrictions on women.', '20.00', 3, '2024-11-15'),
-('978-99933-527-1', 'Jiwanko Yatra', 'Bhanu A. Acharya', 'jiwanko_yatra.jpg', 'A novel about life’s journey, examining the philosophical and emotional aspects of human experience from a Nepali perspective.', '20.00', 4, '2024-11-15'),
-('978-99933-527-0', 'Buddha and His Dhamma', 'Dr. B.R. Ambedkar', 'buddha_dhamma.jpg', 'This is the life story of Siddhartha Gautama, the Buddha, and his teachings of Dhamma, presented in the light of modern perspectives on human society and equality.', '20.00', 5, '2024-11-15'),
 ('978-99933-527-10', 'Mayur Times', 'Narayan Wagle', 'mayur_times.jpg', 'Mayur Times is a gripping thriller set in the context of investigative journalism, diving into corruption and politics.', '20.00', 2, '2024-11-15'),
 ('978-99933-527-11', 'Mad Country', 'Narayan Wagle', 'mad_country.jpg', 'Mad Country explores political turmoil and societal changes in Nepal, weaving personal struggles into larger national narratives.', '20.00', 2, '2024-11-15'),
-('978-99933-527-12', 'Kalilo Man', 'Narayan Wagle', 'kalilo_man.jpg', 'A poignant tale about the resilience and emotions of people amidst changing societal dynamics in Nepal.', '20.00', 2, '2024-11-15'),
 ('978-99933-527-13', 'Seto Bagh', 'Amar Neupane', 'seto_bagh.jpg', 'Seto Bagh narrates the story of the Rana regime in Nepal, focusing on intrigue, romance, and tragedy.', '20.00', 3, '2024-11-15'),
-('978-99933-527-14', 'Paniko Gham', 'Amar Neupane', 'paniko_gham.jpg', 'A philosophical tale about human resilience and the pursuit of light in times of darkness.', '20.00', 3, '2024-11-15'),
+('978-99933-527-3', 'Basain', 'Shankar B. Thapa', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', '20.00', 2, '2024-11-15'),
+('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', '20.00', 1, '2024-11-15'),
+('978-99933-527-9', 'Karnali Blues', 'Shankar Lamichhane', 'karnali_blues.jpg', 'A powerful and emotional story about the relationship between a father and son, set in the backdrop of the Karnali region of Nepal.', '20.00', 1, '2024-11-15'),
+('978-99933-527-7', 'Seto Dharti', 'Jhamak Ghimire', 'seto_dharti.jpg', 'Seto Dharti tells the story of a woman’s struggles against the societal norms and her fight for identity and independence in a male-dominated society.', '20.00', 3, '2024-11-15'),
+('978-99933-527-8', 'Palpasa Cafe', 'Narayan Wagle', 'palpasa_cafe.jpg', 'Palpasa Cafe is a gripping tale set against the backdrop of the Maoist insurgency in Nepal, with love, politics, and personal loss interwoven throughout.', '20.00', 2, '2024-11-15'),
+('978-99933-527-6', 'Shirishko Phool', 'Parijat', 'shirishko_phool.jpg', 'This is a psychological novel about the struggles and alienation faced by a woman in a patriarchal society in Nepal.', '20.00', 4, '2024-11-15'),
+('978-99933-528-0', 'Data Structures and Algorithms', 'R.K. Gupta', 'data_structures_algorithms.jpg', 'This book provides a comprehensive introduction to data structures and algorithms for BCA students.', '25.00', 6, '2024-11-15'),
+('978-99933-528-1', 'Computer Networks', 'James Kurose', 'computer_networks.jpg', 'This book is an introduction to computer networks, providing detailed coverage of various networking technologies and protocols.', '30.00', 6, '2024-11-15'),
+('978-99933-528-2', 'Operating System Concepts', 'Abraham Silberschatz', 'operating_system_concepts.jpg', 'A widely used textbook that covers the fundamental concepts of operating systems for BCA students.', '28.00', 6, '2024-11-15'),
+('978-99933-528-3', 'Database Management Systems', 'Ramez Elmasri', 'dbms.jpg', 'This book offers an in-depth understanding of database management systems, covering various database models, design techniques, and SQL.', '30.00', 6, '2024-11-15'),
+('978-99933-528-4', 'Software Engineering', 'I. Sommerville', 'software_engineering.jpg', 'A detailed guide to the software engineering process, covering topics such as software development models, project management, and software testing.', '35.00', 6, '2024-11-15');
+
 
 -- --------------------------------------------------------
 
@@ -174,26 +169,17 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO order_items (orderid, book_isbn, item_price, quantity) VALUES
-(1, '978-99933-527-9', '200.00', 1),
-(1, '978-99933-527-8', '250.00', 1),
-(1, '978-99933-527-7', '300.00', 1),
-(2, '978-99933-527-9', '400.00', 1),
-(2, '978-99933-527-8', '20.00', 1),
-(2, '978-99933-527-7', '20.00', 1),
-(3, '978-0-999-23456-7', '20.00', 1),
-(1, '978-99933-527-7', '20.00', 1),
-(5, '978-0-999-23456-7', '20.00', 2),
-(5, '978-0-999-23456-8', '20.00', 1),
-(5, '978-0-999-23456-9', '20.00', 1),
-(6, '978-0-999-23456-7', '20.00', 10),
-(6, '978-0-999-23456-8', '20.00', 1),
-(7, '978-0-999-23457-0', '20.00', 1),
-(8, '978-0-999-23457-1', '20.00', 1),
-(9, '978-99933-527-8', '20.00', 4),
-(10, '978-99933-527-12', '20.00', 1),  -- Kalilo Man by Narayan Wagle
-(11, '978-99933-527-13', '20.00', 1),  -- Seto Bagh by Amar Neupane
-(12, '978-99933-527-14', '20.00', 1);  -- Paniko Gham by Amar Neupane
-
+(1, '978-99933-527-9', '200.00', 1),  -- Karnali Blues
+(1, '978-99933-527-8', '250.00', 1),  -- Palpasa Cafe
+(1, '978-99933-527-7', '300.00', 1),  -- Seto Dharti
+(2, '978-99933-527-9', '200.00', 1),  -- Karnali Blues
+(2, '978-99933-527-8', '250.00', 1),  -- Palpasa Cafe
+(2, '978-99933-527-7', '300.00', 1),  -- Seto Dharti
+(13, '978-99933-528-0', '25.00', 2),  -- Data Structures and Algorithms
+(14, '978-99933-528-1', '30.00', 1),  -- Computer Networks
+(15, '978-99933-528-2', '28.00', 3),  -- Operating System Concepts
+(16, '978-99933-528-3', '30.00', 2),  -- Database Management Systems
+(17, '978-99933-528-4', '35.00', 1);  -- Software Engineering
 
 -- --------------------------------------------------------
 
