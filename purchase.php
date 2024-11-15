@@ -82,7 +82,7 @@
 		<div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
 			<div class="card rounded-0 shadow">
 				<div class="card-header">
-					<div class="card-title h6 fw-bold">Please Fill the following form</div>
+					<div class="card-title h6 fw-bold">Please Fill out all Fields </div>
 				</div>
 				<div class="card-body">
 					<div class="container-fluid">
@@ -97,7 +97,7 @@
 									<option value="Esewa">Esewa</option>
 									<option value="Fonepay">Fonepay</option>
 								</select>
-							</div>
+							<!-- </div>
 							<div class="form-group mb-3">
 								<label for="card_number" class="control-label">Number</label>
 								<input type="text" class="form-control rounded-0" name="card_number">
@@ -106,14 +106,14 @@
 								<label for="card_PID" class="control-label">PID</label>
 								<input type="text" class="form-control rounded-0" name="card_PID">
 							</div>
-							<!-- <div class="form-group mb-3">
+							<!-- <div class="form-group mb-3"> -->
 								<label for="card_expire" class="control-label">Expiry Date</label>
 								<input type="date" name="card_expire" class="form-control rounded-0">
 							</div> -->
-							<div class="form-group mb-3">
+							<!-- <div class="form-group mb-3">
 								<label for="card_owner" class="control-label">Name</label>
 								<input type="text" class="form-control rounded-0" name="card_owner">
-							</div>
+							</div> -->
 							<div class="form-group mb-3">
 								<div class="d-grid gap-2">
 									<button type="submit" class="btn btn-primary rounded-0">Purchase</button>

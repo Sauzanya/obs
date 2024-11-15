@@ -1,31 +1,32 @@
 <?php
-// Include the database connection
+// Start a session
+session_start();
+
+// Include database connection
 include 'db_connection.php';
 
-// Assume the logged-in user's ID
-$user_id = 1;
+// Get the last viewed book from the session
+$lastBookISBN = $_SESSION['last_book_isbn'] ?? null;
 
-// Step 1: Get the last book the user interacted with
-$sql = "SELECT book_id FROM user_activity WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$lastBookId = $result->fetch_assoc()['book_id'];
-
-if ($lastBookId) {
-    // Step 2: Get the author of the last interacted book
-    $sql = "SELECT book_author FROM books WHERE book_id = ?";
+if ($lastBookISBN) {
+    // Step 1: Get the author of the last viewed book
+    $sql = "SELECT book_author FROM books WHERE book_isbn = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $lastBookId);
+    if (!$stmt) {
+        die("SQL error: " . $conn->error);
+    }
+    $stmt->bind_param("s", $lastBookISBN);
     $stmt->execute();
     $result = $stmt->get_result();
     $author = $result->fetch_assoc()['book_author'];
 
-    // Step 3: Fetch books by the same author
-    $sql = "SELECT book_title, book_author FROM books WHERE book_author = ? AND book_id != ? LIMIT 5";
+    // Step 2: Fetch recommendations by the same author
+    $sql = "SELECT * FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $author, $lastBookId);
+    if (!$stmt) {
+        die("SQL error: " . $conn->error);
+    }
+    $stmt->bind_param("ss", $author, $lastBookISBN);
     $stmt->execute();
     $result = $stmt->get_result();
 
