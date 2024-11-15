@@ -15,11 +15,14 @@ Phpmyadmin URL : http://localhost:8081/
 
 
 #### Command to run Docker 
-
+firt time
 - docker-compose up --build
 
 - docker-compose down 
 
+###to start
+
+- docker-compose up
 
 ### Summary
 

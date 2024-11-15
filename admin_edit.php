@@ -2,7 +2,7 @@
 	session_start();
 	require_once "./functions/admin.php";
 	$title = "Edit book";
-	require_once "./template/header.php";
+	require_once  realpath('template/header.php');
 	require_once "./functions/database_functions.php";
 	$conn = db_connect();
 
