@@ -21,7 +21,7 @@
 
   // If a search term is provided, fetch books based on the search query
   if ($searchTerm !== '') {
-      $sql = "SELECT * FROM books WHERE title LIKE ? ORDER BY title ASC";
+      $sql = "SELECT * FROM books WHERE book_title LIKE ? ORDER BY book_title ASC";  // Updated column name
       $stmt = $conn->prepare($sql);
 
       // Check if the prepared statement was successful
@@ -94,4 +94,3 @@
   }
   require_once "./template/footer.php";
 ?>
-
