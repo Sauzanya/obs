@@ -15,57 +15,17 @@
   }
 
   $row = select4LatestBook($conn);
-
-  // Search functionality (optional: show if search term exists)
-  $searchTerm = $_GET['title'] ?? '';  // Retrieve search term from URL query
-
-  // If a search term is provided, fetch books based on the search query
-  if ($searchTerm !== '') {
-      // Updated query to search both book_title and book_author
-      $sql = "SELECT * FROM books WHERE book_title LIKE ? OR book_author LIKE ? ORDER BY book_title ASC";  
-      $stmt = $conn->prepare($sql);
-
-      // Check if the prepared statement was successful
-      if ($stmt === false) {
-          die('MySQL prepare error: ' . $conn->error);  // Will output detailed error message
-      }
-
-      $searchTermWithWildcards = "%" . $searchTerm . "%";
-      $stmt->bind_param("ss", $searchTermWithWildcards, $searchTermWithWildcards);  // Bind search term to both fields
-      $stmt->execute();
-      $searchResults = $stmt->get_result();
-  }
 ?>
 
 <!-- Main Content: Place Search Form at the Top -->
 <div class="container">
     <!-- Search Form Section (Placed at the Top) -->
     <div class="search-container text-center my-4">
-        <form action="index.php" method="get">
-            <input type="text" name="title" placeholder="Search for a book" value="<?php echo htmlspecialchars($searchTerm); ?>" required>
+        <form action="search.php" method="get">
+            <input type="text" name="title" placeholder="Search for a book" required>
             <button type="submit">Search</button>
         </form>
     </div>
-
-    <!-- Display search results if a search term is given -->
-    <?php if ($searchTerm !== ''): ?>
-        <div class="lead text-center text-dark fw-bolder h4">Search Results for: "<?php echo htmlspecialchars($searchTerm); ?>"</div>
-        <div class="row">
-            <?php
-            if (isset($searchResults) && $searchResults->num_rows > 0) {
-                while ($book = $searchResults->fetch_assoc()) {
-                    echo "<div class='col-lg-3 col-md-4 col-sm-6 col-xs-12 py-2 mb-2'>";
-                    echo "<a href='book.php?bookisbn=" . $book['book_isbn'] . "' class='card rounded-0 shadow book-item text-reset text-decoration-none'>";
-                    echo "<div class='img-holder overflow-hidden'>";
-                    echo "<img class='img-top' src='./bootstrap/img/" . $book['book_image'] . "'>";
-                    echo "</div><div class='card-body'><div class='card-title fw-bolder h5 text-center'>" . htmlspecialchars($book['book_title']) . "</div></div></a></div>";
-                }
-            } else {
-                echo "<p>No books found matching your search.</p>";
-            }
-            ?>
-        </div>
-    <?php endif; ?>
 
     <!-- Latest Books Section -->
     <div class="lead text-center text-dark fw-bolder h4">Latest books</div>
