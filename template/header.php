@@ -29,7 +29,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-          <a class="navbar-brand" href="index.php">Simple Online Book Store</a>
+          <a class="navbar-brand" href="index.php">Introducing Online Book Stop</a>
         </div>
 
         <!--/.navbar-collapse -->
@@ -56,7 +56,7 @@
     ?>
     <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="container">
-        <h1>Welcome to Simple Online Book Store</h1>
+        <h1>Welcome to Emerging World of Online Book Shop</h1>
         <hr>
       </div>
     <?php } ?>
