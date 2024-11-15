@@ -21,7 +21,8 @@
 
   // If a search term is provided, fetch books based on the search query
   if ($searchTerm !== '') {
-      $sql = "SELECT * FROM books WHERE book_title LIKE ? ORDER BY book_title ASC";  // Updated column name
+      // Updated query to search both book_title and book_author
+      $sql = "SELECT * FROM books WHERE book_title LIKE ? OR book_author LIKE ? ORDER BY book_title ASC";  
       $stmt = $conn->prepare($sql);
 
       // Check if the prepared statement was successful
@@ -30,7 +31,7 @@
       }
 
       $searchTermWithWildcards = "%" . $searchTerm . "%";
-      $stmt->bind_param("s", $searchTermWithWildcards);
+      $stmt->bind_param("ss", $searchTermWithWildcards, $searchTermWithWildcards);  // Bind search term to both fields
       $stmt->execute();
       $searchResults = $stmt->get_result();
   }
