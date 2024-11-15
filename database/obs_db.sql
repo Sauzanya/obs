@@ -175,11 +175,25 @@ INSERT INTO order_items (orderid, book_isbn, item_price, quantity) VALUES
 (2, '978-99933-527-9', '200.00', 1),  -- Karnali Blues
 (2, '978-99933-527-8', '250.00', 1),  -- Palpasa Cafe
 (2, '978-99933-527-7', '300.00', 1),  -- Seto Dharti
+(3, '978-0-999-23456-7', '20.00', 1),  -- Sambodhan
+(1, '978-99933-527-7', '300.00', 1),  -- Seto Dharti (duplicate entry with orderid 1)
+(5, '978-0-999-23456-7', '20.00', 2),  -- Sambodhan
+(5, '978-0-999-23456-8', '20.00', 1),  -- Jeevan Katha
+(5, '978-0-999-23456-9', '20.00', 1),  -- Raatko Paat Jhaar
+(6, '978-0-999-23456-7', '20.00', 10), -- Sambodhan
+(6, '978-0-999-23456-8', '20.00', 1),  -- Jeevan Katha
+(7, '978-0-999-23457-0', '20.00', 1),  -- Dhauko Manchhe
+(8, '978-0-999-23457-1', '20.00', 1),  -- Chhiso Paani
+(9, '978-99933-527-8', '250.00', 4),  -- Palpasa Cafe
+(10, '978-99933-527-12', '28.00', 1),  -- Kalilo Man by Narayan Wagle
+(11, '978-99933-527-13', '30.00', 1),  -- Seto Bagh by Amar Neupane
+(12, '978-99933-527-14', '30.00', 1),  -- Paniko Gham by Amar Neupane
 (13, '978-99933-528-0', '25.00', 2),  -- Data Structures and Algorithms
 (14, '978-99933-528-1', '30.00', 1),  -- Computer Networks
 (15, '978-99933-528-2', '28.00', 3),  -- Operating System Concepts
 (16, '978-99933-528-3', '30.00', 2),  -- Database Management Systems
 (17, '978-99933-528-4', '35.00', 1);  -- Software Engineering
+
 
 -- --------------------------------------------------------
 
