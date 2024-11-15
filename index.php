@@ -5,7 +5,15 @@
   $title = "Home";
   require_once "./template/header.php";
   require_once "./functions/database_functions.php";
+
+  // Connect to the database
   $conn = db_connect();
+
+  // Check if the connection was successful
+  if (!$conn) {
+      die("Connection failed: " . mysqli_connect_error());
+  }
+
   $row = select4LatestBook($conn);
 
   // Search functionality (optional: show if search term exists)
@@ -15,6 +23,12 @@
   if ($searchTerm !== '') {
       $sql = "SELECT * FROM books WHERE title LIKE ? ORDER BY title ASC";
       $stmt = $conn->prepare($sql);
+
+      // Check if the prepared statement was successful
+      if ($stmt === false) {
+          die('MySQL prepare error: ' . $conn->error);  // Will output detailed error message
+      }
+
       $searchTermWithWildcards = "%" . $searchTerm . "%";
       $stmt->bind_param("s", $searchTermWithWildcards);
       $stmt->execute();
@@ -62,7 +76,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 py-2 mb-2">
                 <a href="book.php?bookisbn=<?php echo $book['book_isbn']; ?>" class="card rounded-0 shadow book-item text-reset text-decoration-none">
                     <div class="img-holder overflow-hidden">
-                        <img class="img-top" src="./bootstrap/img/<?php echo $book['book_image']; ?>">
+                        <img class='img-top' src='./bootstrap/img/<?php echo $book['book_image']; ?>'>
                     </div>
                     <div class="card-body">
                         <div class="card-title fw-bolder h5 text-center"><?= htmlspecialchars($book['book_title']) ?></div>
@@ -74,8 +88,10 @@
 </div>
 
 <?php
+  // Close the database connection if it exists
   if (isset($conn)) {
       mysqli_close($conn);
   }
   require_once "./template/footer.php";
 ?>
+
