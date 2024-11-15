@@ -73,7 +73,7 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-IINSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid, created_at) VALUES
+INSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid, created_at) VALUES
 ('978-99933-527-9', 'Karnali Blues', 'Shankar Lamichhane', 'karnali_blues.jpg', 'A powerful and emotional story about the relationship between a father and son, set in the backdrop of the Karnali region of Nepal.', '20.00', 1, '2024-11-15'),
 ('978-99933-527-8', 'Palpasa Cafe', 'Narayan Wagle', 'palpasa_cafe.jpg', 'Palpasa Cafe is a gripping tale set against the backdrop of the Maoist insurgency in Nepal, with love, politics, and personal loss interwoven throughout.', '20.00', 2, '2024-11-15'),
 ('978-99933-527-7', 'Seto Dharti', 'Jhamak Ghimire', 'seto_dharti.jpg', 'Seto Dharti tells the story of a woman’s struggles against the societal norms and her fight for identity and independence in a male-dominated society.', '20.00', 3, '2024-11-15'),
@@ -85,7 +85,7 @@ IINSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, 
 ('978-0-999-23457-0', 'Dhauko Manchhe', 'Bishnu Kumari Waiba', 'dhauko_manchhe.jpg', 'Dhauko Manchhe explores themes of love, human emotions, and relationships, set in the rural backdrop of Nepal.', '20.00', 10, '2024-11-15'),
 ('978-0-999-23457-1', 'Chhiso Paani', 'Bishnu Kumari Waiba', 'chhiso_paani.jpg', 'Chhiso Paani is another beautiful work by Bishnu Kumari Waiba that delves into human emotions, particularly dealing with familial ties and struggles.', '20.00', 10, '2024-11-15'),
 ('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', '20.00', 1, '2024-11-15'),
-('978-99933-527-3', 'Basain', 'Shankar B. Thapa', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', '20.00', 2, '2024-11-15'),
+('978-99933-527-3', 'Basain', 'Lil Bahadur Chhetri', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', '20.00', 2, '2024-11-15'),
 ('978-99933-527-2', 'Rupa Rani', 'Nepal Bhasa', 'rupa_rani.jpg', 'Rupa Rani tells a story of a woman’s fight for love, social acceptance, and freedom in a society burdened by restrictions on women.', '20.00', 3, '2024-11-15'),
 ('978-99933-527-1', 'Jiwanko Yatra', 'Bhanu A. Acharya', 'jiwanko_yatra.jpg', 'A novel about life’s journey, examining the philosophical and emotional aspects of human experience from a Nepali perspective.', '20.00', 4, '2024-11-15'),
 ('978-99933-527-0', 'Buddha and His Dhamma', 'Dr. B.R. Ambedkar', 'buddha_dhamma.jpg', 'This is the life story of Siddhartha Gautama, the Buddha, and his teachings of Dhamma, presented in the light of modern perspectives on human society and equality.', '20.00', 5, '2024-11-15'),
@@ -94,7 +94,6 @@ IINSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, 
 ('978-99933-527-12', 'Kalilo Man', 'Narayan Wagle', 'kalilo_man.jpg', 'A poignant tale about the resilience and emotions of people amidst changing societal dynamics in Nepal.', '20.00', 2, '2024-11-15'),
 ('978-99933-527-13', 'Seto Bagh', 'Amar Neupane', 'seto_bagh.jpg', 'Seto Bagh narrates the story of the Rana regime in Nepal, focusing on intrigue, romance, and tragedy.', '20.00', 3, '2024-11-15'),
 ('978-99933-527-14', 'Paniko Gham', 'Amar Neupane', 'paniko_gham.jpg', 'A philosophical tale about human resilience and the pursuit of light in times of darkness.', '20.00', 3, '2024-11-15'),
-('978-99933-527-15', 'Aakash Ko Thiyo', 'Jhamak Ghimire', 'aakash_ko_thiyo.jpg', 'Aakash Ko Thiyo tells the life story of a woman’s journey in overcoming adversity and her passion for writing amidst personal challenges.', '20.00', 3, '2024-11-15');
 
 -- --------------------------------------------------------
 
