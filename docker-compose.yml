@@ -17,8 +17,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: obs_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
     volumes:
       - db_data:/var/lib/mysql
 
