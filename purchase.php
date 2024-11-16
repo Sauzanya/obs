@@ -139,10 +139,20 @@ function handlePurchase() {
         alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
 
         // Submit the form to redirect to process.php
-        document.getElementById("purchaseForm").submit();
+        // document.getElementById("purchaseForm").submit();
+
     } else {
         // Show error if payment method is invalid
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
+	
+
 }
+
+// document.getElementById("purchaseBtn").addEventListener("Click", function(){
+// 		window.location.href="http://localhost:8080/process.php";
+// 		console.log('test')
+// 	});
+
+
 </script>
