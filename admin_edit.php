@@ -3,53 +3,57 @@
     session_start();
     require_once "./functions/admin.php";
     $title = "Edit book";
-    require_once  realpath('template/header.php');
+    require_once realpath('template/header.php');
     require_once "./functions/database_functions.php";
     require_once "./functions/helper_function.php";
 
     $conn = db_connect();
 
-    if(isset($_GET['bookisbn'])){
+    if (isset($_GET['bookisbn'])) {
         $book_isbn = $_GET['bookisbn'];
     } else {
         echo "Empty query!";
         exit;
     }
 
-    if(!isset($book_isbn)){
-        echo "Empty isbn! check again!";
+    if (!isset($book_isbn)) {
+        echo "Empty isbn! Check again!";
         exit;
     }
 
-    // get book data
+    // Get book data
     $query = "SELECT * FROM books WHERE book_isbn = '{$book_isbn}'";
     $result = mysqli_query($conn, $query);
-    if(!$result){
-        echo $err = "Can't retrieve data ";
+    if (!$result) {
+        echo "Can't retrieve data ";
         exit;
-    }else{
+    } else {
         $rowData = mysqli_fetch_assoc($result); // Renamed $row to $rowData
     }
-    if(isset($_POST['edit'])){
-        $isbn = trim($_POST['isbn']);
-        $data = "";
-        foreach($_POST as $k => $v){
-            if(!in_array($k, ['edit', 'isbn'])){
-                if(!empty($data)) $data .=", ";
-                $data .= "`{$k}` = '".(mysqli_real_escape_string($conn, $v))."'";
-            }
-        }
 
-        $query = "UPDATE books set $data where book_isbn = '{$book_isbn}'";
-        $result = mysqli_query($conn, $query);
-        if($result){
-            $_SESSION['book_success'] = "Book Details has been updated successfully";
-            // header("Location: admin_book.php");
-            redirect("admin_book.php");
-            exit; // Ensure no further code is executed after the redirect
-
+    if (isset($_POST['edit'])) {
+        // Input validation
+        if (empty($_POST['book_title']) || empty($_POST['book_author']) || empty($_POST['book_descr']) || empty($_POST['book_price']) || empty($_POST['publisherid'])) {
+            $err = "All fields are required!";
         } else {
-            $err =  "Can't update data " . mysqli_error($conn);
+            $isbn = trim($_POST['isbn']);
+            $data = "";
+            foreach ($_POST as $k => $v) {
+                if (!in_array($k, ['edit', 'isbn'])) {
+                    if (!empty($data)) $data .= ", ";
+                    $data .= "`{$k}` = '" . (mysqli_real_escape_string($conn, $v)) . "'";
+                }
+            }
+
+            $query = "UPDATE books SET $data WHERE book_isbn = '{$book_isbn}'";
+            $result = mysqli_query($conn, $query);
+            if ($result) {
+                $_SESSION['book_success'] = "Book Details have been updated successfully";
+                redirect("admin_book.php");
+                exit; // Ensure no further code is executed after the redirect
+            } else {
+                $err = "Can't update data " . mysqli_error($conn);
+            }
         }
     }
 ?>
@@ -62,42 +66,40 @@
         <div class="card rounded-0 shadow">
             <div class="card-body">
                 <div class="container-fluid">
-                    <?php if(isset($err)): ?>
+                    <?php if (isset($err)): ?>
                         <div class="alert alert-danger rounded-0">
-                            <?= $_SESSION['err_login'] ?>
+                            <?= $err ?>
                         </div>
-                    <?php 
-                        endif;
-                    ?>
-                    <form method="post" action="admin_edit.php?bookisbn=<?php echo $rowData['book_isbn'];?>" enctype="multipart/form-data">
+                    <?php endif; ?>
+                    <form method="post" action="admin_edit.php?bookisbn=<?php echo $rowData['book_isbn']; ?>" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label class="control-label">ISBN</label>
-                            <input class="form-control rounded-0" type="text" name="isbn" value="<?php echo $rowData['book_isbn'];?>" readOnly="true">
+                            <input class="form-control rounded-0" type="text" name="isbn" value="<?php echo $rowData['book_isbn']; ?>" readOnly="true">
                         </div>
                         <div class="mb-3">
                             <label class="control-label">Title</label>
-                            <input class="form-control rounded-0" type="text" name="book_title" value="<?php echo $rowData['book_title'];?>" required>
+                            <input class="form-control rounded-0" type="text" name="book_title" value="<?php echo $rowData['book_title']; ?>" required>
                         </div>
                         <div class="mb-3">
                             <label class="control-label">Author</label>
-                            <input class="form-control rounded-0" type="text" name="book_author" value="<?php echo $rowData['book_author'];?>" required>
+                            <input class="form-control rounded-0" type="text" name="book_author" value="<?php echo $rowData['book_author']; ?>" required>
                         </div>
                         <div class="mb-3">
                             <label class="control-label">Description</label>
-                            <textarea class="form-control rounded-0" name="book_descr" cols="40" rows="5"><?php echo $rowData['book_descr'];?></textarea>
+                            <textarea class="form-control rounded-0" name="book_descr" cols="40" rows="5"><?php echo $rowData['book_descr']; ?></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="control-label">Price</label>
-                            <input class="form-control rounded-0" type="text" name="book_price" value="<?php echo $rowData['book_price'];?>" required>
+                            <input class="form-control rounded-0" type="text" name="book_price" value="<?php echo $rowData['book_price']; ?>" required>
                         </div>
                         <div class="mb-3">
                             <label class="control-label">Publisher</label>
-                            <select class="form-select rounded-0"  name="publisherid" required>
+                            <select class="form-select rounded-0" name="publisherid" required>
                                 <?php 
-                                $psql = mysqli_query($conn, "SELECT * FROM `publisher` order by publisher_name asc");
-                                while($pub = mysqli_fetch_assoc($psql)):
+                                $psql = mysqli_query($conn, "SELECT * FROM `publisher` ORDER BY publisher_name ASC");
+                                while ($pub = mysqli_fetch_assoc($psql)):
                                 ?>
-                                <option value="<?= $pub['publisherid'] ?>" <?= $pub['publisherid']==$rowData['publisherid'] ? 'selected' : '' ?>><?= $pub['publisher_name'] ?></option>
+                                    <option value="<?= $pub['publisherid'] ?>" <?= $pub['publisherid'] == $rowData['publisherid'] ? 'selected' : '' ?>><?= $pub['publisher_name'] ?></option>
                                 <?php endwhile; ?>
                             </select>
                         </div>
@@ -112,7 +114,7 @@
     </div>
 </div>
 <?php
-    if(isset($conn)) {
+    if (isset($conn)) {
         mysqli_close($conn);
     }
     require_once "./template/footer.php";
