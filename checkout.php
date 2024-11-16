@@ -69,9 +69,10 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                             <input type="text" name="address" class="form-control rounded-0">
                         </div>
                         <div class="mb-3">
-                            <label for="Contact" class="control-label">Contact</label>
-                            <input type="text" name="Contact" class="form-control rounded-0">
-                        </div>
+    <label for="Contact" class="control-label">Contact</label>
+    <input type="tel" name="Contact" class="form-control rounded-0" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
+</div>
+
                         <div class="mb-3 d-grid">
                             <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
                         </div>
