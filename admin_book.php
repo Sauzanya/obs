@@ -5,7 +5,7 @@ $title = "List book";
 require_once "./template/header.php";
 require_once "./functions/database_functions.php";
 $conn = db_connect();
-$result = getAll($conn);
+$result = getAll($conn); // This should return a mysqli_result object, not an array.
 ?>
 <h4 class="fw-bolder text-center">Book List</h4>
 <center>
