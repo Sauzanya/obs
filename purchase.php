@@ -1,15 +1,23 @@
 <?php
 session_start();
+
+// Display any message set in the session
+if (isset($_SESSION['message'])) {
+    echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
+    unset($_SESSION['message']);  // Clear the message after it’s displayed
+}
+
 $_SESSION['err'] = 1;
 foreach ($_POST as $key => $value) {
     if (trim($value) == '') {
-        $_SESSION['err'] = 0;
+        $_SESSION['err'] = 0;  // If a field is empty, set error flag
+        break;  // Stop checking further fields
     }
-    break;
 }
 
 if ($_SESSION['err'] == 0) {
     header("Location: checkout.php");
+    exit;
 } else {
     unset($_SESSION['err']);
 }
