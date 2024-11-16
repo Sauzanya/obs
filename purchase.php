@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();  // Ensure session is started
 
 // Display any message set in the session
 if (isset($_SESSION['message'])) {
@@ -75,7 +75,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <form method="post" action="process.php" class="form-horizontal">
+                    <form id="purchaseForm" method="post" action="process.php" class="form-horizontal">
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
@@ -91,7 +91,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                             This payment method is not currently available. Please choose Cash on Delivery.
                         </div>
 
-                        <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
+                        <button id="purchaseBtn" class="btn btn-primary" type="button" onclick="handlePurchase()">Purchase</button>
                     </form>
                     <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
@@ -127,4 +127,22 @@ function checkPayment() {
 
 // Call the checkPayment function on page load to initialize the state
 window.onload = checkPayment;
+
+// Function to handle the purchase and show message before redirect
+function handlePurchase() {
+    var purchaseBtn = document.getElementById("purchaseBtn");
+    var paymentMethod = document.getElementById("payment").value;
+
+    // Check if the payment method is valid
+    if (paymentMethod === "cod") {
+        // Show success message
+        alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
+
+        // Submit the form to redirect to process.php
+        document.getElementById("purchaseForm").submit();
+    } else {
+        // Show error if payment method is invalid
+        alert("This payment method is not available. Please choose Cash on Delivery.");
+    }
+}
 </script>
