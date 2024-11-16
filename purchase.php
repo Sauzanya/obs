@@ -91,13 +91,33 @@
 							<p class="text-danger">All fields have to be filled</p>
 							<?php } ?>
 							<div class="form-group mb-3">
-								<label for="card_type" class="control-label">Type</label>
-								<select class="form-select rounded-0" name="payment_type">
-									<option value="Khalti">Khalti</option>
-									<option value="Esewa">Esewa</option>
-									<option value="Fonepay">Fonepay</option>
-								</select>
-							<!-- </div>
+							<div class="mb-3">
+    <label for="payment" class="control-label">Payment Method</label>
+    <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
+        <option value="cod">Cash on Delivery (COD)</option>
+        <option value="khalti">Khalti</option>
+        <option value="esewa">eSewa</option>
+    </select>
+</div>
+
+<!-- Message area for unavailable options -->
+<div id="message" class="text-danger" style="display: none;">
+    <p>This payment method is not currently available.</p>
+</div>
+
+<script>
+function checkPayment() {
+    var paymentMethod = document.getElementById("payment").value;
+    var messageDiv = document.getElementById("message");
+
+    if (paymentMethod === "cod") {
+        messageDiv.style.display = "none"; // Hide message if COD is selected
+    } else if (paymentMethod === "khalti" || paymentMethod === "esewa") {
+        messageDiv.style.display = "block"; // Show message for unavailable payment methods
+    }
+}
+</script>
+
 							<div class="form-group mb-3">
 								<label for="card_number" class="control-label">Number</label>
 								<input type="text" class="form-control rounded-0" name="card_number">
@@ -106,8 +126,8 @@
 								<label for="card_PID" class="control-label">PID</label>
 								<input type="text" class="form-control rounded-0" name="card_PID">
 							</div>
-							<!-- <div class="form-group mb-3"> -->
-								<label for="card_expire" class="control-label">Expiry Date</label>
+							<div class="form-group mb-3"> -->
+								<!-- <label for="card_expire" class="control-label">Expiry Date</label>
 								<input type="date" name="card_expire" class="form-control rounded-0">
 							</div> -->
 							<!-- <div class="form-group mb-3">
