@@ -21,7 +21,7 @@ if ($lastBookISBN) {
     $author = $result->fetch_assoc()['book_author'];
 
     // Step 2: Fetch recommendations by the same author
-    $sql = "SELECT book_title, book_author, book_image_url FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
+    $sql = "SELECT book_title, book_author, book_image FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("SQL error: " . $conn->error);
@@ -37,11 +37,11 @@ if ($lastBookISBN) {
         while ($book = $result->fetch_assoc()) {
             $bookTitle = htmlspecialchars($book['book_title']);
             $bookAuthor = htmlspecialchars($book['book_author']);
-            $bookImageUrl = htmlspecialchars($book['book_image_url']); // Ensure this column exists in your database
+            $bookImage = htmlspecialchars($book['book_image']);
 
             echo "<div style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 150px;'>";
-            if ($bookImageUrl) {
-                echo "<img src='$bookImageUrl' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
+            if ($bookImage) {
+                echo "<img src='$bookImage' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
             } else {
                 echo "<img src='default-image.jpg' alt='Default cover' style='width: 100%; height: auto;'>"; // Fallback image
             }
