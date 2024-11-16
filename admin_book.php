@@ -40,12 +40,13 @@ if ($result) {
 endif;
 ?>
 
-<!-- HTML content continues below -->
 <div class="card rounded-0">
     <div class="card-body">
         <div class="container-fluid">
+            <!-- Display number of books found -->
             <p><strong>Number of books found: </strong> <?php echo $num_rows; ?></p>
 
+            <!-- Book Table -->
             <table class="table table-striped table-bordered">
                 <colgroup>
                     <col width="10%">
@@ -71,6 +72,7 @@ endif;
                 </thead>
                 <tbody>
                     <?php
+                    // Loop through each row and display book details
                     while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
                         <td class="px-2 py-1 align-middle">
@@ -81,7 +83,10 @@ endif;
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_title']; ?></td>
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_author']; ?></td>
                         <td class="px-2 py-1 align-middle">
+                            <!-- Display book image -->
                             <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width="50">
+                            <!-- Debugging output for the image path -->
+                            <p class="small text-muted">Path: bootstrap/img/<?php echo $row['book_image']; ?></p>
                         </td>
                         <td class="px-2 py-1 align-middle">
                             <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
@@ -91,6 +96,7 @@ endif;
                             <?php echo getPubName($conn, $row['publisherid']); ?>
                         </td>
                         <td class="px-2 py-1 align-middle text-center">
+                            <!-- Action Buttons -->
                             <div class="btn-group btn-group-sm">
                                 <a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-primary" title="Edit">
                                     <i class="fa fa-edit"></i>
