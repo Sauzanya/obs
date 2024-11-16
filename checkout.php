@@ -77,6 +77,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         <div class="invalid-feedback">
                          Please enter a valid 10-digit contact number.
                         </div>
+                        </div>
                         <div class="mb-3 d-grid">
                             <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
                         </div>
