@@ -138,11 +138,11 @@ function handlePurchase() {
 
     // Check if the payment method is valid
     if (paymentMethod === "cod") {
-        // Show success message
-        // alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
+        //Show success message
+        alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
         window.location.href="http://localhost:8080/process.php";
-        // Submit the form to redirect to process.php
-        // document.getElementById("purchaseForm").submit();
+       // Submit the form to redirect to process.php
+         document.getElementById("purchaseForm").submit();
 
     } else {
         // Show error if payment method is invalid
