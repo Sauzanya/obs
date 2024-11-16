@@ -35,6 +35,12 @@
 		$customerid = setCustomerId($name, $address, $city, $zip_code, $country);
 	}
 
+	// Validate that customerid is a valid integer
+	if (!$customerid || !is_numeric($customerid)) {
+		echo "Invalid customer ID!"; // Or redirect the user if necessary
+		exit;
+	}
+
 	// Get the current date and time
 	$date = date("Y-m-d H:i:s");
 
