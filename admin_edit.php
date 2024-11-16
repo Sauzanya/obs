@@ -6,6 +6,8 @@
     $title = "Edit book";
     require_once  realpath('template/header.php');
     require_once "./functions/database_functions.php";
+    require_once "./functions/helper_function.php";
+
     $conn = db_connect();
 
     if(isset($_GET['bookisbn'])){
@@ -43,7 +45,8 @@
         $result = mysqli_query($conn, $query);
         if($result){
             $_SESSION['book_success'] = "Book Details has been updated successfully";
-            header("Location: admin_book.php");
+            // header("Location: admin_book.php");
+            redirect("admin_book.php");
             exit; // Ensure no further code is executed after the redirect
         } else {
             $err =  "Can't update data " . mysqli_error($conn);
@@ -114,5 +117,3 @@
     require "./template/footer.php";
     ob_end_flush(); // Flush the output buffer
 ?>
-admin_edit.php
-Displaying admin_edit.php.
