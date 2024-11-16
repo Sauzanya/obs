@@ -30,12 +30,21 @@ if ($lastBookISBN) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Display recommended books
+    // Display recommended books with images
     echo "<h2>Recommended Books:</h2>";
     if ($result->num_rows > 0) {
+        echo "<div style='display: flex; flex-wrap: wrap; gap: 20px;'>";
         while ($book = $result->fetch_assoc()) {
-            echo "<p><strong>" . htmlspecialchars($book['book_title']) . "</strong> by " . htmlspecialchars($book['book_author']) . "</p>";
+            $bookTitle = htmlspecialchars($book['book_title']);
+            $bookAuthor = htmlspecialchars($book['book_author']);
+            $bookImageUrl = htmlspecialchars($book['book_image_url']); // Ensure this column exists in your database
+            echo "<div style='border: 1px solid #ccc; padding: 10px; text-align: center; max-width: 150px;'>";
+            echo "<img src='$bookImageUrl' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
+            echo "<p><strong>$bookTitle</strong></p>";
+            echo "<p>by $bookAuthor</p>";
+            echo "</div>";
         }
+        echo "</div>";
     } else {
         echo "<p>No recommendations available.</p>";
     }
