@@ -12,7 +12,7 @@ function db_connect() {
 // Function to fetch the latest 4 books
 function select4LatestBook($conn) {
     $row = array();
-    $query = "SELECT book_isbn, book_image, book_title FROM books ORDER BY ABS(UNIX_TIMESTAMP(created_at)) DESC";
+    $query = "SELECT book_isbn, book_title FROM books ORDER BY ABS(UNIX_TIMESTAMP(created_at)) DESC"; // Removed book_image
     $result = mysqli_query($conn, $query);
     if(!$result) {
         echo "Can't retrieve data " . mysqli_error($conn);
@@ -26,7 +26,7 @@ function select4LatestBook($conn) {
 
 // Function to fetch book details by ISBN
 function getBookByIsbn($conn, $isbn) {
-    $query = "SELECT book_title, book_author, book_price, book_image, book_descr, publisherid FROM books WHERE book_isbn = ?";
+    $query = "SELECT book_title, book_author, book_price, book_descr, publisherid FROM books WHERE book_isbn = ?"; // Removed book_image
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
@@ -53,16 +53,16 @@ function getOrderId($conn, $customerid) {
     return $row['orderid'];
 }
 
-// Function to insert a new order
-function insertIntoOrder($conn, $customerid, $total_price, $date, $ship_name, $ship_address, $ship_city, $ship_zip_code, $ship_country) {
-    $query = "INSERT INTO orders (customerid, total_price, date, ship_name, ship_address, ship_city, ship_zip_code, ship_country)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+// Function to insert a new order (without shipping data)
+function insertIntoOrder($conn, $customerid, $total_price, $date) { // Removed shipping fields
+    $query = "INSERT INTO orders (customerid, total_price, date)
+              VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
         exit;
     }
-    mysqli_stmt_bind_param($stmt, "idssssss", $customerid, $total_price, $date, $ship_name, $ship_address, $ship_city, $ship_zip_code, $ship_country);
+    mysqli_stmt_bind_param($stmt, "ids", $customerid, $total_price, $date);
     $result = mysqli_stmt_execute($stmt);
     if(!$result) {
         echo "Insert order failed: " . mysqli_error($conn);
@@ -86,16 +86,16 @@ function getBookPrice($isbn) {
     return $row['book_price'];
 }
 
-// Function to get customer ID by name, address, and other details
-function getCustomerId($name, $address, $city, $zip_code, $country) {
+// Function to get customer ID by name, address, and contact
+function getCustomerId($name, $address, $contact) {
     $conn = db_connect();
-    $query = "SELECT customerid FROM customers WHERE `name` = ? AND `address` = ? AND city = ? AND zip_code = ? AND country = ?";
+    $query = "SELECT customerid FROM customers WHERE `name` = ? AND `address` = ? AND contact = ?"; // Removed city, zip_code, country
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
         exit;
     }
-    mysqli_stmt_bind_param($stmt, "sssss", $name, $address, $city, $zip_code, $country);
+    mysqli_stmt_bind_param($stmt, "sss", $name, $address, $contact);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if(mysqli_num_rows($result) > 0) {
@@ -107,16 +107,16 @@ function getCustomerId($name, $address, $city, $zip_code, $country) {
 }
 
 // Function to insert a new customer and return customer ID
-function setCustomerId($name, $address, $city, $zip_code, $country) {
+function setCustomerId($name, $address, $contact) { // Removed city, zip_code, country
     $conn = db_connect();
-    $query = "INSERT INTO customers (name, address, city, zip_code, country) 
-              VALUES (?, ?, ?, ?, ?)";
+    $query = "INSERT INTO customers (name, address, contact) 
+              VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
         exit;
     }
-    mysqli_stmt_bind_param($stmt, "sssss", $name, $address, $city, $zip_code, $country);
+    mysqli_stmt_bind_param($stmt, "sss", $name, $address, $contact);
     $result = mysqli_stmt_execute($stmt);
     if(!$result) {
         echo "Insert failed: " . mysqli_error($conn);
@@ -153,15 +153,15 @@ function getAll($conn) {
 }
 
 // Function to add a new book to the database
-function addBook($conn, $isbn, $title, $author, $image, $description, $price, $publisherid) {
-    $query = "INSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid)
-              VALUES (?, ?, ?, ?, ?, ?, ?)";
+function addBook($conn, $isbn, $title, $author, $description, $price, $publisherid) { // Removed image
+    $query = "INSERT INTO books (book_isbn, book_title, book_author, book_descr, book_price, publisherid)
+              VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
         exit;
     }
-    mysqli_stmt_bind_param($stmt, "ssssdis", $isbn, $title, $author, $image, $description, $price, $publisherid);
+    mysqli_stmt_bind_param($stmt, "ssssdi", $isbn, $title, $author, $description, $price, $publisherid);
     $result = mysqli_stmt_execute($stmt);
     if(!$result) {
         echo "Insert book failed: " . mysqli_error($conn);
@@ -170,14 +170,14 @@ function addBook($conn, $isbn, $title, $author, $image, $description, $price, $p
 }
 
 // Function to update book details in the database
-function updateBook($conn, $isbn, $title, $author, $image, $description, $price, $publisherid) {
-    $query = "UPDATE books SET book_title = ?, book_author = ?, book_image = ?, book_descr = ?, book_price = ?, publisherid = ? WHERE book_isbn = ?";
+function updateBook($conn, $isbn, $title, $author, $description, $price, $publisherid) { // Removed image
+    $query = "UPDATE books SET book_title = ?, book_author = ?, book_descr = ?, book_price = ?, publisherid = ? WHERE book_isbn = ?";
     $stmt = mysqli_prepare($conn, $query);
     if(!$stmt) {
         echo "Error preparing statement: " . mysqli_error($conn);
         exit;
     }
-    mysqli_stmt_bind_param($stmt, "ssssdis", $title, $author, $image, $description, $price, $publisherid, $isbn);
+    mysqli_stmt_bind_param($stmt, "ssssdis", $title, $author, $description, $price, $publisherid, $isbn);
     $result = mysqli_stmt_execute($stmt);
     if(!$result) {
         echo "Update book failed: " . mysqli_error($conn);
