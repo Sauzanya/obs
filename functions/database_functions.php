@@ -9,19 +9,27 @@ function db_connect() {
     return $conn;
 }
 
-// Function to fetch the latest 4 books (with images)
-function select4LatestBook($conn) {
-    $row = array();
-    $query = "SELECT book_isbn, book_title, book_image FROM books ORDER BY created_at DESC LIMIT 4"; 
+// Function to fetch all books with detailed information
+function getAll($conn) {
+    // Include all the necessary columns for display
+    $query = "SELECT book_isbn, book_title, book_author, book_descr, book_image, book_price, publisherid 
+              FROM books ORDER BY book_isbn DESC";
     $result = mysqli_query($conn, $query);
     if (!$result) {
-        error_log("Error fetching latest books: " . mysqli_error($conn), 3, "/path/to/logfile.log"); // Log error
-        die("Error fetching the latest books.");
+        error_log("Error fetching all books: " . mysqli_error($conn), 3, "/path/to/logfile.log"); // Log error
+        die("Error fetching the books.");
     }
-    while ($book = mysqli_fetch_assoc($result)) {
-        $row[] = $book;
+    return $result;
+}
+
+// Function to fetch publisher name by ID
+function getPubName($conn, $publisherid) {
+    $query = "SELECT publisher_name FROM publishers WHERE publisher_id = $publisherid";
+    $result = mysqli_query($conn, $query);
+    if ($row = mysqli_fetch_assoc($result)) {
+        return $row['publisher_name'];
     }
-    return $row;
+    return "Unknown Publisher"; // Fallback if no publisher is found
 }
 
 // Function to fetch book details by ISBN (with image)
@@ -39,17 +47,6 @@ function getBookByIsbn($conn, $isbn) {
     mysqli_stmt_close($stmt);
 
     return $book ? $book : null; // Return null if no book is found
-}
-
-// Function to fetch all books (with images)
-function getAll($conn) {
-    $query = "SELECT book_isbn, book_title, book_image FROM books ORDER BY book_isbn DESC";
-    $result = mysqli_query($conn, $query);
-    if (!$result) {
-        error_log("Error fetching all books: " . mysqli_error($conn), 3, "/path/to/logfile.log"); // Log error
-        die("Error fetching the books.");
-    }
-    return $result;
 }
 
 // Function to add a new book (with image)

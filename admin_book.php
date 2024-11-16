@@ -53,7 +53,7 @@ endif;
                     <col width="15%">
                     <col width="15%">
                     <col width="10%">
-                    <col width="15%">
+                    <col width="20%">
                     <col width="10%">
                     <col width="15%">
                     <col width="10%">
@@ -85,8 +85,6 @@ endif;
                         <td class="px-2 py-1 align-middle">
                             <!-- Display book image -->
                             <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width="50">
-                            <!-- Debugging output for the image path -->
-                            <p class="small text-muted">Path: bootstrap/img/<?php echo $row['book_image']; ?></p>
                         </td>
                         <td class="px-2 py-1 align-middle">
                             <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
