@@ -84,4 +84,5 @@ endif;
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_author']; ?></td>
                         <td class="px-2 py-1 align-middle">
                             <!-- Display book image -->
-                            <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width
+                            <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" widthwidth="50" height="70">
+							</td>
