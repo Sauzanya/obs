@@ -16,8 +16,8 @@ if (empty($books)) {
     echo "Error: No books found or an issue occurred while fetching the book list.";
     exit;  // Exit the script if no books are found
 }
-
 ?>
+
 <h4 class="fw-bolder text-center">Book List</h4>
 <center>
     <hr class="bg-warning" style="width:5em;height:3px;opacity:1">
@@ -68,7 +68,9 @@ endif;
                             </td>
                             <td class="px-2 py-1 align-middle"><?php echo $row['book_title']; ?></td>
                             <td class="px-2 py-1 align-middle"><?php echo $row['book_author']; ?></td>
-                            <td class="px-2 py-1 align-middle"><?php echo $row['book_image']; ?></td>
+                            <td class="px-2 py-1 align-middle">
+                                <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="<?php echo $row['book_title']; ?>" width="100" height="auto">
+                            </td>
                             <td class="px-2 py-1 align-middle">
                                 <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
                             </td>
