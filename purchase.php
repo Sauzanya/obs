@@ -97,7 +97,6 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
                                         <option value="cod">Cash on Delivery (COD)</option>
                                         <option value="khalti">Khalti</option>
-                
                                     </select>
                                 </div>
 
@@ -105,7 +104,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     <p>This payment method is not currently available.</p>
                                 </div>
 
-                                <!-- Change to 'submit' type to enable form submission -->
+                                <!-- Purchase Button -->
                                 <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
 
                                 <div id="orderMessage" class="text-success" style="display: none;">
@@ -113,29 +112,38 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                 </div>
 
                                 <script>
+                                // Function to handle payment method selection
                                 function checkPayment() {
                                     var paymentMethod = document.getElementById("payment").value;
                                     var messageDiv = document.getElementById("message");
                                     var purchaseBtn = document.getElementById("purchaseBtn");
 
                                     if (paymentMethod === "cod") {
-                                        messageDiv.style.display = "none";
-                                        purchaseBtn.disabled = false;
+                                        messageDiv.style.display = "none";  // Hide error message
+                                        purchaseBtn.disabled = false;  // Enable the purchase button
                                     } else if (paymentMethod === "khalti") {
-                                        messageDiv.style.display = "block";
-                                        purchaseBtn.disabled = true;
+                                        messageDiv.style.display = "block";  // Show error message
+                                        purchaseBtn.disabled = true;  // Disable the purchase button
                                     }
                                 }
 
-                                // Function to show the order confirmation message when the button is clicked
+                                // Function to show the order confirmation message
                                 function placeOrder() {
                                     var orderMessage = document.getElementById("orderMessage");
-                                    orderMessage.style.display = "block";
+                                    orderMessage.style.display = "block";  // Show order confirmation message
                                     
                                     // Disable purchase button after confirming order
                                     var purchaseBtn = document.getElementById("purchaseBtn");
-                                    purchaseBtn.disabled = true;
+                                    purchaseBtn.disabled = true;  // Disable the purchase button
                                 }
+
+                                // Listen for form submission and show order confirmation
+                                var purchaseForm = document.querySelector("form");
+                                purchaseForm.addEventListener("submit", function(e) {
+                                    e.preventDefault();  // Prevent form from submitting immediately
+                                    placeOrder();  // Show order confirmation message
+                                    this.submit();  // Submit the form after showing the message
+                                });
                                 </script>
 
                             </div>
