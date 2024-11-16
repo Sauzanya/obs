@@ -136,8 +136,8 @@ function handlePurchase() {
     // Check if the payment method is valid
     if (paymentMethod === "cod") {
         // Show success message
-        alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
-
+        // alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
+        window.location.href="http://localhost:8080/process.php";
         // Submit the form to redirect to process.php
         // document.getElementById("purchaseForm").submit();
 
@@ -146,13 +146,8 @@ function handlePurchase() {
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
 	
-
 }
 
-// document.getElementById("purchaseBtn").addEventListener("Click", function(){
-// 		window.location.href="http://localhost:8080/process.php";
-// 		console.log('test')
-// 	});
 
 
 </script>
