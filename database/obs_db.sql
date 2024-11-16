@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+
 --
 
 -- Reset and recreate the database
@@ -104,9 +104,9 @@ INSERT INTO `admin` (`name`, `pass`) VALUES ('admin', 'f865b53623b121fd34ee5426c
 
 -- Customers
 INSERT INTO `customers` (`name`, `address`, `contact`) VALUES
-('John Doe', '123 Main St', '123456789'),
-('Jane Smith', '456 Elm St', '987654321'),
-('Alice Johnson', '789 Oak St', '123123123');
+('John Doe', 'Lalitpur', '123456789'),
+('Jane Smith', 'Kathmandu', '987654321'),
+('Alice Johnson', 'Bhaktapur', '123123123');
 
 -- Books
 INSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid, created_at) VALUES
