@@ -21,7 +21,7 @@ if ($lastBookISBN) {
     $author = $result->fetch_assoc()['book_author'];
 
     // Step 2: Fetch recommendations by the same author
-    $sql = "SELECT * FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
+    $sql = "SELECT book_title, book_author, book_image_url FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("SQL error: " . $conn->error);
@@ -30,7 +30,7 @@ if ($lastBookISBN) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Display recommended books with images
+    // Display recommended books with images and titles
     echo "<h2>Recommended Books:</h2>";
     if ($result->num_rows > 0) {
         echo "<div style='display: flex; flex-wrap: wrap; gap: 20px;'>";
@@ -38,10 +38,15 @@ if ($lastBookISBN) {
             $bookTitle = htmlspecialchars($book['book_title']);
             $bookAuthor = htmlspecialchars($book['book_author']);
             $bookImageUrl = htmlspecialchars($book['book_image_url']); // Ensure this column exists in your database
-            echo "<div style='border: 1px solid #ccc; padding: 10px; text-align: center; max-width: 150px;'>";
-            echo "<img src='$bookImageUrl' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
+
+            echo "<div style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 150px;'>";
+            if ($bookImageUrl) {
+                echo "<img src='$bookImageUrl' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
+            } else {
+                echo "<img src='default-image.jpg' alt='Default cover' style='width: 100%; height: auto;'>"; // Fallback image
+            }
             echo "<p><strong>$bookTitle</strong></p>";
-            echo "<p>by $bookAuthor</p>";
+            echo "<p style='color: gray; font-size: 0.9em;'>by $bookAuthor</p>";
             echo "</div>";
         }
         echo "</div>";
