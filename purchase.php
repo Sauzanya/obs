@@ -93,12 +93,17 @@
 							<div class="form-group mb-3">
 							<div class="mb-3">
 							<div class="mb-3">
+    
+   <!-- Payment Method Selection -->
+<div class="mb-3">
     <label for="payment" class="control-label">Payment Method</label>
     <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
         <option value="cod">Cash on Delivery (COD)</option>
         <option value="khalti">Khalti</option>
+        <option value="esewa">eSewa</option>
     </select>
 </div>
+
 
 <div id="message" class="text-danger" style="display: none;">
     <p>This payment method is not currently available.</p>
@@ -108,6 +113,7 @@
 <button id="purchaseBtn" class="btn btn-primary" type="button" disabled>Purchase</button>
 
 <script>
+
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var messageDiv = document.getElementById("message");
@@ -116,35 +122,13 @@ function checkPayment() {
     if (paymentMethod === "cod") {
         messageDiv.style.display = "none"; 
         purchaseBtn.disabled = false; 
-    } else if (paymentMethod === "khalti")
-	{
-        messageDiv.style.display = "block";
-        purchaseBtn.disabled = true; 
+    } else if (paymentMethod === "khalti") {
+        messageDiv.style.display = "block"; 
+        purchaseBtn.disabled = true;
     }
 }
 </script>
 
-							<!-- <div class="form-group mb-3">
-								<label for="card_number" class="control-label">Number</label>
-								<input type="text" class="form-control rounded-0" name="card_number">
-							</div>
-							<div class="form-group mb-3">
-								<label for="card_PID" class="control-label">PID</label>
-								<input type="text" class="form-control rounded-0" name="card_PID">
-							</div>
-							<div class="form-group mb-3"> --> -->
-								<!-- <label for="card_expire" class="control-label">Expiry Date</label>
-								<input type="date" name="card_expire" class="form-control rounded-0">
-							</div> -->
-							<!-- <div class="form-group mb-3">
-								<label for="card_owner" class="control-label">Name</label>
-								<input type="text" class="form-control rounded-0" name="card_owner">
-							</div> -->
-							<div class="form-group mb-3">
-								<div class="d-grid gap-2">
-									<button type="submit" class="btn btn-primary rounded-0">Purchase</button>
-									<button type="reset" class="btn btn-default bg-light bg-gradient border rounded-0">Cancel</button>
-								</div>
 							</div>
 						</form>
 						<p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
