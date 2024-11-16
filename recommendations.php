@@ -5,6 +5,9 @@ session_start();
 // Include database connection
 include 'db_connection.php';
 
+// Define the base directory for book images
+$imageBasePath = 'img/'; // Adjust the path as needed to match your folder structure
+
 // Get the last viewed book from the session
 $lastBookISBN = $_SESSION['last_book_isbn'] ?? null;
 
@@ -21,7 +24,7 @@ if ($lastBookISBN) {
     $author = $result->fetch_assoc()['book_author'];
 
     // Step 2: Fetch recommendations by the same author
-    $sql = "SELECT book_title, book_author, book_image FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
+    $sql = "SELECT book_title, book_author, book_images FROM books WHERE book_author = ? AND book_isbn != ? LIMIT 5";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         die("SQL error: " . $conn->error);
@@ -37,14 +40,18 @@ if ($lastBookISBN) {
         while ($book = $result->fetch_assoc()) {
             $bookTitle = htmlspecialchars($book['book_title']);
             $bookAuthor = htmlspecialchars($book['book_author']);
-            $bookImage = htmlspecialchars($book['book_image']);
+            $bookImage = htmlspecialchars($book['book_images']); // Filename of the book image
 
             echo "<div style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 150px;'>";
-            if ($bookImage) {
-                echo "<img src='$bookImage' alt='Cover of $bookTitle' style='width: 100%; height: auto;'>";
+            // Construct the full path to the book image in the 'img' folder
+            if (!empty($bookImage)) {
+                $imagePath = $imageBasePath . $bookImage;
+                echo "<img src='$imagePath' alt='Cover of $bookTitle' class='img-fluid' style='width: 100%; height: auto;'>";
             } else {
-                echo "<img src='default-image.jpg' alt='Default cover' style='width: 100%; height: auto;'>"; // Fallback image
+                // Display a default image if book image is missing or invalid
+                echo "<img src='img/default-image.jpg' alt='Default cover' class='img-fluid' style='width: 100%; height: auto;'>";
             }
+            // Display the book title and author
             echo "<p><strong>$bookTitle</strong></p>";
             echo "<p style='color: gray; font-size: 0.9em;'>by $bookAuthor</p>";
             echo "</div>";
