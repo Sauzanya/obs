@@ -73,7 +73,10 @@ endif;
                 <tbody>
                     <?php
                     // Loop through each row and display book details
-                    while ($row = mysqli_fetch_assoc($result)) { ?>
+                    while ($row = mysqli_fetch_assoc($result)) { 
+                        $description = $row['book_descr'];
+                        $short_description = (strlen($description) > 50) ? substr($description, 0, 50) . "..." : $description;
+                    ?>
                     <tr>
                         <td class="px-2 py-1 align-middle">
                             <a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank">
@@ -87,7 +90,10 @@ endif;
                             <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width="50">
                         </td>
                         <td class="px-2 py-1 align-middle">
-                            <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
+                            <!-- Display short description (Truncated) -->
+                            <p class="text-truncate" style="width:15em" title="<?php echo htmlspecialchars($description); ?>">
+                                <?php echo htmlspecialchars($short_description); ?>
+                            </p>
                         </td>
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
                         <td class="px-2 py-1 align-middle">
