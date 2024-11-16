@@ -14,12 +14,6 @@ if ($_SESSION['err'] == 0) {
     unset($_SESSION['err']);
 }
 
-$_SESSION['ship'] = array();
-foreach ($_POST as $key => $value) {
-    if ($key != "submit") {
-        $_SESSION['ship'][$key] = $value;
-    }
-}
 require_once "./functions/database_functions.php";
 // print out header here
 $title = "Purchase";
@@ -61,18 +55,6 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                     <th><?php echo $_SESSION['total_items']; ?></th>
                     <th><?php echo "Rs." . $_SESSION['total_price']; ?></th>
                 </tr>
-                <tr>
-                    <td>Shipping</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>20.00</td>
-                </tr>
-                <tr>
-                    <th>Total Including Shipping</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th><?php echo "Rs." . ($_SESSION['total_price'] + 20); ?></th>
-                </tr>
             </table>
         </div>
     </div>
@@ -90,64 +72,14 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
                         <div class="form-group mb-3">
-                            <div class="mb-3">
-                                <!-- Payment Method Selection -->
-                                <div class="mb-3">
-                                    <label for="payment" class="control-label">Payment Method</label>
-                                    <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
-                                        <option value="cod">Cash on Delivery (COD)</option>
-                                        <option value="khalti">Khalti</option>
-                                    </select>
-                                </div>
-
-                                <div id="message" class="text-danger" style="display: none;">
-                                    <p>This payment method is not currently available.</p>
-                                </div>
-
-                                <!-- Purchase Button -->
-                                <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
-
-                                <div id="orderMessage" class="text-success" style="display: none;">
-                                    <p>Your order has been placed, and you will get a call for delivery.</p>
-                                </div>
-
-                                <script>
-                                // Function to handle payment method selection
-                                function checkPayment() {
-                                    var paymentMethod = document.getElementById("payment").value;
-                                    var messageDiv = document.getElementById("message");
-                                    var purchaseBtn = document.getElementById("purchaseBtn");
-
-                                    if (paymentMethod === "cod") {
-                                        messageDiv.style.display = "none";  // Hide error message
-                                        purchaseBtn.disabled = false;  // Enable the purchase button
-                                    } else if (paymentMethod === "khalti") {
-                                        messageDiv.style.display = "block";  // Show error message
-                                        purchaseBtn.disabled = true;  // Disable the purchase button
-                                    }
-                                }
-
-                                // Function to show the order confirmation message
-                                function placeOrder() {
-                                    var orderMessage = document.getElementById("orderMessage");
-                                    orderMessage.style.display = "block";  // Show order confirmation message
-                                    
-                                    // Disable purchase button after confirming order
-                                    var purchaseBtn = document.getElementById("purchaseBtn");
-                                    purchaseBtn.disabled = true;  // Disable the purchase button
-                                }
-
-                                // Listen for form submission and show order confirmation
-                                var purchaseForm = document.querySelector("form");
-                                purchaseForm.addEventListener("submit", function(e) {
-                                    e.preventDefault();  // Prevent form from submitting immediately
-                                    placeOrder();  // Show order confirmation message
-                                    this.submit();  // Submit the form after showing the message
-                                });
-                                </script>
-
-                            </div>
+                            <label for="payment" class="control-label">Payment Method</label>
+                            <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
+                                <option value="cod">Cash on Delivery (COD)</option>
+                                <option value="khalti">Khalti</option>
+                            </select>
                         </div>
+
+                        <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
                     </form>
                     <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
