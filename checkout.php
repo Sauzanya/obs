@@ -7,10 +7,49 @@ require "./template/header.php";
 // Define the exchange rate (if required, else skip this)
 $exchange_rate = 130; // Example exchange rate (1 USD = 130 NPR)
 
-// Initialize total items and price
 $_SESSION['total_items'] = 0;
 $_SESSION['total_price'] = 0;
+$errors = [];
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Server-side validation
+    if (empty($_POST['name'])) {
+        $errors[] = "Name is required.";
+    }
+    if (empty($_POST['address'])) {
+        $errors[] = "Address is required.";
+    }
+    if (empty($_POST['Contact'])) {
+        $errors[] = "Contact is required.";
+    }
+
+    // If no errors, process the purchase
+    if (empty($errors)) {
+        // Proceed with checkout or save the order data
+        // Example: Save to session or database
+
+        // Redirect to the purchase page
+        header("Location: purchase.php");
+        exit();
+    }
+}
+
+?>
+
+<h4 class="fw-bolder text-center">Checkout</h4>
+<center>
+    <hr class="bg-warning" style="width:5em;height:3px;opacity:1">
+</center>
+
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger">
+        <?php foreach ($errors as $error): ?>
+            <p><?php echo $error; ?></p>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 ?>
     <div class="card rounded-0 shadow mb-3">
@@ -60,21 +99,18 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                     <div class="card-title h6 fw-bold">Please Fill the following form</div>
                 </div>
                 <div class="card-body container-fluid">
-                    <form method="post" action="purchase.php" class="form-horizontal">
-                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
-                            <p class="text-danger">All fields have to be filled</p>
-                        <?php } ?>
+                    <form method="post" action="checkout.php" class="form-horizontal" id="checkout-form">
                         <div class="mb-3">
                             <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" class="form-control rounded-0">
+                            <input type="text" name="name" class="form-control rounded-0" id="name">
                         </div>
                         <div class="mb-3">
                             <label for="address" class="control-label">Address</label>
-                            <input type="text" name="address" class="form-control rounded-0">
+                            <input type="text" name="address" class="form-control rounded-0" id="address">
                         </div>
                         <div class="mb-3">
                             <label for="Contact" class="control-label">Contact</label>
-                            <input type="text" name="Contact" class="form-control rounded-0">
+                            <input type="text" name="Contact" class="form-control rounded-0" id="contact">
                         </div>
                         <div class="mb-3 d-grid">
                             <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
@@ -85,7 +121,6 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
             </div>
         </div>
     </div>
-
 <?php
 } else {
     echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
@@ -94,3 +129,21 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
+
+<script>
+// Client-side validation (JavaScript)
+document.getElementById('checkout-form').addEventListener('submit', function(event) {
+    var name = document.getElementById('name').value.trim();
+    var address = document.getElementById('address').value.trim();
+    var contact = document.getElementById('contact').value.trim();
+
+    // Check if all fields are filled
+    if (name === "" || address === "" || contact === "") {
+        event.preventDefault();  // Prevent form submission
+        alert("All fields must be filled out!");
+        return false;
+    }
+
+    return true;
+});
+</script>
