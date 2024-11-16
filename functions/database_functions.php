@@ -24,14 +24,19 @@ function getAll($conn) {
     return $result;
 }
 
-// Function to fetch publisher name by ID
+// Function to fetch publisher name by ID (1, 2, or 3)
 function getPubName($conn, $publisherid) {
-    $query = "SELECT publisher_name FROM publishers WHERE publisher_id = $publisherid";
-    $result = mysqli_query($conn, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        return $row['publisher_name'];
+    // Use a simple switch-case since there are only three publishers
+    switch ($publisherid) {
+        case 1:
+            return "Publisher 1"; // Replace with the actual name if needed
+        case 2:
+            return "Publisher 2"; // Replace with the actual name if needed
+        case 3:
+            return "Publisher 3"; // Replace with the actual name if needed
+        default:
+            return "Unknown Publisher"; // Fallback in case of invalid publisher ID
     }
-    return "Unknown Publisher"; // Fallback if no publisher is found
 }
 
 // Function to fetch book details by ISBN (with image)
@@ -108,5 +113,27 @@ function deleteBook($conn, $isbn) {
         die("Failed to delete book.");
     }
     mysqli_stmt_close($stmt);
+}
+
+// Function to fetch the latest 4 books
+function select4LatestBook($conn) {
+    // Define the SQL query to fetch the latest 4 books
+    $sql = "SELECT book_isbn, book_title, book_image FROM books ORDER BY book_date_added DESC LIMIT 4";
+    
+    // Execute the query
+    $result = mysqli_query($conn, $sql);
+    
+    // Check for errors in the query execution
+    if (!$result) {
+        // Log error if query fails
+        error_log("Error fetching latest books: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        die("Error fetching the latest books.");
+    }
+
+    // Fetch the results as an associative array
+    $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    
+    // Return the fetched books
+    return $books;
 }
 ?>
