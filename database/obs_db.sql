@@ -120,6 +120,9 @@ INSERT INTO `customers` (`customerid`, `name`, `address`, `city`, `zip_code`, `c
 (6, 'Rachu Rizal', 'Lalitpur', 'Lalitpur City', '12345', 'Nepal'),
 (7, 'Mark Cooper', 'Laltpur', 'Lalitpur City', '12345', 'Nepal'),
 (8, 'Samantha Miller', 'Sample Street', 'Sample City', '12345', 'Sample Country');
+ALTER TABLE customers 
+MODIFY COLUMN customerid INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 -- --------------------------------------------------------
 
 --
