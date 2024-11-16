@@ -5,8 +5,8 @@ session_start();
 // Include database connection
 include 'db_connection.php';
 
-// Define the base directory for book images (adjusted for your structure)
-$imageBasePath = 'bootstrap/img/'; // 'img' folder inside 'bootstrap'
+// Define the base directory for book images (absolute URL for local testing)
+$imageBasePath = '/obs/bootstrap/img/'; // This works if your server root is at localhost/obs
 
 // Get the last viewed book from the session
 $lastBookISBN = $_SESSION['last_book_isbn'] ?? null;
@@ -52,7 +52,7 @@ if ($lastBookISBN) {
                 echo "<img src='$imagePath' alt='Cover of $bookTitle' class='img-fluid' style='width: 100%; height: auto;'>";
             } else {
                 // Display a default image if book image is missing or invalid
-                echo "<img src='bootstrap/img/default-image.jpg' alt='Default cover' class='img-fluid' style='width: 100%; height: auto;'>";
+                echo "<img src='/obs/bootstrap/img/default-image.jpg' alt='Default cover' class='img-fluid' style='width: 100%; height: auto;'>";
             }
             // Display the book title and author
             echo "<p><strong>$bookTitle</strong></p>";
