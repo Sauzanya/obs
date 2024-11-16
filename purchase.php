@@ -1,25 +1,32 @@
 <?php
 session_start();
+$_SESSION['err'] = 1;
+foreach ($_POST as $key => $value) {
+    if (trim($value) == '') {
+        $_SESSION['err'] = 0;
+    }
+    break;
+}
 
-// Display any message set in the session
-if (isset($_SESSION['message'])) {
-    echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
-    unset($_SESSION['message']);  // Clear the message after it's displayed
+if ($_SESSION['err'] == 0) {
+    header("Location: checkout.php");
+} else {
+    unset($_SESSION['err']);
 }
 
 require_once "./functions/database_functions.php";
 // print out header here
 $title = "Purchase";
 require "./template/header.php";
-
-// check if there are items in the cart
-if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
+// connect database
 ?>
 <h4 class="fw-bolder text-center">Payment</h4>
 <center>
     <hr class="bg-warning" style="width:5em;height:3px;opacity:1">
 </center>
-
+<?php
+if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
+?>
 <div class="card rounded-0 shadow mb-3">
     <div class="card-body">
         <div class="container-fluid">
@@ -52,22 +59,28 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
         </div>
     </div>
 </div>
-
 <div class="row justify-content-center">
     <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
         <div class="card rounded-0 shadow">
             <div class="card-header">
-                <div class="card-title h6 fw-bold">Please Select Payment Method</div>
+                <div class="card-title h6 fw-bold">Please Fill out all Fields</div>
             </div>
             <div class="card-body">
                 <div class="container-fluid">
                     <form method="post" action="process.php" class="form-horizontal">
+                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
+                        <p class="text-danger">All fields have to be filled</p>
+                        <?php } ?>
                         <div class="form-group mb-3">
                             <label for="payment" class="control-label">Payment Method</label>
-                            <select name="payment" class="form-control rounded-0" id="payment">
+                            <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
                                 <option value="cod">Cash on Delivery (COD)</option>
                                 <option value="khalti">Khalti</option>
                             </select>
+                        </div>
+
+                        <div id="paymentMessage" class="alert alert-danger" style="display: none;">
+                            This payment method is not currently available. Please choose Cash on Delivery.
                         </div>
 
                         <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
@@ -78,12 +91,10 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
         </div>
     </div>
 </div>
-
 <?php
 } else {
     echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
 }
-
 if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
@@ -93,13 +104,19 @@ require_once "./template/footer.php";
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var purchaseBtn = document.getElementById("purchaseBtn");
+    var paymentMessage = document.getElementById("paymentMessage");
 
     if (paymentMethod === "cod") {
-        // Enable the purchase button for Cash on Delivery
+        // Enable the purchase button for Cash on Delivery and hide the message
         purchaseBtn.disabled = false;
+        paymentMessage.style.display = "none";
     } else if (paymentMethod === "khalti") {
-        // Disable the purchase button for Khalti (since it's unavailable)
+        // Disable the purchase button for Khalti and show the message
         purchaseBtn.disabled = true;
+        paymentMessage.style.display = "block";
     }
 }
+
+// Call the checkPayment function on page load to initialize the state
+window.onload = checkPayment;
 </script>
