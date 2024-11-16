@@ -68,6 +68,8 @@ CREATE TABLE `books` (
   `publisherid` int(10) UNSIGNED NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+ALTER TABLE books ADD COLUMN book_image_url VARCHAR(255);
+
 
 --
 -- Dumping data for table `books`
