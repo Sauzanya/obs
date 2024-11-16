@@ -53,7 +53,7 @@ endif;
                     <col width="15%">
                     <col width="15%">
                     <col width="10%">
-                    <col width="20%">
+                    <col width="15%">
                     <col width="10%">
                     <col width="15%">
                     <col width="10%">
@@ -73,11 +73,7 @@ endif;
                 <tbody>
                     <?php
                     // Loop through each row and display book details
-                    while ($row = mysqli_fetch_assoc($result)) { 
-                        $description = $row['book_descr'];
-                        $short_description = (strlen($description) > 50) ? substr($description, 0, 50) . "..." : $description;
-                        $publisher = getPubName($conn, $row['publisherid']);
-                    ?>
+                    while ($row = mysqli_fetch_assoc($result)) { ?>
                     <tr>
                         <td class="px-2 py-1 align-middle">
                             <a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank">
@@ -91,24 +87,17 @@ endif;
                             <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width="50">
                         </td>
                         <td class="px-2 py-1 align-middle">
-                            <!-- Display short description (Truncated) -->
-                            <p class="text-truncate" style="width:15em" title="<?php echo htmlspecialchars($description); ?>">
-                                <?php echo htmlspecialchars($short_description); ?>
-                            </p>
+                            <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
                         </td>
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
                         <td class="px-2 py-1 align-middle">
-                            <?php echo $publisher; ?>
+                            <?php echo getPubName($conn, $row['publisherid']); ?>
                         </td>
                         <td class="px-2 py-1 align-middle text-center">
                             <!-- Action Buttons -->
                             <div class="btn-group btn-group-sm">
-                                <a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-primary" title="Edit">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a href="admin_delete.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-danger" title="Delete" onclick="if(confirm('Are you sure to delete this book?') === false) event.preventDefault()">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                <a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-warning rounded-0">Edit</a>
+                                <a href="admin_delete.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-danger rounded-0">Delete</a>
                             </div>
                         </td>
                     </tr>
@@ -120,10 +109,8 @@ endif;
 </div>
 
 <?php
-// Close database connection
-if (isset($conn)) {
-    mysqli_close($conn);
-}
+// Close the database connection
+mysqli_close($conn);
 
 // Include footer template
 require_once "./template/footer.php";
