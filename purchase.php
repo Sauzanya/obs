@@ -97,7 +97,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
                                         <option value="cod">Cash on Delivery (COD)</option>
                                         <option value="khalti">Khalti</option>
-                                        <option value="esewa">eSewa</option>
+                
                                     </select>
                                 </div>
 
@@ -105,7 +105,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     <p>This payment method is not currently available.</p>
                                 </div>
 
-                                <button id="purchaseBtn" class="btn btn-primary" type="button" disabled onclick="placeOrder()">Purchase</button>
+                                <!-- Change to 'submit' type to enable form submission -->
+                                <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
 
                                 <div id="orderMessage" class="text-success" style="display: none;">
                                     <p>Your order has been placed, and you will get a call for delivery.</p>
@@ -120,18 +121,18 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     if (paymentMethod === "cod") {
                                         messageDiv.style.display = "none";
                                         purchaseBtn.disabled = false;
-                                    } else if (paymentMethod === "khalti" || paymentMethod === "esewa") {
+                                    } else if (paymentMethod === "khalti") {
                                         messageDiv.style.display = "block";
                                         purchaseBtn.disabled = true;
                                     }
                                 }
 
+                                // Function to show the order confirmation message when the button is clicked
                                 function placeOrder() {
-                                    // Show the order confirmation message
                                     var orderMessage = document.getElementById("orderMessage");
                                     orderMessage.style.display = "block";
                                     
-                                    // Optionally, disable the purchase button after order is placed
+                                    // Disable purchase button after confirming order
                                     var purchaseBtn = document.getElementById("purchaseBtn");
                                     purchaseBtn.disabled = true;
                                 }
