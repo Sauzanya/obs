@@ -106,26 +106,29 @@ INSERT INTO `admin` (`name`, `pass`) VALUES ('admin', 'f865b53623b121fd34ee5426c
 INSERT INTO `customers` (`name`, `address`, `contact`) VALUES
 ('John Doe', 'Lalitpur', '123456789'),
 ('Jane Smith', 'Kathmandu', '987654321'),
-('Alice Johnson', 'Bhaktapur', '123123123');
+('Alice Johnson', 'Bhaktapur', '123123123'),
+('Robert Brown', 'Pokhara', '321321321'),
+('Charlie White', 'Chitwan', '555555555'),
+('Eve Green', 'Lalitpur', '666666666'),
+('Grace Blue', 'Kathmandu', '777777777');
+
 
 -- Books
 INSERT INTO books (book_isbn, book_title, book_author, book_image, book_descr, book_price, publisherid, created_at) VALUES
-('978-99933-527-10', 'Mayur Times', 'Narayan Wagle', 'mayur_times.jpg', 'Mayur Times is a gripping thriller set in the context of investigative journalism, diving into corruption and politics.', '20.00', 2, '2024-11-15'),
-('978-99933-527-11', 'Mad Country', 'Narayan Wagle', 'mad_country.jpg', 'Mad Country explores political turmoil and societal changes in Nepal, weaving personal struggles into larger national narratives.', '20.00', 2, '2024-11-15'),
-('978-99933-527-13', 'Seto Bagh', 'Amar Neupane', 'seto_bagh.jpg', 'Seto Bagh narrates the story of the Rana regime in Nepal, focusing on intrigue, romance, and tragedy.', '20.00', 3, '2024-11-15'),
-('978-99933-527-3', 'Basain', 'Shankar B. Thapa', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', '20.00', 2, '2024-11-15'),
-('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', '20.00', 1, '2024-11-15'),
-('978-99933-527-9', 'Karnali Blues', 'Shankar Lamichhane', 'karnali_blues.jpg', 'A powerful and emotional story about the relationship between a father and son, set in the backdrop of the Karnali region of Nepal.', '20.00', 1, '2024-11-15'),
-('978-99933-527-7', 'Seto Dharti', 'Jhamak Ghimire', 'seto_dharti.jpg', 'Seto Dharti tells the story of a woman’s struggles against the societal norms and her fight for identity and independence in a male-dominated society.', '20.00', 3, '2024-11-15'),
-('978-99933-527-8', 'Palpasa Cafe', 'Narayan Wagle', 'palpasa_cafe.jpg', 'Palpasa Cafe is a gripping tale set against the backdrop of the Maoist insurgency in Nepal, with love, politics, and personal loss interwoven throughout.', '20.00', 2, '2024-11-15'),
-('978-99933-527-6', 'Shirishko Phool', 'Parijat', 'shirishko_phool.jpg', 'This is a psychological novel about the struggles and alienation faced by a woman in a patriarchal society in Nepal.', '20.00', 4, '2024-11-15'),
-('978-99933-528-0', 'Data Structures and Algorithms', 'R.K. Gupta', 'data_structures_algorithms.jpg', 'This book provides a comprehensive introduction to data structures and algorithms for BCA students.', '25.00', 6, '2024-11-15'),
-('978-99933-528-1', 'Computer Networks', 'James Kurose', 'computer_networks.jpg', 'This book is an introduction to computer networks, providing detailed coverage of various networking technologies and protocols.', '30.00', 6, '2024-11-15'),
-('978-99933-528-2', 'Operating System Concepts', 'Abraham Silberschatz', 'operating_system_concepts.jpg', 'A widely used textbook that covers the fundamental concepts of operating systems for BCA students.', '28.00', 6, '2024-11-15'),
-('978-99933-528-3', 'Database Management Systems', 'Ramez Elmasri', 'dbms.jpg', 'This book offers an in-depth understanding of database management systems, covering various database models, design techniques, and SQL.', '30.00', 6, '2024-11-15'),
-('978-99933-528-4', 'Software Engineering', 'I. Sommerville', 'software_engineering.jpg', 'A detailed guide to the software engineering process, covering topics such as software development models, project management, and software testing.', '35.00', 6, '2024-11-15');
-
-
+('978-99933-527-10', 'Mayur Times', 'Narayan Wagle', 'mayur_times.jpg', 'Mayur Times is a gripping thriller set in the context of investigative journalism, diving into corruption and politics.', 20.00, 2, '2024-11-15'),
+('978-99933-527-11', 'Mad Country', 'Narayan Wagle', 'mad_country.jpg', 'Mad Country explores political turmoil and societal changes in Nepal, weaving personal struggles into larger national narratives.', 20.00, 2, '2024-11-15'),
+('978-99933-527-13', 'Seto Bagh', 'Amar Neupane', 'seto_bagh.jpg', 'Seto Bagh narrates the story of the Rana regime in Nepal, focusing on intrigue, romance, and tragedy.', 20.00, 3, '2024-11-15'),
+('978-99933-527-3', 'Basain', 'Shankar B. Thapa', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', 20.00, 2, '2024-11-15'),
+('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', 20.00, 1, '2024-11-15'),
+('978-99933-527-9', 'Karnali Blues', 'Shankar Lamichhane', 'karnali_blues.jpg', 'A powerful and emotional story about the relationship between a father and son, set in the backdrop of the Karnali region of Nepal.', 20.00, 1, '2024-11-15'),
+('978-99933-527-7', 'Seto Dharti', 'Jhamak Ghimire', 'seto_dharti.jpg', 'Seto Dharti tells the story of a woman’s struggles against the societal norms and her fight for identity and independence in a male-dominated society.', 20.00, 3, '2024-11-15'),
+('978-99933-527-8', 'Palpasa Cafe', 'Narayan Wagle', 'palpasa_cafe.jpg', 'Palpasa Cafe is a gripping tale set against the backdrop of the Maoist insurgency in Nepal, with love, politics, and personal loss interwoven throughout.', 20.00, 2, '2024-11-15'),
+('978-99933-527-6', 'Shirishko Phool', 'Parijat', 'shirishko_phool.jpg', 'This is a psychological novel about the struggles and alienation faced by a woman in a patriarchal society in Nepal.', 20.00, 4, '2024-11-15'),
+('978-99933-528-0', 'Data Structures and Algorithms', 'R.K. Gupta', 'data_structures_algorithms.jpg', 'This book provides a comprehensive introduction to data structures and algorithms for BCA students.', 25.00, 6, '2024-11-15'),
+('978-99933-528-1', 'Computer Networks', 'James Kurose', 'computer_networks.jpg', 'This book is an introduction to computer networks, providing detailed coverage of various networking technologies and protocols.', 30.00, 6, '2024-11-15'),
+('978-99933-528-2', 'Operating System Concepts', 'Abraham Silberschatz', 'operating_system_concepts.jpg', 'A widely used textbook that covers the fundamental concepts of operating systems for BCA students.', 28.00, 6, '2024-11-15'),
+('978-99933-528-3', 'Database Management Systems', 'Ramez Elmasri', 'dbms.jpg', 'This book offers an in-depth understanding of database management systems, covering various database models, design techniques, and SQL.', 30.00, 6, '2024-11-15'),
+('978-99933-528-4', 'Software Engineering', 'I. Sommerville', 'software_engineering.jpg', 'A detailed guide to the software engineering process, covering topics such as software development models, project management, and software testing.', 35.00, 6, '2024-11-15');
 
 -- Publishers
 INSERT INTO `publisher` (`publisher_name`) VALUES
@@ -133,22 +136,37 @@ INSERT INTO `publisher` (`publisher_name`) VALUES
 ('Publisher Two'),
 ('Publisher Three');
 
--- Orders
-INSERT INTO `orders` (`customerid`, `amount`, `date`) VALUES
-(1, 70.00, NOW()),
-(2, 50.00, NOW());
+-- Orders (Corrected to use `date` column instead of `order_date`)
+IINSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
+(1, 1, 60.00, '2024-11-15'),
+(2, 2, 80.00, '2024-11-15'),
+(3, 3, 60.00, '2024-11-15'),
+(4, 4, 80.00, '2024-11-15'),
+(5, 5, 65.00, '2024-11-15'),
+(6, 6, 86.00, '2024-11-15'),
+(7, 7, 65.00, '2024-11-15');
 
--- Order Items
+
+-- Order Items (No changes required)
 INSERT INTO `order_items` (`orderid`, `book_isbn`, `item_price`, `quantity`) VALUES
-(1, '978-1-234-56789-0', 20.00, 2),
-(1, '978-1-234-56789-1', 25.00, 1),
-(2, '978-1-234-56789-2', 30.00, 1),
-(2, '978-1-234-56789-0', 20.00, 1);
+(1, '978-99933-527-10', 20.00, 2),
+(1, '978-99933-527-11', 20.00, 1),
+(2, '978-99933-527-13', 20.00, 3),
+(2, '978-99933-527-3', 20.00, 1),
+(3, '978-99933-527-4', 20.00, 2),
+(3, '978-99933-527-9', 20.00, 1),
+(4, '978-99933-527-7', 20.00, 1),
+(4, '978-99933-527-8', 20.00, 3),
+(5, '978-99933-527-6', 20.00, 2),
+(5, '978-99933-528-0', 25.00, 1),
+(6, '978-99933-528-1', 30.00, 1),
+(6, '978-99933-528-2', 28.00, 2),
+(7, '978-99933-528-3', 30.00, 1),
+(7, '978-99933-528-4', 35.00, 1);
 
 -- --------------------------------------------------------
 -- Query for Admin Panel
 -- --------------------------------------------------------
-
 SELECT 
     orders.orderid,
     customers.name AS customer_name,
