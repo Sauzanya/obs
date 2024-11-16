@@ -39,13 +39,14 @@
                 <a href="book.php?bookisbn=<?php echo $book['book_isbn']; ?>" class="card rounded-0 shadow book-item text-reset text-decoration-none">
                     <div class="img-holder overflow-hidden">
                         <?php
-                        // Check if the book image exists
+                        // Check if the book image exists in the correct folder
                         $image_path = './bootstrap/img/' . $book['book_image'];
-                        if (file_exists($image_path) && !empty($book['book_image'])) {
-                            $book_image = $book['book_image'];
+
+                        // If the file does not exist, use a default image
+                        if (!file_exists($image_path) || empty($book['book_image'])) {
+                            $book_image = 'default.jpg'; // Default image if the actual image doesn't exist
                         } else {
-                            // Use a default image if the image doesn't exist or is missing
-                            $book_image = 'default.jpg'; 
+                            $book_image = $book['book_image'];
                         }
                         ?>
                         <img class="img-top" src="<?php echo './bootstrap/img/' . $book_image; ?>" alt="Book Image" width="100%">
