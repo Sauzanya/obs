@@ -22,13 +22,28 @@ function getAll($conn) {
     return $result;
 }
 
-// Function to fetch publisher name by ID
+// Function to fetch publisher name by ID (using prepared statements for security)
 function getPubName($conn, $publisherid) {
-    $query = "SELECT publisher_name FROM publishers WHERE publisher_id = $publisherid";
-    $result = mysqli_query($conn, $query);
+    // Prepare the query to prevent SQL injection
+    $query = "SELECT publisher_name FROM publishers WHERE publisher_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    
+    if (!$stmt) {
+        error_log("Error preparing publisher query: " . mysqli_error($conn), 3, "/path/to/logfile.log"); // Log error
+        return "Unknown Publisher"; // Return fallback value
+    }
+    
+    // Bind the parameter
+    mysqli_stmt_bind_param($stmt, "i", $publisherid);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
     if ($row = mysqli_fetch_assoc($result)) {
+        mysqli_stmt_close($stmt);
         return $row['publisher_name'];
     }
+    
+    mysqli_stmt_close($stmt);
     return "Unknown Publisher"; // Fallback if no publisher is found
 }
 
