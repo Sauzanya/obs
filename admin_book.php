@@ -5,7 +5,7 @@ $title = "List book";
 require_once "./template/header.php";
 require_once "./functions/database_functions.php";
 $conn = db_connect();
-$result = getAll($conn); // This should return a mysqli_result object, not an array.
+$result = getAll($conn);  // This should return a mysqli_result object
 ?>
 <h4 class="fw-bolder text-center">Book List</h4>
 <center>
@@ -46,7 +46,7 @@ endif;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <?php while ($row = mysqli_fetch_assoc($result)): ?>  <!-- Correct usage of mysqli_fetch_assoc() -->
                         <tr>
                             <td class="px-2 py-1 align-middle"><a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank"><?php echo $row['book_isbn']; ?></a></td>
                             <td class="px-2 py-1 align-middle"><?php echo $row['book_title']; ?></td>
