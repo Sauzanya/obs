@@ -26,10 +26,11 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                     <?php
                     foreach ($_SESSION['cart'] as $isbn => $qty) {
                         $conn = db_connect();
-                        $book = mysqli_fetch_assoc(getBookByIsbn($conn, $isbn));
-                        $price_in_npr = $book['book_price'] * $exchange_rate;  // Convert price to NPR if needed
-                        $_SESSION['total_items'] += $qty;
-                        $_SESSION['total_price'] += $qty * $price_in_npr;  // Calculate total price in NPR
+                        $book = getBookByIsbn($conn, $isbn);  // Assume this returns an associative array
+                        if ($book) {
+                            $price_in_npr = $book['book_price'] * $exchange_rate;  // Convert price to NPR if needed
+                            $_SESSION['total_items'] += $qty;
+                            $_SESSION['total_price'] += $qty * $price_in_npr;  // Calculate total price in NPR
                     ?>
                     <tr>
                         <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
@@ -37,7 +38,10 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         <td><?php echo $qty; ?></td>
                         <td><?php echo "₹ " . number_format($qty * $price_in_npr, 2); ?></td>  <!-- Show total price in NPR -->
                     </tr>
-                    <?php } ?>
+                    <?php 
+                            }
+                        } 
+                    ?>
                     <tr>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
