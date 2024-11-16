@@ -118,7 +118,7 @@ function checkPayment() {
 }
 </script>
 
-							<div class="form-group mb-3">
+							<!-- <div class="form-group mb-3">
 								<label for="card_number" class="control-label">Number</label>
 								<input type="text" class="form-control rounded-0" name="card_number">
 							</div>
@@ -126,7 +126,7 @@ function checkPayment() {
 								<label for="card_PID" class="control-label">PID</label>
 								<input type="text" class="form-control rounded-0" name="card_PID">
 							</div>
-							<div class="form-group mb-3"> -->
+							<div class="form-group mb-3"> --> -->
 								<!-- <label for="card_expire" class="control-label">Expiry Date</label>
 								<input type="date" name="card_expire" class="form-control rounded-0">
 							</div> -->
