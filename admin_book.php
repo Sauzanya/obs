@@ -84,5 +84,42 @@ endif;
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_author']; ?></td>
                         <td class="px-2 py-1 align-middle">
                             <!-- Display book image -->
-                            <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" widthwidth="50" height="70">
-							</td>
+                            <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="Book Image" width="50">
+                            <!-- Debugging output for the image path -->
+                            <p class="small text-muted">Path: bootstrap/img/<?php echo $row['book_image']; ?></p>
+                        </td>
+                        <td class="px-2 py-1 align-middle">
+                            <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
+                        </td>
+                        <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
+                        <td class="px-2 py-1 align-middle">
+                            <?php echo getPubName($conn, $row['publisherid']); ?>
+                        </td>
+                        <td class="px-2 py-1 align-middle text-center">
+                            <!-- Action Buttons -->
+                            <div class="btn-group btn-group-sm">
+                                <a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-primary" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="admin_delete.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-danger" title="Delete" onclick="if(confirm('Are you sure to delete this book?') === false) event.preventDefault()">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?php
+// Close database connection
+if (isset($conn)) {
+    mysqli_close($conn);
+}
+
+// Include footer template
+require_once "./template/footer.php";
+?>
