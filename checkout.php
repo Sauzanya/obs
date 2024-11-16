@@ -4,81 +4,82 @@ require_once "./functions/database_functions.php";
 $title = "Checking out";
 require "./template/header.php";
 
-$exchange_rate = 130;
+// Define the exchange rate (if required, else skip this)
+$exchange_rate = 130; // Example exchange rate (1 USD = 130 NPR)
+
 $_SESSION['total_items'] = 0;
 $_SESSION['total_price'] = 0;
 
-$errors = [];
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Validate Name and Contact fields
-    if (empty($_POST['name']) || !preg_match("/^[a-zA-Z\s]+$/", $_POST['name'])) {
-        $errors[] = "Please enter a valid name (letters and spaces only).";
-    }
-    if (empty($_POST['Contact']) || !preg_match("/^[0-9]{10}$/", $_POST['Contact'])) {
-        $errors[] = "Please enter a valid 10-digit contact number.";
-    }
-
-    if (empty($errors)) {
-        // Proceed with purchase (redirect to purchase page)
-        header("Location: purchase.php");
-        exit();
-    }
-}
-
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    ?>
+?>
     <div class="card rounded-0 shadow mb-3">
         <div class="card-body">
-            <table class="table">
-                <tr><th>Item</th><th>Price (NPR)</th><th>Quantity</th><th>Total (NPR)</th></tr>
-                <?php
-                foreach ($_SESSION['cart'] as $isbn => $qty) {
-                    $conn = db_connect();
-                    $book = getBookByIsbn($conn, $isbn);
-                    if ($book) {
-                        $price_in_npr = $book['book_price'] * $exchange_rate;
-                        $_SESSION['total_items'] += $qty;
-                        $_SESSION['total_price'] += $qty * $price_in_npr;
-                ?>
-                <tr>
-                    <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
-                    <td><?php echo "₹ " . number_format($price_in_npr, 2); ?></td>
-                    <td><?php echo $qty; ?></td>
-                    <td><?php echo "₹ " . number_format($qty * $price_in_npr, 2); ?></td>
-                </tr>
-                <?php
-                    }
-                }
-                ?>
-                <tr><th>&nbsp;</th><th>&nbsp;</th><th><?php echo $_SESSION['total_items']; ?></th><th><?php echo "₹ " . number_format($_SESSION['total_price'], 2); ?></th></tr>
-            </table>
+            <div class="container-fluid">
+                <table class="table">
+                    <tr>
+                        <th>Item</th>
+                        <th>Price (NPR)</th>
+                        <th>Quantity</th>
+                        <th>Total (NPR)</th>
+                    </tr>
+                    <?php
+                    foreach ($_SESSION['cart'] as $isbn => $qty) {
+                        $conn = db_connect();
+                        $book = getBookByIsbn($conn, $isbn);  // Assume this returns an associative array
+                        if ($book) {
+                            $price_in_npr = $book['book_price'] * $exchange_rate;  // Convert price to NPR if needed
+                            $_SESSION['total_items'] += $qty;
+                            $_SESSION['total_price'] += $qty * $price_in_npr;  // Calculate total price in NPR
+                    ?>
+                    <tr>
+                        <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
+                        <td><?php echo "₹ " . number_format($price_in_npr, 2); ?></td>  <!-- Show price in NPR -->
+                        <td><?php echo $qty; ?></td>
+                        <td><?php echo "₹ " . number_format($qty * $price_in_npr, 2); ?></td>  <!-- Show total price in NPR -->
+                    </tr>
+                    <?php 
+                            }
+                        } 
+                    ?>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th><?php echo $_SESSION['total_items']; ?></th>
+                        <th><?php echo "₹ " . number_format($_SESSION['total_price'], 2); ?></th>  <!-- Show total in NPR -->
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
             <div class="card rounded-0 shadow">
-                <div class="card-header"><div class="card-title h6 fw-bold">Please Fill the following form</div></div>
-                <div class="card-body">
-                    <?php if (!empty($errors)) { echo "<p class='text-danger'>" . implode("<br>", $errors) . "</p>"; } ?>
-                    <form method="post" action="checkout.php">
+                <div class="card-header">
+                    <div class="card-title h6 fw-bold">Please Fill the following form</div>
+                </div>
+                <div class="card-body container-fluid">
+                    <form method="post" action="purchase.php" class="form-horizontal">
+                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
+                            <p class="text-danger">All fields have to be filled</p>
+                        <?php } ?>
                         <div class="mb-3">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" class="form-control" required>
+                            <label for="name" class="control-label">Name</label>
+                            <input type="text" name="name" class="form-control rounded-0">
                         </div>
                         <div class="mb-3">
-                            <label for="address">Address</label>
-                            <input type="text" name="address" class="form-control" required>
+                            <label for="address" class="control-label">Address</label>
+                            <input type="text" name="address" class="form-control rounded-0">
                         </div>
                         <div class="mb-3">
-                            <label for="Contact">Contact</label>
-                            <input type="text" name="Contact" class="form-control" required>
+                            <label for="Contact" class="control-label">Contact</label>
+                            <input type="text" name="Contact" class="form-control rounded-0">
                         </div>
-                        <div class="mb-3">
-                            <input type="submit" value="Purchase" class="btn btn-primary">
+                        <div class="mb-3 d-grid">
+                            <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
                         </div>
                     </form>
+                    <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
             </div>
         </div>
@@ -86,23 +87,9 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
 <?php
 } else {
-    echo "<p class='text-warning'>Your cart is empty! Please make sure you add some books in it!</p>";
+    echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
 }
 
+if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
-
-<script>
-// Client-side validation
-document.querySelector('form').addEventListener('submit', function(event) {
-    let name = document.querySelector('input[name="name"]').value.trim();
-    let contact = document.querySelector('input[name="Contact"]').value.trim();
-    let nameError = /^[a-zA-Z\s]+$/.test(name);
-    let contactError = /^[0-9]{10}$/.test(contact);
-    
-    if (!nameError || !contactError) {
-        event.preventDefault();
-        alert("Please ensure all fields are valid!");
-    }
-});
-</script>
