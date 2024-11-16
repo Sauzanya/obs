@@ -48,7 +48,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                 <?php
                 foreach ($_SESSION['cart'] as $isbn => $qty) {
                     $conn = db_connect();
-                    $book = mysqli_fetch_assoc(getBookByIsbn($conn, $isbn));
+                    $book = getBookByIsbn($conn, $isbn); // Get the book data directly
+                    if ($book) { // Ensure the book exists
                 ?>
                 <tr>
                     <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
@@ -56,7 +57,9 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                     <td><?php echo $qty; ?></td>
                     <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
                 </tr>
-                <?php } ?>
+                <?php 
+                    }
+                } ?>
                 <tr>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
@@ -145,9 +148,5 @@ function handlePurchase() {
         // Show error if payment method is invalid
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
-	
 }
-
-
-
 </script>
