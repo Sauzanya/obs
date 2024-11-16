@@ -63,7 +63,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
     <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
         <div class="card rounded-0 shadow">
             <div class="card-header">
-                <div class="card-title h6 fw-bold">Please Fill out all Fields </div>
+                <div class="card-title h6 fw-bold">Please Fill out all Fields</div>
             </div>
             <div class="card-body">
                 <div class="container-fluid">
@@ -94,3 +94,19 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
 if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
+
+<script>
+// Function to handle payment method selection and enable/disable the purchase button
+function checkPayment() {
+    var paymentMethod = document.getElementById("payment").value;
+    var purchaseBtn = document.getElementById("purchaseBtn");
+
+    if (paymentMethod === "cod") {
+        // Enable the purchase button for Cash on Delivery
+        purchaseBtn.disabled = false;
+    } else if (paymentMethod === "khalti") {
+        // Disable the purchase button for Khalti (since it's unavailable)
+        purchaseBtn.disabled = true;
+    }
+}
+</script>

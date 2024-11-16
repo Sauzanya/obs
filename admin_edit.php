@@ -44,7 +44,7 @@
         if($result){
             $_SESSION['book_success'] = "Book Details has been updated successfully";
             header("Location: admin_book.php");
-            // exit; // Ensure no further code is executed after the redirect
+            exit; // Ensure no further code is executed after the redirect
         } else {
             $err =  "Can't update data " . mysqli_error($conn);
         }

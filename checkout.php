@@ -61,17 +61,18 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                             <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
                         <div class="mb-3">
-                            <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" class="form-control rounded-0">
+                        <label for="name" class="control-label">Name</label>
+                        <input type="text" name="name" class="form-control rounded-0" pattern="[A-Za-z\s]+" title="Name can only contain letters and spaces" required>
                         </div>
+
                         <div class="mb-3">
                             <label for="address" class="control-label">Address</label>
                             <input type="text" name="address" class="form-control rounded-0">
                         </div>
                         <div class="mb-3">
-    <label for="Contact" class="control-label">Contact</label>
-    <input type="tel" name="Contact" class="form-control rounded-0" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
-</div>
+                        <label for="Contact" class="control-label">Contact</label>
+                        <input type="tel" name="Contact" class="form-control rounded-0" pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
+                        </div>
 
                         <div class="mb-3 d-grid">
                             <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
