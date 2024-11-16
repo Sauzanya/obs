@@ -79,6 +79,10 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                             </select>
                         </div>
 
+                        <div id="paymentMessage" class="alert alert-danger" style="display: none;">
+                            This payment method is not currently available. Please choose Cash on Delivery.
+                        </div>
+
                         <button id="purchaseBtn" class="btn btn-primary" type="submit" name="purchaseBtn" disabled>Purchase</button>
                     </form>
                     <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
@@ -100,13 +104,19 @@ require_once "./template/footer.php";
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var purchaseBtn = document.getElementById("purchaseBtn");
+    var paymentMessage = document.getElementById("paymentMessage");
 
     if (paymentMethod === "cod") {
-        // Enable the purchase button for Cash on Delivery
+        // Enable the purchase button for Cash on Delivery and hide the message
         purchaseBtn.disabled = false;
+        paymentMessage.style.display = "none";
     } else if (paymentMethod === "khalti") {
-        // Disable the purchase button for Khalti (since it's unavailable)
+        // Disable the purchase button for Khalti and show the message
         purchaseBtn.disabled = true;
+        paymentMessage.style.display = "block";
     }
 }
+
+// Call the checkPayment function on page load to initialize the state
+window.onload = checkPayment;
 </script>
