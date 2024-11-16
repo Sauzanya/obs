@@ -37,6 +37,16 @@
             }
         }
 
+        // Function to show the order confirmation message
+        function placeOrder() {
+            var orderMessage = document.getElementById("orderMessage");
+            orderMessage.style.display = "block";  // Show order confirmation message
+            
+            // Disable the purchase button after confirming order
+            var purchaseBtn = document.getElementById("purchaseBtn");
+            purchaseBtn.disabled = true;  // Disable the purchase button to prevent double submission
+        }
+
         // Listen for form submission and show order confirmation
         var purchaseForm = document.querySelector("form");
         purchaseForm.addEventListener("submit", function(e) {
