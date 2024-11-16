@@ -49,11 +49,10 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                     <?php
                     foreach ($_SESSION['cart'] as $isbn => $qty) {
                         $conn = db_connect();
-                        $result = getBookByIsbn($conn, $isbn);
-                        
+                        $result = getBookByIsbn($conn, $isbn);  // Ensure this returns a mysqli_result
+
                         // Ensure the query was successful and fetch the book details
-                        if ($result) {
-                            $book = mysqli_fetch_assoc($result);
+                        if ($result && $book = mysqli_fetch_assoc($result)) {
                     ?>
                         <tr>
                             <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
