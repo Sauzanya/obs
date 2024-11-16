@@ -14,6 +14,7 @@
       die("Connection failed: " . mysqli_connect_error());
   }
 
+  // Fetch the latest books from the database
   $row = select4LatestBook($conn);
 ?>
 
@@ -37,7 +38,17 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 py-2 mb-2">
                 <a href="book.php?bookisbn=<?php echo $book['book_isbn']; ?>" class="card rounded-0 shadow book-item text-reset text-decoration-none">
                     <div class="img-holder overflow-hidden">
-                        <img class='img-top' src='./bootstrap/img/<?php echo $book['book_image']; ?>'>
+                        <?php
+                        // Check if the book image exists
+                        $image_path = './bootstrap/img/' . $book['book_image'];
+                        if (file_exists($image_path) && !empty($book['book_image'])) {
+                            $book_image = $book['book_image'];
+                        } else {
+                            // Use a default image if the image doesn't exist or is missing
+                            $book_image = 'default.jpg'; 
+                        }
+                        ?>
+                        <img class="img-top" src="<?php echo './bootstrap/img/' . $book_image; ?>" alt="Book Image" width="100%">
                     </div>
                     <div class="card-body">
                         <div class="card-title fw-bolder h5 text-center"><?= htmlspecialchars($book['book_title']) ?></div>
