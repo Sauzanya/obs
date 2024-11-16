@@ -48,6 +48,7 @@
             // header("Location: admin_book.php");
             redirect("admin_book.php");
             exit; // Ensure no further code is executed after the redirect
+
         } else {
             $err =  "Can't update data " . mysqli_error($conn);
         }

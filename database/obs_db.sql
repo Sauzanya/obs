@@ -69,6 +69,8 @@ CREATE TABLE `books` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
+
+
 --
 -- Dumping data for table `books`
 --
