@@ -76,6 +76,7 @@ endif;
                     while ($row = mysqli_fetch_assoc($result)) { 
                         $description = $row['book_descr'];
                         $short_description = (strlen($description) > 50) ? substr($description, 0, 50) . "..." : $description;
+                        $publisher = getPubName($conn, $row['publisherid']);
                     ?>
                     <tr>
                         <td class="px-2 py-1 align-middle">
@@ -97,7 +98,7 @@ endif;
                         </td>
                         <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
                         <td class="px-2 py-1 align-middle">
-                            <?php echo getPubName($conn, $row['publisherid']); ?>
+                            <?php echo $publisher; ?>
                         </td>
                         <td class="px-2 py-1 align-middle text-center">
                             <!-- Action Buttons -->
