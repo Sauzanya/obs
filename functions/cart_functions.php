@@ -6,7 +6,9 @@
         - Multiply the price by the quantity and sum it up.
         - Returns the total price.
     */
-    require_once 'functions.php'; // Ensure functions.php is included for database functions
+
+    // Update the path to functions.php based on its location
+    require_once '../functions.php'; // Adjust this path as needed
 
     function total_price($cart) {
         $price = 0.0; // Initialize total price as 0.0
