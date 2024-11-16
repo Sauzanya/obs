@@ -26,7 +26,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                     <?php
                     foreach ($_SESSION['cart'] as $isbn => $qty) {
                         $conn = db_connect();
-                        $book = mysqli_fetch_assoc(getBookByIsbn($conn, $isbn));
+                        $book = getBookByIsbn($conn, $isbn); // Directly fetch the book data
                         $price_in_npr = $book['book_price'] * $exchange_rate;  // Convert price to NPR if needed
                         $_SESSION['total_items'] += $qty;
                         $_SESSION['total_price'] += $qty * $price_in_npr;  // Calculate total price in NPR
