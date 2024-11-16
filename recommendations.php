@@ -5,8 +5,8 @@ session_start();
 // Include database connection
 include 'db_connection.php';
 
-// Define the base directory for book images
-$imageBasePath = 'img/'; // Adjust the path as needed to match your folder structure
+// Define the base directory for book images (adjusted for your structure)
+$imageBasePath = 'bootstrap/img/'; // 'img' folder inside 'bootstrap'
 
 // Get the last viewed book from the session
 $lastBookISBN = $_SESSION['last_book_isbn'] ?? null;
@@ -42,14 +42,17 @@ if ($lastBookISBN) {
             $bookAuthor = htmlspecialchars($book['book_author']);
             $bookImage = htmlspecialchars($book['book_images']); // Filename of the book image
 
+            // Debug output
+            echo "<p>Debug: Image Path - " . $imageBasePath . $bookImage . "</p>";
+
             echo "<div style='border: 1px solid #ddd; padding: 10px; text-align: center; width: 150px;'>";
-            // Construct the full path to the book image in the 'img' folder
+            // Construct the full path to the book image in the 'bootstrap/img' folder
             if (!empty($bookImage)) {
                 $imagePath = $imageBasePath . $bookImage;
                 echo "<img src='$imagePath' alt='Cover of $bookTitle' class='img-fluid' style='width: 100%; height: auto;'>";
             } else {
                 // Display a default image if book image is missing or invalid
-                echo "<img src='img/default-image.jpg' alt='Default cover' class='img-fluid' style='width: 100%; height: auto;'>";
+                echo "<img src='bootstrap/img/default-image.jpg' alt='Default cover' class='img-fluid' style='width: 100%; height: auto;'>";
             }
             // Display the book title and author
             echo "<p><strong>$bookTitle</strong></p>";
