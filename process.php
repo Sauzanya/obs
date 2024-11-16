@@ -45,11 +45,7 @@ if (!$customerid) {
 }
 
 // Insert the order into the database
-if (!insertIntoOrder($conn, $customerid, $_SESSION['total_price'], $date)) {
-    $_SESSION['message'] = "There was an error inserting the order. Please try again.";
-    header("Location: purchase.php");
-    exit;
-}
+insertIntoOrder($conn, $customerid, $_SESSION['total_price'], $date);
 
 // Retrieve the order ID of the newly inserted order
 $orderid = getOrderId($conn, $customerid);
