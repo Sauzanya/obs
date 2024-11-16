@@ -10,6 +10,12 @@ $conn = db_connect();
 
 // Fetch all books
 $result = getAll($conn);
+
+// Check if $result is a valid mysqli_result object
+if (!$result || !is_object($result)) {
+    echo "Error: Invalid result from the database.";
+    exit;
+}
 ?>
     <h4 class="fw-bolder text-center">Book List</h4>
     <center>
