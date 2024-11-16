@@ -105,18 +105,39 @@
     <p>This payment method is not currently available.</p>
 </div>
 
+<div class="mb-3">
+    <label for="payment" class="control-label">Payment Method</label>
+    <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
+        <option value="cod">Cash on Delivery (COD)</option>
+        <option value="khalti">Khalti</option>
+        <option value="esewa">eSewa</option>
+    </select>
+</div>
+
+<!-- Message area for unavailable options -->
+<div id="message" class="text-danger" style="display: none;">
+    <p>This payment method is not currently available.</p>
+</div>
+
+<!-- Purchase Button -->
+<button id="purchaseBtn" class="btn btn-primary" type="button" disabled>Purchase</button>
+
 <script>
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var messageDiv = document.getElementById("message");
+    var purchaseBtn = document.getElementById("purchaseBtn");
 
     if (paymentMethod === "cod") {
-        messageDiv.style.display = "none"; // Hide message if COD is selected
-    } else if (paymentMethod === "khalti" || paymentMethod === "esewa") {
-        messageDiv.style.display = "block"; // Show message for unavailable payment methods
+        messageDiv.style.display = "none";
+        purchaseBtn.disabled = false;
+    } else if (paymentMethod === "khalti") {
+        messageDiv.style.display = "block"; 
+        purchaseBtn.disabled = true; 
     }
 }
 </script>
+
 
 							<!-- <div class="form-group mb-3">
 								<label for="card_number" class="control-label">Number</label>
@@ -126,7 +147,7 @@ function checkPayment() {
 								<label for="card_PID" class="control-label">PID</label>
 								<input type="text" class="form-control rounded-0" name="card_PID">
 							</div>
-							<div class="form-group mb-3"> --> -->
+							<div class="form-group mb-3"> --> 
 								<!-- <label for="card_expire" class="control-label">Expiry Date</label>
 								<input type="date" name="card_expire" class="form-control rounded-0">
 							</div> -->
