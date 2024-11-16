@@ -1,146 +1,152 @@
 <?php
-session_start();
+session_start();  // Ensure session is started
+
+// Display any message set in the session
+if (isset($_SESSION['message'])) {
+    echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
+    unset($_SESSION['message']);  // Clear the message after it’s displayed
+}
+
 $_SESSION['err'] = 1;
 foreach ($_POST as $key => $value) {
     if (trim($value) == '') {
-        $_SESSION['err'] = 0;
+        $_SESSION['err'] = 0;  // If a field is empty, set error flag
+        break;  // Stop checking further fields
     }
-    break;
 }
 
 if ($_SESSION['err'] == 0) {
     header("Location: checkout.php");
+    exit;
 } else {
     unset($_SESSION['err']);
 }
 
-$_SESSION['ship'] = array();
-foreach ($_POST as $key => $value) {
-    if ($key != "submit") {
-        $_SESSION['ship'][$key] = $value;
-    }
-}
-
 require_once "./functions/database_functions.php";
+// print out header here
 $title = "Purchase";
 require "./template/header.php";
-
+// connect database
 ?>
-
 <h4 class="fw-bolder text-center">Payment</h4>
 <center>
     <hr class="bg-warning" style="width:5em;height:3px;opacity:1">
 </center>
-
 <?php
 if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
 ?>
-    <div class="card rounded-0 shadow mb-3">
-        <div class="card-body">
-            <div class="container-fluid">
-                <table class="table">
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                    <?php
-                    foreach ($_SESSION['cart'] as $isbn => $qty) {
-                        $conn = db_connect();
-                        $book = mysqli_fetch_assoc(getBookByIsbn($conn, $isbn));
-                    ?>
-                        <tr>
-                            <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
-                            <td><?php echo "Rs." . $book['book_price']; ?></td>
-                            <td><?php echo $qty; ?></td>
-                            <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
-                        </tr>
-                    <?php } ?>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                        <th><?php echo $_SESSION['total_items']; ?></th>
-                        <th><?php echo "Rs." . $_SESSION['total_price']; ?></th>
-                    </tr>
-                    <!-- No shipping row here, shipping is removed -->
-                    <tr>
-                        <th>Total</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
-                        <th><?php echo "Rs." . $_SESSION['total_price']; ?></th>
-                    </tr>
-                </table>
-            </div>
+<div class="card rounded-0 shadow mb-3">
+    <div class="card-body">
+        <div class="container-fluid">
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+                <?php
+                foreach ($_SESSION['cart'] as $isbn => $qty) {
+                    $conn = db_connect();
+                    $book = getBookByIsbn($conn, $isbn); // Get the book data directly
+                    if ($book) { // Ensure the book exists
+                ?>
+                <tr>
+                    <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
+                    <td><?php echo "Rs." . $book['book_price']; ?></td>
+                    <td><?php echo $qty; ?></td>
+                    <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
+                </tr>
+                <?php 
+                    }
+                } ?>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th><?php echo $_SESSION['total_items']; ?></th>
+                    <th><?php echo "Rs." . $_SESSION['total_price']; ?></th>
+                </tr>
+            </table>
         </div>
     </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
+        <div class="card rounded-0 shadow">
+            <div class="card-header">
+                <div class="card-title h6 fw-bold">Please Fill out all Fields</div>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <form id="purchaseForm" method="post" action="process.php" class="form-horizontal">
+                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
+                        <p class="text-danger">All fields have to be filled</p>
+                        <?php } ?>
+                        <div class="form-group mb-3">
+                            <label for="payment" class="control-label">Payment Method</label>
+                            <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
+                                <option value="cod">Cash on Delivery (COD)</option>
+                                <option value="khalti">Khalti</option>
+                            </select>
+                        </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
-            <div class="card rounded-0 shadow">
-                <div class="card-header">
-                    <div class="card-title h6 fw-bold">Please Fill out all Fields</div>
-                </div>
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <form method="post" action="process.php" class="form-horizontal" id="payment-form">
-                            <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
-                                <p class="text-danger">All fields have to be filled</p>
-                            <?php } ?>
-                            <div class="form-group mb-3">
-                                <label for="card_type" class="control-label">Type</label>
-                                <select class="form-select rounded-0" name="payment_type" id="payment-method" onchange="updatePaymentMethod()">
-                                    <option value="COD" selected>Cash on Delivery (COD)</option>
-                                    <option value="Khalti">Khalti</option>
-                                </select>
-                            </div>
+                        <div id="paymentMessage" class="alert alert-danger" style="display: none;">
+                            This payment method is not currently available. Please choose Cash on Delivery.
+                        </div>
 
-                            <!-- Show message when Khalti is selected -->
-                            <div id="khalti-message" class="alert alert-warning" style="display:none;">
-                                This payment method is currently unavailable.
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary rounded-0" id="purchase-button" disabled>Purchase</button>
-                                    <button type="reset" class="btn btn-default bg-light bg-gradient border rounded-0">Cancel</button>
-                                </div>
-                            </div>
-                        </form>
-                        <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
-                    </div>
+                        <button id="purchaseBtn" class="btn btn-primary" type="button" onclick="handlePurchase()">Purchase</button>
+                    </form>
+                    <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <?php
 } else {
     echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
 }
-if (isset($conn)) {
-    mysqli_close($conn);
-}
+if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
 
 <script>
-// Handle payment method change (Khalti and COD logic)
-function updatePaymentMethod() {
-    const paymentMethod = document.getElementById('payment-method').value;
-    const purchaseButton = document.getElementById('purchase-button');
-    const khaltiMessage = document.getElementById('khalti-message');
-    
-    if (paymentMethod === 'Khalti') {
-        // Show Khalti unavailable message and disable purchase button
-        khaltiMessage.style.display = 'block';
-        purchaseButton.disabled = true;
-    } else {
-        // Hide the message and enable the purchase button for COD
-        khaltiMessage.style.display = 'none';
-        purchaseButton.disabled = false;
+// Function to handle payment method selection and enable/disable the purchase button
+function checkPayment() {
+    var paymentMethod = document.getElementById("payment").value;
+    var purchaseBtn = document.getElementById("purchaseBtn");
+    var paymentMessage = document.getElementById("paymentMessage");
+
+    if (paymentMethod === "cod") {
+        // Enable the purchase button for Cash on Delivery and hide the message
+        purchaseBtn.disabled = false;
+        paymentMessage.style.display = "none";
+    } else if (paymentMethod === "khalti") {
+        // Disable the purchase button for Khalti and show the message
+        purchaseBtn.disabled = true;
+        paymentMessage.style.display = "block";
     }
 }
 
-// Initialize the page with the correct state
-window.onload = updatePaymentMethod;
+// Call the checkPayment function on page load to initialize the state
+window.onload = checkPayment;
+
+// Function to handle the purchase and show message before redirect
+function handlePurchase() {
+    var purchaseBtn = document.getElementById("purchaseBtn");
+    var paymentMethod = document.getElementById("payment").value;
+
+    // Check if the payment method is valid
+    if (paymentMethod === "cod") {
+        //Show success message
+        alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
+    
+       // Submit the form to redirect to process.php
+         document.getElementById("purchaseForm").submit();
+
+    } else {
+        // Show error if payment method is invalid
+        alert("This payment method is not available. Please choose Cash on Delivery.");
+    }
+}
 </script>
