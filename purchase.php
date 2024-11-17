@@ -1,18 +1,17 @@
 <?php
-session_start();  // Ensure session is started
+session_start();  
 
-// Display any message set in the session
+
 if (isset($_SESSION['message'])) {
     echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
-    unset($_SESSION['message']);  // Clear the message after it’s displayed
+    unset($_SESSION['message']);  
 }
 
 $_SESSION['err'] = 1;
 foreach ($_POST as $key => $value) {
     if (trim($value) == '') {
-        $_SESSION['err'] = 0;  // If a field is empty, set error flag
-        break;  // Stop checking further fields
-    }
+        $_SESSION['err'] = 0;  
+        break;  
 }
 
 if ($_SESSION['err'] == 0) {
@@ -48,8 +47,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                 <?php
                 foreach ($_SESSION['cart'] as $isbn => $qty) {
                     $conn = db_connect();
-                    $book = getBookByIsbn($conn, $isbn); // Get the book data directly
-                    if ($book) { // Ensure the book exists
+                    $book = getBookByIsbn($conn, $isbn); 
+                    if ($book) { 
                 ?>
                 <tr>
                     <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
@@ -111,41 +110,41 @@ require_once "./template/footer.php";
 ?>
 
 <script>
-// Function to handle payment method selection and enable/disable the purchase button
+
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var purchaseBtn = document.getElementById("purchaseBtn");
     var paymentMessage = document.getElementById("paymentMessage");
 
     if (paymentMethod === "cod") {
-        // Enable the purchase button for Cash on Delivery and hide the message
+        
         purchaseBtn.disabled = false;
         paymentMessage.style.display = "none";
     } else if (paymentMethod === "khalti") {
-        // Disable the purchase button for Khalti and show the message
+        
         purchaseBtn.disabled = true;
         paymentMessage.style.display = "block";
     }
 }
 
-// Call the checkPayment function on page load to initialize the state
+
 window.onload = checkPayment;
 
-// Function to handle the purchase and show message before redirect
+
 function handlePurchase() {
     var purchaseBtn = document.getElementById("purchaseBtn");
     var paymentMethod = document.getElementById("payment").value;
 
-    // Check if the payment method is valid
+    
     if (paymentMethod === "cod") {
-        //Show success message
+        
         alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
     
-       // Submit the form to redirect to process.php
+       
          document.getElementById("purchaseForm").submit();
 
     } else {
-        // Show error if payment method is invalid
+      
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
 }
