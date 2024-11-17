@@ -10,12 +10,14 @@ body {
     justify-content: space-between;
     margin-bottom: 20px;
 }
+
 .search-form input[type="text"] {
     width: 45%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
 .search-form button {
     padding: 10px 20px;
     border: none;
@@ -24,6 +26,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .search-form button:hover {
     background-color: #0056b3;
 }
@@ -33,6 +36,7 @@ body {
     justify-content: center;
     margin-top: 20px;
 }
+
 .pagination a {
     padding: 10px 15px;
     margin: 0 5px;
@@ -41,7 +45,40 @@ body {
     text-decoration: none;
     color: #007BFF;
 }
+
 .pagination a:hover {
     background-color: #007BFF;
     color: #fff;
+}
+
+.pagination a.active {
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px 16px;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table thead tr {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+table th,
+table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f0f0f0;
 }

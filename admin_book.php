@@ -18,22 +18,17 @@ if ($result->num_rows == 0) {
     echo "Error: No books found or an issue occurred while fetching the book list.";
     exit;  // Exit the script if no books are found
 }
-// debug($result);
-// debug($books, 1);
 $books = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $bst->insert($row);
     $books[] = $row;
-
 }
 
+$titleQuery = isset($_GET['title']) ? $_GET['title'] : '';
+$authorQuery = isset($_GET['author']) ? $_GET['author'] : '';
 
-// debug($books);
-
-if(isset($_GET['title'])){
-    $searchQuery = isset($_GET['title']) ? $_GET['title'] : '';
-    // Handle search query
-    $searchResults = $bst->search($bst->root, $searchQuery);
+if (!empty($titleQuery) || !empty($authorQuery)) {
+    $searchResults = $bst->search($bst->root, $titleQuery, $authorQuery);
 } else {
     $searchResults = $books;
 }
@@ -45,12 +40,6 @@ $totalPages = ceil($totalBooks / $booksPerPage);
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $startIndex = ($currentPage - 1) * $booksPerPage;
 $paginatedResults = array_slice($searchResults, $startIndex, $booksPerPage);
-
-// Display books
-// foreach ($paginatedResults as $book) {
-//     echo "<li>{$book['book_title']} by {$book['book_author']}</li>";
-// }
-// debug($paginatedResults, 1);
 
 ?>
 
@@ -138,9 +127,21 @@ endif;
             <div class="pagination">
             <?php
                 // Display pagination links
-                for ($i = 1; $i <= $totalPages; $i++) {
-                    echo "<a href=\"?title={$searchQuery}&page={$i}\">{$i}</a>";
+                if($totalPages > 1){
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                        if ($i == $currentPage) {
+                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\" class=\"active\">{$i}</a>";
+                        } else {
+                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\">{$i}</a>";
+                        }
+                    }
                 }
+
+
+
+       
+    
+                
             ?>
         </div>
 
