@@ -4,7 +4,7 @@ require_once "./functions/admin.php";
 $title = "List book";
 require_once "./template/header.php";
 require_once "./functions/database_functions.php";
-require_once "./Search_ALG/BST.php";
+require_once "./search_ALG/BST_admin.php";
 
 // Establish database connection
 $conn = db_connect();
