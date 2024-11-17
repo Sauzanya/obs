@@ -151,10 +151,11 @@ function getBooksAndPublishers($conn) {
         exit("Failed to retrieve books and publishers.");
     }
 
-    $books = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $books[] = $row; // Fetch all books with publisher names into an array
-    }
-    return $books; // Return the array of books with publisher names
+    return $result;
+    // $books = [];
+    // while ($row = mysqli_fetch_assoc($result)) {
+    //     $books[] = $row; // Fetch all books with publisher names into an array
+    // }
+    // return $books; // Return the array of books with publisher names
 }
 ?>
