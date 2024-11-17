@@ -17,3 +17,13 @@ function redirect($url)
         echo '</noscript>'; exit;
     }
 }
+
+function debug($data, $die = false){
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+    if($die)
+    {
+        exit;
+    }
+}

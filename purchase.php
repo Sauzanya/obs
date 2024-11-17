@@ -1,7 +1,6 @@
 <?php
 session_start();  
 
-
 if (isset($_SESSION['message'])) {
     echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
     unset($_SESSION['message']);  
@@ -12,6 +11,7 @@ foreach ($_POST as $key => $value) {
     if (trim($value) == '') {
         $_SESSION['err'] = 0;  
         break;  
+}
 }
 
 if ($_SESSION['err'] == 0) {
@@ -127,24 +127,17 @@ function checkPayment() {
     }
 }
 
-
 window.onload = checkPayment;
-
 
 function handlePurchase() {
     var purchaseBtn = document.getElementById("purchaseBtn");
     var paymentMethod = document.getElementById("payment").value;
 
-    
     if (paymentMethod === "cod") {
-        
         alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
-    
-       
-         document.getElementById("purchaseForm").submit();
-
+        document.getElementById("purchaseForm").submit();
+        window.location.href = "http://localhost:8080"; // Corrected URL
     } else {
-      
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
 }

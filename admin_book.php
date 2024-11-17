@@ -9,7 +9,7 @@ require_once "./functions/database_functions.php";
 $conn = db_connect();
 
 // Fetch all books using the updated getAll() function
-$books = getAll($conn);
+$books = getBooksAndPublishers($conn);
 
 // Check if the result is empty
 if (empty($books)) {
@@ -59,7 +59,9 @@ endif;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($books as $row): ?>
+                    <?php foreach ($books as $row): 
+                        // debug($row, 1);
+                        ?>
                         <tr>
                             <td class="px-2 py-1 align-middle">
                                 <a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank">
