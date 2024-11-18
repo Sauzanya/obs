@@ -59,7 +59,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                     <div class="card-title h6 fw-bold">Please Fill the following form</div>
                 </div>
                 <div class="card-body container-fluid">
-                    <form method="post" action="purchase.php" class="form-horizontal">
+                    <!-- <form method="post" action="purchase.php" class="form-horizontal">
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                             <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
@@ -81,7 +81,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         <div class="mb-3 d-grid">
                             <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
                         </div>
-                    </form>
+                    </form> -->
                     <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
             </div>
