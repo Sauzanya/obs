@@ -48,15 +48,17 @@ INSERT INTO `admin` (`name`, `pass`) VALUES
 --
 
 CREATE TABLE `books` (
-  `book_isbn` varchar(20) COLLATE latin1_general_ci NOT NULL,
-  `book_title` varchar(60) COLLATE latin1_general_ci DEFAULT NULL,
-  `book_author` varchar(60) COLLATE latin1_general_ci DEFAULT NULL,
-  `book_image` varchar(40) COLLATE latin1_general_ci DEFAULT NULL,
-  `book_descr` text COLLATE latin1_general_ci,
-  `book_price` decimal(6,2) NOT NULL,
-  `publisherid` int(10) UNSIGNED NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  `book_isbn` VARCHAR(20) NOT NULL,
+  `book_title` VARCHAR(60) DEFAULT NULL,
+  `book_author` VARCHAR(60) DEFAULT NULL,
+  `book_image` VARCHAR(40) DEFAULT NULL,
+  `book_descr` TEXT,
+  `book_price` DECIMAL(6,2) NOT NULL,
+  `publisherid` INT(10) UNSIGNED NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`book_isbn`)
+)
+ ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `books`
@@ -111,15 +113,17 @@ CREATE TABLE `customers` (
 --
 
 CREATE TABLE `orders` (
-  `orderid` int(10) UNSIGNED NOT NULL,
-  `customerid` int(10) DEFAULT NOT NULL,
-  `name` varchar(100) NOT NULL,
-  'address'varchar(100) NOT NULL,
-  'contact'varchar(100) NOT NULL,
-  'total_price' decimal (10,2)NOT NULL,
-  `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  'payment_method' varchar(50) NOT Null,
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  `orderid` INT(10) UNSIGNED NOT NULL,
+  `customerid` INT(10) UNSIGNED NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `address` VARCHAR(100) NOT NULL,
+  `contact` VARCHAR(100) NOT NULL,
+  `total_price` DECIMAL(10,2) NOT NULL,
+  `order_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `payment_method` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`orderid`)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `orders`
@@ -141,14 +145,16 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE order_items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id VARCHAR(50) NOT NULL,
-    book_isbn VARCHAR(20) NOT NULL,
-    book_price DECIMAL(10, 2) NOT NULL,
-    quantity INT NOT NULL,
-    FOREIGN KEY (orderid) REFERENCES orders(orderid),
-    FOREIGN KEY (book_isbn) REFERENCES books(book_isbn)
-); ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT UNSIGNED NOT NULL,
+  book_isbn VARCHAR(20) NOT NULL,
+  book_price DECIMAL(10, 2) NOT NULL,
+  quantity INT NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(orderid),
+  FOREIGN KEY (book_isbn) REFERENCES books(book_isbn)
+);
+
+ ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `order_items`
