@@ -35,11 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $order_id = mysqli_insert_id($conn);
 
     // Insert each item into the "order_items" table
-    foreach ($_SESSION['cart'] as $isbn => $qty) {
-        $book = getBookByIsbn($conn, $isbn); // Retrieve book details
+    foreach ($_SESSION['cart'] as $book_isbn => $qty) {
+        $book = getBookByIsbn($conn, $book_isbn); // Retrieve book details
         $book_price = $book['book_price'];
-        $query = "INSERT INTO order_items (order_id, isbn, quantity, price)
-                  VALUES ('$order_id', '$isbn', '$qty', '$book_price')";
+        $query = "INSERT INTO order_items (order_id, book_isbn, quantity, book_price)
+                  VALUES ('$order_id', '$book_isbn', '$qty', '$book_price')";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
