@@ -56,33 +56,13 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
             <div class="card rounded-0 shadow">
                 <div class="card-header">
-                    <div class="card-title h6 fw-bold">Please Fill the following form</div>
+                    <div class="card-title h6 fw-bold">Proceed to Purchase</div>
                 </div>
                 <div class="card-body container-fluid">
-                    <form method="post" action="purchase.php" class="form-horizontal">
-                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
-                            <p class="text-danger">All fields have to be filled</p>
-                        <?php } ?>
-                        <div class="mb-3">
-                            <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" class="form-control rounded-0">
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="control-label">Address</label>
-                            <input type="text" name="address" class="form-control rounded-0">
-                        </div>
-                        <div class="mb-3">
-                       <label for="Contact" class="control-label">Contact</label>
-                        <input type="text" name="Contact" class="form-control rounded-0" pattern="^[0-9]{10}$" title="Please enter a valid 10-digit contact number." required>
-                        <div class="invalid-feedback">
-                         Please enter a valid 10-digit contact number.
-                        </div>
-                        </div>
-                        <div class="mb-3 d-grid">
-                            <input type="submit" name="submit" value="Purchase" class="btn btn-primary rounded-0">
-                        </div>
-                    </form>
-                    <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
+                    <p class="fw-light fst-italic"><small class="text-muted">Please click "Purchase" if you wish to confirm your purchase, or <a href="index.php" class="text-decoration-none">Continue Shopping</a> to add or remove items.</small></p>
+                    <div class="mb-3 d-grid">
+                        <a href="purchase.php" class="btn btn-primary rounded-0">Purchase</a>
+                    </div>
                 </div>
             </div>
         </div>
