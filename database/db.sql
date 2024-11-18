@@ -87,10 +87,10 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 --
 
 CREATE TABLE `customers` (
-  `customerid` int(10) DEFAULT,
+  
   `name` varchar(60) COLLATE latin1_general_ci NOT NULL,
   `address` varchar(80) COLLATE latin1_general_ci NOT NULL,
-  `contact` varchar(20) COLLATE latin1_general_ci NOT NULL
+  `contact` varchar(20) COLLATE latin1_general_ci  PRIMARY key NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
@@ -216,14 +216,13 @@ ALTER TABLE `books`
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`customerid`);
+  ADD PRIMARY KEY (`customercontact`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`orderid`),
-  ADD KEY `customerid` (`customerid`);
+  ADD PRIMARY KEY (`orderid`);
 
 --
 -- Indexes for table `order_items`
@@ -246,8 +245,8 @@ ALTER TABLE `publisher`
 --
 -- AUTO_INCREMENT for table `customers`
 --
-ALTER TABLE `customers`
-  MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+-- ALTER TABLE `customers`
+--   MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
