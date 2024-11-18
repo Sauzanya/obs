@@ -77,7 +77,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <form id="purchaseForm" method="post" action="purchase.php" class="form-horizontal">
+                    <form id="purchaseForm" method="post" action="index.php" class="form-horizontal">
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
