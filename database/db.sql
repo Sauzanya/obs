@@ -85,7 +85,7 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 --
 
 CREATE TABLE `customers` (
-  `customerid` int(10) UNSIGNED NOT NULL,
+  `customerid` int(10) DEFAULT,
   `name` varchar(60) COLLATE latin1_general_ci NOT NULL,
   `address` varchar(80) COLLATE latin1_general_ci NOT NULL,
   `contact` varchar(20) COLLATE latin1_general_ci NOT NULL
@@ -95,14 +95,14 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customerid`, `name`, `address`, `contact`) VALUES
-(1, 'John Doe', 'Lalitpur', '123456789'),
-(2, 'Jane Smith', 'Kathmandu', '987654321'),
-(3, 'Alice Johnson', 'Bhaktapur', '123123123'),
-(4, 'Robert Brown', 'Pokhara', '321321321'),
-(5, 'Charlie White', 'Chitwan', '555555555'),
-(6, 'Eve Green', 'Lalitpur', '666666666'),
-(7, 'Grace Blue', 'Kathmandu', '777777777');
+-- INSERT INTO `customers` (`customerid`, `name`, `address`, `contact`) VALUES
+-- (1, 'John Doe', 'Lalitpur', '123456789'),
+-- (2, 'Jane Smith', 'Kathmandu', '987654321'),
+-- (3, 'Alice Johnson', 'Bhaktapur', '123123123'),
+-- (4, 'Robert Brown', 'Pokhara', '321321321'),
+-- (5, 'Charlie White', 'Chitwan', '555555555'),
+-- (6, 'Eve Green', 'Lalitpur', '666666666'),
+-- (7, 'Grace Blue', 'Kathmandu', '777777777');
 
 -- --------------------------------------------------------
 
@@ -112,23 +112,27 @@ INSERT INTO `customers` (`customerid`, `name`, `address`, `contact`) VALUES
 
 CREATE TABLE `orders` (
   `orderid` int(10) UNSIGNED NOT NULL,
-  `customerid` int(10) UNSIGNED NOT NULL,
-  `amount` decimal(6,2) DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `customerid` int(10) DEFAULT NOT NULL,
+  `name` varchar(100) NOT NULL,
+  'address'varchar(100) NOT NULL,
+  'contact'varchar(100) NOT NULL,
+  'total_price' decimal (10,2)NOT NULL,
+  `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  'payment_method' varchar(50) NOT Null,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
-(1, 1, 60.00, '2024-11-15 00:00:00'),
-(2, 2, 80.00, '2024-11-15 00:00:00'),
-(3, 3, 60.00, '2024-11-15 00:00:00'),
-(4, 4, 80.00, '2024-11-15 00:00:00'),
-(5, 5, 65.00, '2024-11-15 00:00:00'),
-(6, 6, 86.00, '2024-11-15 00:00:00'),
-(7, 7, 65.00, '2024-11-15 00:00:00');
+-- INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
+-- (1, 1, 60.00, '2024-11-15 00:00:00'),
+-- (2, 2, 80.00, '2024-11-15 00:00:00'),
+-- (3, 3, 60.00, '2024-11-15 00:00:00'),
+-- (4, 4, 80.00, '2024-11-15 00:00:00'),
+-- (5, 5, 65.00, '2024-11-15 00:00:00'),
+-- (6, 6, 86.00, '2024-11-15 00:00:00'),
+-- (7, 7, 65.00, '2024-11-15 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -136,33 +140,35 @@ INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
 -- Table structure for table `order_items`
 --
 
-CREATE TABLE `order_items` (
-  `id` int(11) NOT NULL,
-  `orderid` int(10) UNSIGNED NOT NULL,
-  `book_isbn` varchar(20) COLLATE latin1_general_ci NOT NULL,
-  `item_price` decimal(6,2) NOT NULL,
-  `quantity` tinyint(3) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(50) NOT NULL,
+    book_isbn VARCHAR(20) NOT NULL,
+    book_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (orderid) REFERENCES orders(orderid),
+    FOREIGN KEY (book_isbn) REFERENCES books(book_isbn)
+); ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `order_items`
 --
 
-INSERT INTO `order_items` (`id`, `orderid`, `book_isbn`, `item_price`, `quantity`) VALUES
-(1, 1, '978-99933-527-10', 20.00, 2),
-(2, 1, '978-99933-527-11', 20.00, 1),
-(3, 2, '978-99933-527-13', 20.00, 3),
-(4, 2, '978-99933-527-3', 20.00, 1),
-(5, 3, '978-99933-527-4', 20.00, 2),
-(6, 3, '978-99933-527-9', 20.00, 1),
-(7, 4, '978-99933-527-7', 20.00, 1),
-(8, 4, '978-99933-527-8', 20.00, 3),
-(9, 5, '978-99933-527-6', 20.00, 2),
-(10, 5, '978-99933-528-0', 25.00, 1),
-(11, 6, '978-99933-528-1', 30.00, 1),
-(12, 6, '978-99933-528-2', 28.00, 2),
-(13, 7, '978-99933-528-3', 30.00, 1),
-(14, 7, '978-99933-528-4', 35.00, 1);
+-- INSERT INTO `order_items` (`id`, `orderid`, `book_isbn`, `item_price`, `quantity`) VALUES
+-- (1, 1, '978-99933-527-10', 20.00, 2),
+-- (2, 1, '978-99933-527-11', 20.00, 1),
+-- (3, 2, '978-99933-527-13', 20.00, 3),
+-- (4, 2, '978-99933-527-3', 20.00, 1),
+-- (5, 3, '978-99933-527-4', 20.00, 2),
+-- (6, 3, '978-99933-527-9', 20.00, 1),
+-- (7, 4, '978-99933-527-7', 20.00, 1),
+-- (8, 4, '978-99933-527-8', 20.00, 3),
+-- (9, 5, '978-99933-527-6', 20.00, 2),
+-- (10, 5, '978-99933-528-0', 25.00, 1),
+-- (11, 6, '978-99933-528-1', 30.00, 1),
+-- (12, 6, '978-99933-528-2', 28.00, 2),
+-- (13, 7, '978-99933-528-3', 30.00, 1),
+-- (14, 7, '978-99933-528-4', 35.00, 1);
 
 -- --------------------------------------------------------
 

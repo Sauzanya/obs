@@ -1,7 +1,6 @@
 <?php
 session_start();  
 
-
 if (isset($_SESSION['message'])) {
     echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
     unset($_SESSION['message']);  
@@ -12,6 +11,7 @@ foreach ($_POST as $key => $value) {
     if (trim($value) == '') {
         $_SESSION['err'] = 0;  
         break;  
+    }
 }
 
 if ($_SESSION['err'] == 0) {
@@ -81,6 +81,25 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
+                        <!-- Name -->
+                        <div class="form-group mb-3">
+                            <label for="name" class="control-label">Name</label>
+                            <input type="text" name="name" id="name" class="form-control rounded-0" required>
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="form-group mb-3">
+                            <label for="contact" class="control-label">Contact Number</label>
+                            <input type="text" name="contact" id="contact" class="form-control rounded-0" required>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group mb-3">
+                            <label for="address" class="control-label">Address</label>
+                            <textarea name="address" id="address" class="form-control rounded-0" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Payment Method -->
                         <div class="form-group mb-3">
                             <label for="payment" class="control-label">Payment Method</label>
                             <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
@@ -110,41 +129,30 @@ require_once "./template/footer.php";
 ?>
 
 <script>
-
 function checkPayment() {
     var paymentMethod = document.getElementById("payment").value;
     var purchaseBtn = document.getElementById("purchaseBtn");
     var paymentMessage = document.getElementById("paymentMessage");
 
     if (paymentMethod === "cod") {
-        
         purchaseBtn.disabled = false;
         paymentMessage.style.display = "none";
     } else if (paymentMethod === "khalti") {
-        
         purchaseBtn.disabled = true;
         paymentMessage.style.display = "block";
     }
 }
 
-
 window.onload = checkPayment;
-
 
 function handlePurchase() {
     var purchaseBtn = document.getElementById("purchaseBtn");
     var paymentMethod = document.getElementById("payment").value;
 
-    
     if (paymentMethod === "cod") {
-        
         alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
-    
-       
-         document.getElementById("purchaseForm").submit();
-
+        document.getElementById("purchaseForm").submit();
     } else {
-      
         alert("This payment method is not available. Please choose Cash on Delivery.");
     }
 }
