@@ -15,7 +15,7 @@ foreach ($_POST as $key => $value) {
 }
 
 if ($_SESSION['err'] == 0) {
-    header("Location:purchase.php");
+    header("Location:cart.php");
     exit;
 } else {
     unset($_SESSION['err']);
