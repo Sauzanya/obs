@@ -34,28 +34,28 @@ function getBookByIsbn($conn, $isbn) {
 }
 
 function getOrderId($conn, $customerid) {
-    $query = "SELECT orderid FROM orders WHERE customerid = '$customerid'";
+    $query = "SELECT orderid FROM orders WHERE customerid = '$customerid' ORDER BY orderid DESC LIMIT 1";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Error retrieving order ID: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Error retrieving order ID.");
     }
     $row = mysqli_fetch_assoc($result);
-    return $row['orderid'];
+    return $row['orderid'] ?? null; // Return the order ID or null if not found
 }
 
-function insertIntoOrder($conn, $customerid, $total_price, $date, $ship_name, $ship_address, $ship_city, $ship_zip_code, $ship_country) {
-    $query = "INSERT INTO orders (customerid, total_price, order_date, ship_name, ship_address, ship_city, ship_zip_code, ship_country) 
-              VALUES ('$customerid', '$total_price', '$date', '$ship_name', '$ship_address', '$ship_city', '$ship_zip_code', '$ship_country')";
+function insertIntoOrder($conn, $customerid, $total_price, $payment_method) {
+    $query = "INSERT INTO orders (customerid, total_price, payment_method) 
+              VALUES ('$customerid', '$total_price', '$payment_method')";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Insert orders failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Failed to insert order.");
     }
+    return mysqli_insert_id($conn); // Return the order ID
 }
 
-function getbookprice($isbn) {
-    $conn = db_connect();
+function getBookPrice($conn, $isbn) {
     $query = "SELECT book_price FROM books WHERE book_isbn = '$isbn'";
     $result = mysqli_query($conn, $query);
     if (!$result) {
@@ -63,12 +63,11 @@ function getbookprice($isbn) {
         exit("Failed to retrieve book price.");
     }
     $row = mysqli_fetch_assoc($result);
-    return $row['book_price'];
+    return $row['book_price'] ?? 0; // Return the price or 0 if not found
 }
 
-function getCustomerId($name, $address, $city, $zip_code, $country) {
-    $conn = db_connect();
-    $query = "SELECT customerid FROM customers WHERE name = '$name' AND address = '$address' AND city = '$city' AND zip_code = '$zip_code' AND country = '$country'";
+function getCustomerId($conn, $name, $address, $contact) {
+    $query = "SELECT customerid FROM customers WHERE name = '$name' AND address = '$address' AND contact = '$contact'";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Error retrieving customer ID: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
@@ -82,9 +81,8 @@ function getCustomerId($name, $address, $city, $zip_code, $country) {
     }
 }
 
-function setCustomerId($name, $address, $city, $zip_code, $country) {
-    $conn = db_connect();
-    $query = "INSERT INTO customers (name, address, city, zip_code, country) VALUES ('$name', '$address', '$city', '$zip_code', '$country')";
+function setCustomerId($conn, $name, $address, $contact) {
+    $query = "INSERT INTO customers (name, address, contact) VALUES ('$name', '$address', '$contact')";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Insert customer failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
