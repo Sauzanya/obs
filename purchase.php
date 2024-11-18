@@ -15,7 +15,7 @@ foreach ($_POST as $key => $value) {
 }
 
 if ($_SESSION['err'] == 0) {
-    header("Location: checkout.php");
+    header("Location:purchase.php");
     exit;
 } else {
     unset($_SESSION['err']);
@@ -73,7 +73,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
     <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
         <div class="card rounded-0 shadow">
             <div class="card-header">
-                <div class="card-title h6 fw-bold">Please Fill out all Fields</div>
+                <div class="card-title h6 fw-bold">Please Choose the Payment Option</div>
             </div>
             <div class="card-body">
                 <div class="container-fluid">
