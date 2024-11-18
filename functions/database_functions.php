@@ -44,9 +44,9 @@ function getOrderId($conn, $customerid) {
     return $row['orderid'];
 }
 
-function insertIntoOrder($conn, $customerid, $total_price, $date, $ship_name, $ship_address, $ship_city, $ship_zip_code, $ship_country) {
-    $query = "INSERT INTO orders (customerid, total_price, order_date) 
-              VALUES ('$customerid', '$total_price', '$date', '$ship_name', '$ship_address', '$ship_city', '$ship_zip_code', '$ship_country')";
+function insertIntoOrder($conn, $customerid, $total_price, $order_date,$name, $address,$contact,$payment_method) {
+    $query = "INSERT INTO orders (customerid, total_price, order_date,name,address,contact,payment_method) 
+              VALUES ('$customerid', '$total_price','$order_date','$name', '$address','$contact','$payment_method')";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Insert orders failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
