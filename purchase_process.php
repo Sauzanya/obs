@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check for empty fields
     if (empty($name) || empty($contact) || empty($address)) {
         $_SESSION['err'] = 1; // Set error session variable
-        header("Location: purchase.php"); // Redirect back to purchase page
+        header("Location: checkout.php"); // Redirect back to purchase page
         exit;
     }
 
