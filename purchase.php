@@ -77,27 +77,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <form id="purchaseForm" method="post" action="process.php" class="form-horizontal">
-                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
-                        <p class="text-danger">All fields have to be filled</p>
-                        <?php } ?>
-                        <!-- Name -->
-                        <div class="form-group mb-3">
-                            <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" id="name" class="form-control rounded-0" required>
-                        </div>
-
-                        <!-- Contact -->
-                        <div class="form-group mb-3">
-                            <label for="contact" class="control-label">Contact Number</label>
-                            <input type="text" name="contact" id="contact" class="form-control rounded-0" required>
-                        </div>
-
-                        <!-- Address -->
-                        <div class="form-group mb-3">
-                            <label for="address" class="control-label">Address</label>
-                            <textarea name="address" id="address" class="form-control rounded-0" rows="3" required></textarea>
-                        </div>
+                    <form id="purchaseForm" method="post" action="purchase_process.php" class="form-horizontal">
+                        
 
                         <!-- Payment Method -->
                         <div class="form-group mb-3">
