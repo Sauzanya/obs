@@ -87,7 +87,7 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 --
 
 CREATE TABLE `customers` (
-  
+  `id` int (100) AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(60) COLLATE latin1_general_ci NOT NULL,
   `address` varchar(80) COLLATE latin1_general_ci NOT NULL,
   `contact` varchar(20) COLLATE latin1_general_ci  PRIMARY key NOT NULL
