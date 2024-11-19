@@ -82,22 +82,49 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
                         <!-- Name -->
-                        <div class="form-group mb-3">
-                            <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" id="name" class="form-control rounded-0" required>
-                        </div>
+                        <!-- Name -->
+<div class="form-group mb-3">
+    <label for="name" class="control-label">Name</label>
+    <input
+        type="text"
+        name="name"
+        id="name"
+        class="form-control rounded-0"
+        pattern="[A-Za-z\s]+"
+        title="Name should only contain letters and spaces."
+        required
+    />
+</div>
 
-                        <!-- Contact -->
-                        <div class="form-group mb-3">
-                            <label for="contact" class="control-label">Contact Number</label>
-                            <input type="text" name="contact" id="contact" class="form-control rounded-0" required>
-                        </div>
+<!-- Contact -->
+<div class="form-group mb-3">
+    <label for="contact" class="control-label">Contact Number</label>
+    <input
+        type="text"
+        name="contact"
+        id="contact"
+        class="form-control rounded-0"
+        pattern="^\d{10}$"
+        title="Contact number must be exactly 10 digits."
+        required
+    />
+</div>
 
-                        <!-- Address -->
-                        <div class="form-group mb-3">
-                            <label for="address" class="control-label">Address</label>
-                            <textarea name="address" id="address" class="form-control rounded-0" rows="3" required></textarea>
-                        </div>
+<!-- Address -->
+<div class="form-group mb-3">
+    <label for="address" class="control-label">Address</label>
+    <textarea
+        name="address"
+        id="address"
+        class="form-control rounded-0"
+        rows="3"
+        minlength="10"
+        maxlength="255"
+        title="Address must be between 10 and 255 characters."
+        required
+    ></textarea>
+</div>
+
 
                         <!-- Payment Method -->
                         <div class="form-group mb-3">
