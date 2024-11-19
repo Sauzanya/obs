@@ -81,8 +81,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
-                        <!-- Name -->
-                        <!-- Name -->
+                       
 <div class="form-group mb-3">
     <label for="name" class="control-label">Name</label>
     <input
