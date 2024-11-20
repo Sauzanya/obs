@@ -41,7 +41,8 @@ function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $
               VALUES ('$customerid', '$total_price', '$order_date', '$name', '$address', '$contact', '$payment_method')";
     $result = mysqli_query($conn, $query);
     if (!$result) {
-        error_log("Insert orders failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        error_log("Insert orders failed: " . mysqli_error($conn));
+
         exit("Failed to insert order.");
     }
     return mysqli_insert_id($conn); // Return the order_id
