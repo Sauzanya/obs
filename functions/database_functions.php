@@ -64,15 +64,20 @@ function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $
 
 
 // Function to insert order items
-function insertOrderItems($conn, $order_id, $isbn, $price, $quantity) {
-    $query = "INSERT INTO order_items (order_id, book_isbn, book_price, quantity) 
-              VALUES ('$order_id', '$isbn', '$price', '$quantity')";
-    $result = mysqli_query($conn, $query);
-    if (!$result) {
-        error_log("Insert order item failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to insert order item.");
+// Function to insert order items into the database
+function insertOrderItem($order_id, $isbn, $book_price, $quantity) {
+    global $conn;  // Ensure the database connection is accessible
+
+    $query = "INSERT INTO order_items (order_id, isbn, price, quantity) 
+              VALUES ('$order_id', '$isbn', '$book_price', '$quantity')";
+    
+    if (mysqli_query($conn, $query)) {
+        return true;  // Return true if the query is successful
+    } else {
+        return false;  // Return false if there is an error
     }
 }
+
 
 // Function to get the customer ID or insert a new customer if not found
 function getOrInsertCustomerId($name, $address, $contact) {
