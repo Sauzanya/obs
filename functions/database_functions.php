@@ -93,8 +93,8 @@ function setCustomerId($name, $address, $contact) {
     return mysqli_insert_id($conn); // Return the customer ID
 }
 
-function getPubName($conn, $pubid) {
-    $query = "SELECT publisher_name FROM publishers WHERE publisherid = '$pubid'";
+function getPubName($conn, $publisherid) {
+    $query = "SELECT publisher_name FROM publishers WHERE publisherid = '$publisherid'";
     $result = mysqli_query($conn, $query);
     if (!$result) {
         error_log("Can't retrieve publisher name: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
