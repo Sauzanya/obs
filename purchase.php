@@ -124,7 +124,16 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                             <!-- Contact -->
                             <div class="form-group mb-3">
                                 <label for="contact" class="control-label">Contact Number</label>
-                                <input type="text" name="contact" id="contact" class="form-control rounded-0" required>
+                                <input 
+        type="text" 
+        name="contact" 
+        id="contact" 
+        class="form-control rounded-0" 
+        required
+        pattern="^\d{10}$" 
+        title="Please enter a valid 10-digit contact number."
+        placeholder="Enter 10-digit number"
+    >
                             </div>
                             <!-- Address -->
                             <div class="form-group mb-3">
