@@ -148,6 +148,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
         header("Location: index.php");  // Redirect to index or any other page
         exit;
     }
+    require_once "./template/header.php";
 } else {
     // If cart is empty, display a warning message
     echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books to it!</p>";
