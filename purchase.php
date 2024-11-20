@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION['message'])) {
     echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
-    unset($_SESSION['message']);
+    unset($_SESSION['message']);  // Clear the message after displaying it
 }
 
 $_SESSION['err'] = 1;
@@ -145,7 +145,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
 
         // Set a success message and redirect
         $_SESSION['message'] = "Order placed successfully! We will reach out to you soon.";
-        header("Location: index.php");
+        header("Location: index.php");  // Redirect to index or any other page
         exit;
     }
 } else {
