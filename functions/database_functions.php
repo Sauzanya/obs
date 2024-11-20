@@ -1,150 +1,217 @@
 <?php
-// Existing database connection function
+// Database connection function
 function db_connect() {
     $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
     if (!$conn) {
-        // Log error message instead of direct echo
-        error_log("Can't connect database: " . mysqli_connect_error(), 3, "/var/www/html/logs/error_log.log");
-        exit("Database connection failed.");
+        error_log("Can't connect to the database: " . mysqli_connect_error(), 3, "/var/www/html/logs/error_log.log");
+        exit("Database connection failed. Please try again later.");
     }
     return $conn;
 }
 
-// Existing functions (no change in these)
+// Fetch the latest 4 books
 function select4LatestBook($conn) {
     $row = array();
     $query = "SELECT book_isbn, book_image, book_title FROM books ORDER BY abs(unix_timestamp(created_at)) DESC LIMIT 4";
-    $result = mysqli_query($conn, $query);
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Can't retrieve data: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Error fetching the latest books.");
     }
+
     while ($book = mysqli_fetch_assoc($result)) {
-        $row[] = $book; // Fetch and add books to the array
+        $row[] = $book;
     }
+    mysqli_stmt_close($stmt);
     return $row;
 }
 
+// Get book by ISBN
 function getBookByIsbn($conn, $isbn) {
-    $query = "SELECT book_title, book_author, book_price, book_descr, book_image FROM books WHERE book_isbn = '$isbn'";
-    $result = mysqli_query($conn, $query);
+    $query = "SELECT book_title, book_author, book_price, book_descr, book_image FROM books WHERE book_isbn = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $isbn); // Bind ISBN parameter
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Can't retrieve data: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Error fetching book details.");
     }
-    return mysqli_fetch_assoc($result); // Fetch a single row as associative array
+    $book = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
+    return $book;
 }
 
-// Update insertIntoOrder to take customer_id
+// Insert a new order into the orders table
 function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method) {
-    // Ensure order_date is in correct format
     if (!$order_date) {
-        $order_date = date('Y-m-d'); // Default to current date if not provided
+        $order_date = date('Y-m-d');
     }
 
-    // Prepare the SQL statement to prevent SQL injection
     $query = "INSERT INTO orders (customerid, total_price, order_date, name, address, contact, payment_method) 
               VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-    // Prepare the statement
     $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
 
-    // Bind the parameters (Ensure data types match)
     mysqli_stmt_bind_param($stmt, "idsssss", $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method);
-
-    // Execute the statement
-    if (!mysqli_stmt_execute($stmt)) {
-        error_log("Insert orders failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+    $result = mysqli_stmt_execute($stmt);
+    if (!$result) {
+        error_log("Insert order failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Failed to insert order.");
     }
 
-    // Close the statement
+    $order_id = mysqli_insert_id($conn);
     mysqli_stmt_close($stmt);
+    return $order_id;
 }
 
-
-// Function to insert order items
-// Function to insert order items into the database
+// Insert items into the order_items table
 function insertOrderItem($order_id, $isbn, $book_price, $quantity) {
-    global $conn;  // Ensure the database connection is accessible
+    $conn = db_connect();
 
-    $query = "INSERT INTO order_items (order_id, isbn, price, quantity) 
-              VALUES ('$order_id', '$isbn', '$book_price', '$quantity')";
-    
-    if (mysqli_query($conn, $query)) {
-        return true;  // Return true if the query is successful
-    } else {
-        return false;  // Return false if there is an error
+    $query = "INSERT INTO order_items (order_id, isbn, price, quantity) VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
     }
+
+    mysqli_stmt_bind_param($stmt, "isdi", $order_id, $isbn, $book_price, $quantity);
+    $result = mysqli_stmt_execute($stmt);
+    if (!$result) {
+        error_log("Insert order item failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Failed to insert order item.");
+    }
+
+    mysqli_stmt_close($stmt);
+    return $result;
 }
 
-
-// Function to get the customer ID or insert a new customer if not found
+// Get or insert customer and return customer ID
 function getOrInsertCustomerId($name, $address, $contact) {
     $conn = db_connect();
-    // First, try to get the customer ID
-    $query = "SELECT customerid FROM customers WHERE name = '$name' AND address = '$address' AND contact = '$contact'";
-    $result = mysqli_query($conn, $query);
+    $query = "SELECT customerid FROM customers WHERE name = ? AND address = ? AND contact = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
+
+    mysqli_stmt_bind_param($stmt, "sss", $name, $address, $contact);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Error retrieving customer ID: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Error retrieving customer ID.");
     }
-    
+
     if (mysqli_num_rows($result) > 0) {
-        // Customer exists, return the customer ID
         $row = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
         return $row['customerid'];
     } else {
-        // Customer doesn't exist, insert a new customer
-        $query = "INSERT INTO customers (name, address, contact) VALUES ('$name', '$address', '$contact')";
-        $result = mysqli_query($conn, $query);
-        if (!$result) {
+        $insertQuery = "INSERT INTO customers (name, address, contact) VALUES (?, ?, ?)";
+        $insertStmt = mysqli_prepare($conn, $insertQuery);
+        if (!$insertStmt) {
+            error_log("Insert prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+            exit("Failed to prepare insert statement.");
+        }
+
+        mysqli_stmt_bind_param($insertStmt, "sss", $name, $address, $contact);
+        if (mysqli_stmt_execute($insertStmt)) {
+            $customerId = mysqli_insert_id($conn);
+            mysqli_stmt_close($insertStmt);
+            return $customerId;
+        } else {
             error_log("Insert customer failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
             exit("Failed to insert customer.");
         }
-        return mysqli_insert_id($conn); // Return the new customer ID
     }
 }
 
-// Other existing functions (no changes needed)
+// Get book price by ISBN
 function getbookprice($isbn) {
     $conn = db_connect();
-    $query = "SELECT book_price FROM books WHERE book_isbn = '$isbn'";
-    $result = mysqli_query($conn, $query);
+    $query = "SELECT book_price FROM books WHERE book_isbn = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $isbn);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Get book price failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to retrieve book price.");
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error fetching book price.");
     }
     $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
     return $row['book_price'];
 }
 
+// Get publisher name by publisherid
 function getPublisherName($conn, $publisherid) {
-    $query = "SELECT publisher_name FROM publishers WHERE publisherid = '$publisherid'";
-    $result = mysqli_query($conn, $query);
-    if (!$result) {
-        error_log("Can't retrieve publisher name: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to retrieve publisher name.");
+    $query = "SELECT publisher_name FROM publishers WHERE publisherid = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
     }
+
+    mysqli_stmt_bind_param($stmt, "i", $publisherid);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (!$result) {
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error fetching publisher name.");
+    }
+
     if (mysqli_num_rows($result) == 0) {
-        return "Unknown Publisher"; // If no publisher found, return a default name
+        return "Unknown Publisher";
     }
     $row = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
     return $row['publisher_name'];
 }
 
+// Get all books from the database
 function getAll($conn) {
     $query = "SELECT * FROM books ORDER BY book_isbn DESC";
-    $result = mysqli_query($conn, $query);
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error preparing the SQL statement.");
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Can't retrieve all books: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to retrieve all books.");
+        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Error fetching all books.");
     }
 
     $books = [];
     while ($row = mysqli_fetch_assoc($result)) {
-        $books[] = $row; // Fetch all books into an array
+        $books[] = $row;
     }
-    return $books; // Return the array of books
+    mysqli_stmt_close($stmt);
+    return $books;
 }
 ?>
