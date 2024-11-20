@@ -37,15 +37,24 @@ function getBookByIsbn($conn, $isbn) {
 
 // Update insertIntoOrder to take customer_id
 function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method) {
+    // Prepare the SQL statement to prevent SQL injection
     $query = "INSERT INTO orders (customerid, total_price, order_date, name, address, contact, payment_method) 
-              VALUES ('$customerid', '$total_price', '$order_date', '$name', '$address', '$contact', '$payment_method')";
-    $result = mysqli_query($conn, $query);
-    if (!$result) {
-        error_log("Insert orders failed: " . mysqli_error($conn));
+              VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+    // Prepare the statement
+    $stmt = mysqli_prepare($conn, $query);
+
+    // Bind the parameters
+    mysqli_stmt_bind_param($stmt, "idssss", $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method);
+
+    // Execute the statement
+    if (!mysqli_stmt_execute($stmt)) {
+        error_log("Insert orders failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Failed to insert order.");
     }
-    return mysqli_insert_id($conn); // Return the order_id
+
+    // Close the statement
+    mysqli_stmt_close($stmt);
 }
 
 // Function to insert order items
