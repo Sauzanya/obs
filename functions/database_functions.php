@@ -37,6 +37,11 @@ function getBookByIsbn($conn, $isbn) {
 
 // Update insertIntoOrder to take customer_id
 function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method) {
+    // Ensure order_date is in correct format
+    if (!$order_date) {
+        $order_date = date('Y-m-d'); // Default to current date if not provided
+    }
+
     // Prepare the SQL statement to prevent SQL injection
     $query = "INSERT INTO orders (customerid, total_price, order_date, name, address, contact, payment_method) 
               VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -44,8 +49,8 @@ function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $
     // Prepare the statement
     $stmt = mysqli_prepare($conn, $query);
 
-    // Bind the parameters
-    mysqli_stmt_bind_param($stmt, "idssss", $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method);
+    // Bind the parameters (Ensure data types match)
+    mysqli_stmt_bind_param($stmt, "idsssss", $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method);
 
     // Execute the statement
     if (!mysqli_stmt_execute($stmt)) {
@@ -56,6 +61,7 @@ function insertIntoOrder($conn, $customerid, $total_price, $order_date, $name, $
     // Close the statement
     mysqli_stmt_close($stmt);
 }
+
 
 // Function to insert order items
 function insertOrderItems($conn, $order_id, $isbn, $price, $quantity) {
