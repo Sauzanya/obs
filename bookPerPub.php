@@ -14,16 +14,20 @@ if (isset($_GET['publisherid']) && is_numeric($_GET['publisherid'])) {
 $conn = db_connect();
 $publisherName = getPublisherName($conn, $publisherid);  // Fetch publisher name based on publisherid
 
+// Debugging output
+echo "Publisher ID: " . $publisherid; // Debugging line
+echo "Publisher Name: " . $publisherName; // Debugging line
+
 // SQL query to fetch books by publisherid
 $query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$publisherid'";
 $result = mysqli_query($conn, $query);
 if (!$result) {
-    echo "Can't retrieve data: " . mysqli_error($conn);
+    echo "Error executing query: " . mysqli_error($conn);
     exit;
 }
 
 if (mysqli_num_rows($result) == 0) {
-    echo "No books available for this publisher! Please check back later.";
+    echo "No books available for this publisher!";
     exit;
 }
 
