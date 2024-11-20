@@ -1,7 +1,7 @@
 <?php
 session_start();
 // Include the database functions
-include_once 'database_functions.php';  // Make sure this path is correct
+include_once 'functions/database_functions.php';  // Make sure this path is correct
 
 // Your purchase logic here
 $conn = db_connect();  // Now this function should work
