@@ -85,13 +85,13 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 --
 -- Table structure for table `customers`
 --
-
 CREATE TABLE `customers` (
-  `id` int (100) AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(60) COLLATE latin1_general_ci NOT NULL,
-  `address` varchar(80) COLLATE latin1_general_ci NOT NULL,
-  `contact` varchar(20) COLLATE latin1_general_ci  NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+  `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(60) NOT NULL,
+  `address` varchar(80) NOT NULL,
+  `contact` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 --
 -- Dumping data for table `customers`
@@ -144,17 +144,16 @@ ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 -- Table structure for table `order_items`
 --
 
-CREATE TABLE order_items (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  order_id INT UNSIGNED NOT NULL,
-  book_isbn VARCHAR(20) NOT NULL,
-  book_price DECIMAL(10, 2) NOT NULL,
-  quantity INT NOT NULL,
-  FOREIGN KEY (order_id) REFERENCES orders(orderid),
-  FOREIGN KEY (book_isbn) REFERENCES books(book_isbn)
-);
+CREATE TABLE `order_items` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT UNSIGNED NOT NULL,
+  `book_isbn` VARCHAR(20) NOT NULL,
+  `book_price` DECIMAL(10, 2) NOT NULL,
+  `quantity` INT NOT NULL,
+  FOREIGN KEY (`order_id`) REFERENCES `orders` (`orderid`),
+  FOREIGN KEY (`book_isbn`) REFERENCES `books` (`book_isbn`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
- ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 --
 -- Dumping data for table `order_items`

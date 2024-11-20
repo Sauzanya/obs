@@ -93,7 +93,7 @@ function setCustomerId($name, $address, $contact) {
     return mysqli_insert_id($conn); // Return the customer ID
 }
 
-function getPubName($conn, $publisherid) {
+function getPublisherName($conn, $publisherid) {
     $query = "SELECT publisher_name FROM publishers WHERE publisherid = '$publisherid'";
     $result = mysqli_query($conn, $query);
     if (!$result) {
