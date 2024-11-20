@@ -6,7 +6,6 @@ include_once 'functions/database_functions.php';  // Make sure this path is corr
 // Your purchase logic here
 $conn = db_connect();  // Now this function should work
 
-
 // Server-Side Form Handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     // Validate the input fields
@@ -125,15 +124,15 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                             <div class="form-group mb-3">
                                 <label for="contact" class="control-label">Contact Number</label>
                                 <input 
-        type="text" 
-        name="contact" 
-        id="contact" 
-        class="form-control rounded-0" 
-        required
-        pattern="^\d{10}$" 
-        title="Please enter a valid 10-digit contact number."
-        placeholder="Enter 10-digit number"
-    >
+                                    type="text" 
+                                    name="contact" 
+                                    id="contact" 
+                                    class="form-control rounded-0" 
+                                    required
+                                    pattern="^\d{10}$" 
+                                    title="Please enter a valid 10-digit contact number."
+                                    placeholder="Enter 10-digit number"
+                                >
                             </div>
                             <!-- Address -->
                             <div class="form-group mb-3">
@@ -148,6 +147,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                                     <option value="khalti">Khalti</option>
                                 </select>
                             </div>
+                            <!-- Message for Khalti -->
+                            <div id="paymentMessage"></div>
                             <button id="purchaseBtn" class="btn btn-primary" type="submit" name="submit">Purchase</button>
                         </form>
                     </div>
@@ -155,6 +156,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
         </div>
     </div>
+
 <?php
 } else {
     // If cart is empty, display a warning message
@@ -181,4 +183,19 @@ function validateForm() {
     }
     return true;
 }
+
+// Detect the payment method change and disable the button if "Khalti" is selected
+document.getElementById("payment").addEventListener("change", function() {
+    var paymentMethod = this.value;
+    var purchaseBtn = document.getElementById("purchaseBtn");
+    var messageDiv = document.getElementById("paymentMessage");
+
+    if (paymentMethod === "khalti") {
+        purchaseBtn.disabled = true;  // Disable the purchase button
+        messageDiv.innerHTML = "<p class='text-danger'>Khalti payment option is not available at the moment.</p>"; // Show message
+    } else {
+        purchaseBtn.disabled = false; // Enable the purchase button
+        messageDiv.innerHTML = "";  // Clear any previous message
+    }
+});
 </script>
