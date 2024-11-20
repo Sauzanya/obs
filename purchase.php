@@ -122,7 +122,8 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
 
         // Insert the order
         $customer_id = getOrInsertCustomerId($name, $address, $contact);
-        $order_id = insertOrder($customer_id, $name, $address, $contact, $total_price, $payment);
+        insertIntoOrder($conn, $customer_id, $total_price, $order_date, $name, $address, $contact, $payment_method);
+
 
         // Insert order items
         foreach ($_SESSION['cart'] as $isbn => $qty) {
