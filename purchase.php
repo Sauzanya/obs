@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     // Set a success message and redirect
     $_SESSION['message'] = "Order placed successfully! We will reach out to you soon.";
-    header("Location: index.php");  // Redirect to index or any other page
+    header("Location: purchase.php");  // Redirect back to the same page to show the message
     exit;  // Prevent further execution after the redirect
 }
 
@@ -53,7 +53,7 @@ require_once "./template/header.php";  // Now, you can safely include your heade
 
 // Display any session messages after header has been sent
 if (isset($_SESSION['message'])) {
-    echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
+    echo '<div class="alert alert-success">' . $_SESSION['message'] . '</div>';
     unset($_SESSION['message']);  // Clear the message after displaying it
 }
 
