@@ -14,12 +14,12 @@ foreach ($_POST as $key => $value) {
     }
 }
 
-if ($_SESSION['err'] == 0) {
-    header("Location: purchase.php");
-    exit;
-} else {
-    unset($_SESSION['err']);
-}
+// if ($_SESSION['err'] == 0) {
+//     header("Location: purchase.php");
+//     exit;
+// } else {
+//     unset($_SESSION['err']);
+// }
 
 require_once "./functions/database_functions.php";
 $title = "Purchase";
