@@ -22,10 +22,9 @@ if ($_SESSION['err'] == 0) {
 }
 
 require_once "./functions/database_functions.php";
-// print out header here
 $title = "Purchase";
 require "./template/header.php";
-// connect database
+
 ?>
 <h4 class="fw-bolder text-center">Payment</h4>
 <center>
@@ -77,109 +76,73 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <form id="purchaseForm" method="post" action="index.php" class="form-horizontal">
+                    <form id="purchaseForm" method="post" action="purchase.php" class="form-horizontal">
                         <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
                         <p class="text-danger">All fields have to be filled</p>
                         <?php } ?>
-                       
-<div class="form-group mb-3">
-    <label for="name" class="control-label">Name</label>
-    <input
-        type="text"
-        name="name"
-        id="name"
-        class="form-control rounded-0"
-        pattern="[A-Za-z\s]+"
-        title="Name should only contain letters and spaces."
-        required
-    />
-</div>
 
-<!-- Contact -->
-<div class="form-group mb-3">
-    <label for="contact" class="control-label">Contact Number</label>
-    <input
-        type="text"
-        name="contact"
-        id="contact"
-        class="form-control rounded-0"
-        pattern="^\d{10}$"
-        title="Contact number must be exactly 10 digits."
-        required
-    />
-</div>
-
-<!-- Address -->
-<div class="form-group mb-3">
-    <label for="address" class="control-label">Address</label>
-    <textarea
-        name="address"
-        id="address"
-        class="form-control rounded-0"
-        rows="3"
-        minlength="10"
-        maxlength="255"
-        title="Address must be between 10 and 255 characters."
-        required
-    ></textarea>
-</div>
-
-
+                        <!-- Name -->
+                        <div class="form-group mb-3">
+                            <label for="name" class="control-label">Name</label>
+                            <input type="text" name="name" id="name" class="form-control rounded-0" required>
+                        </div>
+                        <!-- Contact -->
+                        <div class="form-group mb-3">
+                            <label for="contact" class="control-label">Contact Number</label>
+                            <input type="text" name="contact" id="contact" class="form-control rounded-0" required>
+                        </div>
+                        <!-- Address -->
+                        <div class="form-group mb-3">
+                            <label for="address" class="control-label">Address</label>
+                            <textarea name="address" id="address" class="form-control rounded-0" rows="3" required></textarea>
+                        </div>
                         <!-- Payment Method -->
                         <div class="form-group mb-3">
                             <label for="payment" class="control-label">Payment Method</label>
-                            <select name="payment" class="form-control rounded-0" id="payment" onchange="checkPayment()">
+                            <select name="payment" class="form-control rounded-0" id="payment">
                                 <option value="cod">Cash on Delivery (COD)</option>
                                 <option value="khalti">Khalti</option>
                             </select>
                         </div>
-
-                        <div id="paymentMessage" class="alert alert-danger" style="display: none;">
-                            This payment method is not currently available. Please choose Cash on Delivery.
-                        </div>
-
-                        <button id="purchaseBtn" class="btn btn-primary" type="button" onclick="handlePurchase()">Purchase</button>
+                        <button id="purchaseBtn" class="btn btn-primary" type="submit" name="submit">Purchase</button>
                     </form>
-                    <p class="fw-light fst-italic"><small class="text-muted">Please press Purchase to confirm your purchase, or Continue Shopping to add or remove items.</small></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+        $name = $_POST['name'];
+        $address = $_POST['address'];
+        $contact = $_POST['contact'];
+        $payment = $_POST['payment'];
+        $total_price = $_SESSION['total_price'];
+        $customer_id = 1; // Replace with actual customer ID if available
+
+        // Insert the order
+        $customer_id = getOrInsertCustomerId($name, $address, $contact);
+        $order_id = insertOrder($customer_id, $name, $address, $contact, $total_price, $payment);
+
+        // Insert order items
+        foreach ($_SESSION['cart'] as $isbn => $qty) {
+            $book = getBookByIsbn($conn, $isbn);
+            if ($book) {
+                insertOrderItem($order_id, $isbn, $book['book_price'], $qty);
+            }
+        }
+
+        // Clear the cart and redirect
+        unset($_SESSION['cart']);
+        unset($_SESSION['total_price']);
+        unset($_SESSION['total_items']);
+        $_SESSION['message'] = "Order placed successfully!";
+        header("Location: index.php");
+        exit;
+    }
 } else {
     echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
 }
 if (isset($conn)) { mysqli_close($conn); }
 require_once "./template/footer.php";
 ?>
-
-<script>
-function checkPayment() {
-    var paymentMethod = document.getElementById("payment").value;
-    var purchaseBtn = document.getElementById("purchaseBtn");
-    var paymentMessage = document.getElementById("paymentMessage");
-
-    if (paymentMethod === "cod") {
-        purchaseBtn.disabled = false;
-        paymentMessage.style.display = "none";
-    } else if (paymentMethod === "khalti") {
-        purchaseBtn.disabled = true;
-        paymentMessage.style.display = "block";
-    }
-}
-
-window.onload = checkPayment;
-
-function handlePurchase() {
-    var purchaseBtn = document.getElementById("purchaseBtn");
-    var paymentMethod = document.getElementById("payment").value;
-
-    if (paymentMethod === "cod") {
-        alert("Your order has been successfully placed. We'll reach out to confirm your order. Thank you for choosing Cash on Delivery!");
-        document.getElementById("purchaseForm").submit();
-    } else {
-        alert("This payment method is not available. Please choose Cash on Delivery.");
-    }
-}
-</script>
