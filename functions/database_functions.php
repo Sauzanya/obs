@@ -168,7 +168,7 @@ function getbookprice($isbn) {
 
 // Get publisher name by publisherid
 function getPublisherName($conn, $publisherid) {
-    $query = "SELECT publisher_name FROM publishers WHERE publisherid = ?";
+    $query = "SELECT publisher_name FROM publisher WHERE publisherid = ?";
     $stmt = mysqli_prepare($conn, $query);
     if (!$stmt) {
         error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
