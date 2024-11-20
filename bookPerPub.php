@@ -2,8 +2,8 @@
 	session_start();
 	require_once "./functions/database_functions.php";
 	// get pubid
-	if(isset($_GET['pubid'])){
-		$pubid = $_GET['pubid'];
+	if(isset($_GET['publisherid'])){
+		$pubid = $_GET['publisherid'];
 	} else {
 		echo "Wrong query! Check again!";
 		exit;
@@ -13,7 +13,7 @@
 	$conn = db_connect();
 	$publisherName = getPublisherName($conn, $pubid);
 
-	$query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$pubid'";
+	$query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$publisherid'";
 	$result = mysqli_query($conn, $query);
 	if(!$result){
 		echo "Can't retrieve data " . mysqli_error($conn);
