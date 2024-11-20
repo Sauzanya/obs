@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION['message'])) {
     echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
-    unset($_SESSION['message']);  
+    unset($_SESSION['message']);
 }
 
 $_SESSION['err'] = 1;
@@ -14,13 +14,6 @@ foreach ($_POST as $key => $value) {
     }
 }
 
-// if ($_SESSION['err'] == 0) {
-//     header("Location: purchase.php");
-//     exit;
-// } else {
-//     unset($_SESSION['err']);
-// }
-
 require_once "./functions/database_functions.php";
 $title = "Purchase";
 require "./template/header.php";
@@ -30,6 +23,7 @@ require "./template/header.php";
 <center>
     <hr class="bg-warning" style="width:5em;height:3px;opacity:1">
 </center>
+
 <?php
 if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
 ?>
@@ -68,6 +62,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
         </div>
     </div>
 </div>
+
 <div class="row justify-content-center">
     <div class="col-lg-5 col-md-8 col-sm-10 col-xs-12">
         <div class="card rounded-0 shadow">
@@ -76,9 +71,9 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             </div>
             <div class="card-body">
                 <div class="container-fluid">
-                    <form id="purchaseForm" method="post" action="purchase.php" class="form-horizontal">
-                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 1) { ?>
-                        <p class="text-danger">All fields have to be filled</p>
+                    <form id="purchaseForm" method="post" action="purchase.php" class="form-horizontal" onsubmit="return validateForm()">
+                        <?php if (isset($_SESSION['err']) && $_SESSION['err'] == 0) { ?>
+                        <p class="text-danger">All fields are required. Please fill in all fields!</p>
                         <?php } ?>
 
                         <!-- Name -->
@@ -99,7 +94,7 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
                         <!-- Payment Method -->
                         <div class="form-group mb-3">
                             <label for="payment" class="control-label">Payment Method</label>
-                            <select name="payment" class="form-control rounded-0" id="payment">
+                            <select name="payment" class="form-control rounded-0" id="payment" required>
                                 <option value="cod">Cash on Delivery (COD)</option>
                                 <option value="khalti">Khalti</option>
                             </select>
@@ -111,19 +106,29 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
         </div>
     </div>
 </div>
+
 <?php
+    // Server-Side Form Handling
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+        // Validate the input fields
+        if (empty($_POST['name']) || empty($_POST['address']) || empty($_POST['contact'])) {
+            $_SESSION['err'] = 0;
+            header("Location: purchase.php");
+            exit;
+        }
+
         $name = $_POST['name'];
         $address = $_POST['address'];
         $contact = $_POST['contact'];
         $payment = $_POST['payment'];
         $total_price = $_SESSION['total_price'];
+        $order_date = date('Y-m-d H:i:s'); // Current date and time
         $customer_id = 1; // Replace with actual customer ID if available
 
         // Insert the order
+        $conn = db_connect();
         $customer_id = getOrInsertCustomerId($name, $address, $contact);
-        insertIntoOrder($conn, $customer_id, $total_price, $order_date, $name, $address, $contact, $payment_method);
-
+        $order_id = insertIntoOrder($conn, $customer_id, $total_price, $order_date, $name, $address, $contact, $payment);
 
         // Insert order items
         foreach ($_SESSION['cart'] as $isbn => $qty) {
@@ -133,17 +138,37 @@ if (isset($_SESSION['cart']) && (array_count_values($_SESSION['cart']))) {
             }
         }
 
-        // Clear the cart and redirect
+        // Clear the cart after placing the order
         unset($_SESSION['cart']);
         unset($_SESSION['total_price']);
         unset($_SESSION['total_items']);
-        $_SESSION['message'] = "Order placed successfully!";
+
+        // Set a success message and redirect
+        $_SESSION['message'] = "Order placed successfully! We will reach out to you soon.";
         header("Location: index.php");
         exit;
     }
 } else {
-    echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
+    // If cart is empty, display a warning message
+    echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books to it!</p>";
 }
+
 if (isset($conn)) { mysqli_close($conn); }
+
 require_once "./template/footer.php";
 ?>
+
+<script>
+    // Client-Side Form Validation
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var contact = document.getElementById("contact").value;
+        var address = document.getElementById("address").value;
+
+        if (name == "" || contact == "" || address == "") {
+            alert("All fields are required. Please fill them out.");
+            return false;
+        }
+        return true;
+    }
+</script>
