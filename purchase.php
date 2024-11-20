@@ -1,5 +1,11 @@
 <?php
 session_start();
+// Include the database functions
+include_once 'database_functions.php';  // Make sure this path is correct
+
+// Your purchase logic here
+$conn = db_connect();  // Now this function should work
+
 
 // Server-Side Form Handling
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
