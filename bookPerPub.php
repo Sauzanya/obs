@@ -2,27 +2,27 @@
 session_start();
 require_once "./functions/database_functions.php";
 
-// Get pubid from the URL parameter
-if(isset($_GET['publisherid'])){
-    $publisherid = $_GET['publisherid'];  // Changed from $pubid to $publisherid for consistency
+// Validate the publisherid from URL
+if (isset($_GET['publisherid']) && is_numeric($_GET['publisherid'])) {
+    $publisherid = $_GET['publisherid'];  // Use the publisherid from the URL
 } else {
     echo "Wrong query! Check again!";
-    exit;
+    exit;  // Stop execution if publisherid is not provided or is invalid
 }
 
 // Connect to the database
 $conn = db_connect();
-$publisherName = getPublisherName($conn, $publisherid);  // Corrected variable name
+$publisherName = getPublisherName($conn, $publisherid);  // Fetch publisher name based on publisherid
 
 // SQL query to fetch books by publisherid
 $query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$publisherid'";
 $result = mysqli_query($conn, $query);
-if(!$result){
-    echo "Can't retrieve data " . mysqli_error($conn);
+if (!$result) {
+    echo "Can't retrieve data: " . mysqli_error($conn);
     exit;
 }
 
-if(mysqli_num_rows($result) == 0){
+if (mysqli_num_rows($result) == 0) {
     echo "No books available for this publisher! Please check back later.";
     exit;
 }
@@ -42,13 +42,13 @@ require "./template/header.php";
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="publisher_list.php" class="text-decoration-none text-muted fw-light">Publishers</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><?php echo $publisherName; ?></li> <!-- Corrected to $publisherName -->
+        <li class="breadcrumb-item active" aria-current="page"><?php echo $publisherName; ?></li>
     </ol>
 </nav>
 
 <div id="pubBooks">
 <?php 
-    while($row = mysqli_fetch_assoc($result)) { 
+    while ($row = mysqli_fetch_assoc($result)) { 
 ?>
     <div class="row book-item mb-2">
         <div class="col-md-3">
@@ -69,7 +69,7 @@ require "./template/header.php";
 </div>
 
 <?php
-if(isset($conn)) { 
+if (isset($conn)) { 
     mysqli_close($conn); 
 }
 require "./template/footer.php";
