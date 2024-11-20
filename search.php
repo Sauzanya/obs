@@ -55,23 +55,23 @@ class BinarySearchTree {
         }
     }
 
-    public function search($title) {
-        return $this->searchNode($this->root, $title);
-    }
+    // public function search($title) {
+    //     return $this->searchNode($this->root, $title);
+    // }
 
-    private function searchNode($node, $title) {
-        if ($node === null) {
-            return null;
-        }
-        if ($title === $node->title) {
-            return $node;
-        }
-        if (strcmp($title, $node->title) < 0) {
-            return $this->searchNode($node->left, $title);
-        } else {
-            return $this->searchNode($node->right, $title);
-        }
-    }
+    // private function searchNode($node, $title) {
+    //     if ($node === null) {
+    //         return null;
+    //     }
+    //     if ($title === $node->title) {
+    //         return $node;
+    //     }
+    //     if (strcmp($title, $node->title) < 0) {
+    //         return $this->searchNode($node->left, $title);
+    //     } else {
+    //         return $this->searchNode($node->right, $title);
+    //     }
+    // }
 
     public function inOrderTraversal($node, &$result) {
         if ($node !== null) {
@@ -108,6 +108,10 @@ $bst->inOrderTraversal($bst->root, $allBooks);
 
 // Filter books based on the search term
 $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
+    if (preg_match('/^[a-zA-Z]$/', $searchTerm)) {
+        // Check if the title starts with the search term (case-insensitive)
+        return strcasecmp($book->title[0], $searchTerm) === 0;
+    }
     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
 });
 
