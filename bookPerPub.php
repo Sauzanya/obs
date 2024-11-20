@@ -11,7 +11,7 @@
 
 	// connect database
 	$conn = db_connect();
-	$pubName = getPubName($conn, $pubid);
+	$publisherName = getPublisherName($conn, $pubid);
 
 	$query = "SELECT book_isbn, book_title, book_image, book_descr FROM books WHERE publisherid = '$pubid'";
 	$result = mysqli_query($conn, $query);
