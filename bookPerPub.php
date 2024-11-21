@@ -3,8 +3,8 @@ session_start();
 require_once "./functions/database_functions.php";
 
 // Validate the publisherid from URL
-if (isset($_GET['publisherid']) && is_numeric($_GET['publisherid'])) {
-    $publisherid = $_GET['publisherid'];  // Use the publisherid from the URL
+if (isset($_GET['pubid']) && is_numeric($_GET['pubid'])) {
+    $publisherid = $_GET['pubid'];  // Use the publisherid from the URL
 } else {
     echo "Wrong query! Check again!";
     exit;  // Stop execution if publisherid is not provided or is invalid
