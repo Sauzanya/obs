@@ -116,8 +116,7 @@ require "./template/header.php";
                                             <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
                                         </tr>
                                         <?php
-                                    } // end of if
-                                    
+                                    }
                                 ?>
                         <div class="card rounded-0 shadow mb-3">
                             <div class="card-body">
@@ -135,13 +134,13 @@ require "./template/header.php";
                                             $book = getBookByIsbn($conn, $isbn); 
                                             if ($book) { 
                                         ?>
-                                            <tr>
-                                                <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
-                                                <td><?php echo "Rs." . $book['book_price']; ?></td>
-                                                <td><?php echo $qty; ?></td>
-                                                <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
-                                            </tr>
-                                        <?php } // end of if ?>
+                                        <tr>
+                                            <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
+                                            <td><?php echo "Rs." . $book['book_price']; ?></td>
+                                            <td><?php echo $qty; ?></td>
+                                            <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
+                                        </tr>
+                                        <?php } ?>
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>&nbsp;</th>
@@ -150,7 +149,7 @@ require "./template/header.php";
                                             </tr>
                                         </table>
                                     </div>
-                                         <?php } // end of foreach?>
+                                <?php } ?>
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
@@ -252,14 +251,14 @@ require "./template/header.php";
                         echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books to it!</p>";
                     }
 
-        if (isset($conn)) {
-            mysqli_close($conn);  // Close database connection if open
-            echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
-        }
+if (isset($conn)) {
+    mysqli_close($conn);  // Close database connection if open
+    echo "<p class=\"text-warning\">Your cart is empty! Please make sure you add some books in it!</p>";
+}
 
-        require_once "./template/footer.php";  // Include the footer as well
-        if (isset($conn)) { mysqli_close($conn); }
-        require_once "./template/footer.php";
+require_once "./template/footer.php";  // Include the footer as well
+if (isset($conn)) { mysqli_close($conn); }
+require_once "./template/footer.php";
 ?>
 
 <script>

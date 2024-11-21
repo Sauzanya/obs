@@ -235,9 +235,51 @@ function getBooksAndPublishers($conn) {
         ORDER BY 
             books.book_isbn DESC
     ";
-    $result = mysqli_query($conn, $query);
 
+
+    $result = mysqli_query($conn, $query);
+    // debug($query);
     // debug($result, 1);
+
+
+    if (!$result) {
+        error_log("Can't retrieve books and publishers: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Failed to retrieve books and publishers.");
+    }
+
+    return $result;
+    // $books = [];
+    // while ($row = mysqli_fetch_assoc($result)) {
+    //     $books[] = $row; // Fetch all books with publisher names into an array
+    // }
+    // return $books; // Return the array of books with publisher names
+}
+function getOrderList($conn)
+{
+    $query = "
+        SELECT
+            order.book_isbn, 
+            order.book_title, 
+            order.book_author, 
+            order.book_price, 
+            order.publisher_name  
+            ord.name
+        FROM 
+            order
+        JOIN 
+            publisher 
+        ON 
+            books.publisherid = publisher.publisherid 
+        ORDER BY 
+            books.book_isbn DESC
+    ";
+
+
+    $result = mysqli_query($conn, $query);
+    debug($query, 1);
+    // debug($result, 1);
+
+
     if (!$result) {
         error_log("Can't retrieve books and publishers: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
         exit("Failed to retrieve books and publishers.");
