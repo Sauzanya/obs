@@ -20,6 +20,13 @@ $row = select4LatestBook($conn);
 
 <!-- Main Content: Place Search Form at the Top -->
 <div class="container">
+<?php
+if (isset($_SESSION['message'])) {
+        echo '<div class="alert alert-info">' . $_SESSION['message'] . '</div>';
+        unset($_SESSION['message']);  
+    }
+
+    ?>
     <!-- Search Form Section (Placed at the Top) -->
     <div class="search-container text-center my-4">
         <form action="search.php" method="get">
