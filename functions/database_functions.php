@@ -1,5 +1,5 @@
 <?php
-// Database connection function
+// include_once 'helper_function.php';
 function db_connect() {
     $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
     if (!$conn) {
@@ -213,5 +213,41 @@ function getAll($conn) {
     }
     mysqli_stmt_close($stmt);
     return $books;
+}
+
+
+function getBooksAndPublishers($conn) {
+    $query = "
+        SELECT 
+            books.book_isbn, 
+            books.book_title, 
+            books.book_author, 
+            books.book_price, 
+            books.book_descr, 
+            books.book_image, 
+            publisher.publisher_name  
+        FROM 
+            books 
+        JOIN 
+            publisher 
+        ON 
+            books.publisherid = publisher.publisherid 
+        ORDER BY 
+            books.book_isbn DESC
+    ";
+    $result = mysqli_query($conn, $query);
+
+    // debug($result, 1);
+    if (!$result) {
+        error_log("Can't retrieve books and publishers: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Failed to retrieve books and publishers.");
+    }
+
+    return $result;
+    // $books = [];
+    // while ($row = mysqli_fetch_assoc($result)) {
+    //     $books[] = $row; // Fetch all books with publisher names into an array
+    // }
+    // return $books; // Return the array of books with publisher names
 }
 ?>

@@ -31,20 +31,10 @@ $offset = ($page - 1) * $limit;
 $allBooks = [];
 $bst->inOrderTraversal($bst->root, $allBooks);
 
-// // Filter books based on the search term
-// $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
-//     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
-// });
-
-
-// new code Filter books based on the search term
+// Filter books based on the search term
 $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
-    if (preg_match('/^[a-zA-Z]$/', $searchTerm)) {
-        // Check if the title starts with the search term (case-insensitive)
-        return strcasecmp($book->title[0], $searchTerm) === 0;
-    }
     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
-})
+});
 
 // Get the total number of results
 $totalResults = count($filteredBooks);
