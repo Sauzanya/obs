@@ -10,15 +10,18 @@ require_once "./search_ALG/BST_admin.php";
 $conn = db_connect();
 
 // Fetch all books using the updated getAll() function
-$result = getOrderList($conn);
+$results = getOrderList($conn);
+
+
+// debug($result,1);
 
 // Pagination
-$booksPerPage = 5;
-$totalBooks = count($searchResults);
-$totalPages = ceil($totalBooks / $booksPerPage);
-$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$startIndex = ($currentPage - 1) * $booksPerPage;
-$paginatedResults = array_slice($searchResults, $startIndex, $booksPerPage);
+// $booksPerPage = 5;
+// $totalBooks = count($searchResults);
+// $totalPages = ceil($totalBooks / $booksPerPage);
+// $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+// $startIndex = ($currentPage - 1) * $booksPerPage;
+// $paginatedResults = array_slice($searchResults, $startIndex, $booksPerPage);
 
 ?>
 
@@ -57,33 +60,30 @@ endif;
                     <tr>
                         <th>ISBN</th>
                         <th>Title</th>
-                        <th>Author</th>
                         <th>Price</th>
-                        <th>Action</th>
                         <th>name</th>
-                        <th>address</th>
                         <th>contact</th>
-
+                        <th>payment_method</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($paginatedResults as $row): 
+                    <?php foreach ($results as $row): 
                         // debug($row, 1);
+
+
+                    
                         ?>
                         <tr>
-                            <td class="px-2 py-1 align-middle">
-                                <a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank">
-                                    <?php echo $row['book_isbn']; ?>
-                                </a>
-                            </td>
+                            <td class="px-2 py-1 align-middle"><?php echo $row['book_id']; ?></td>
                             <td class="px-2 py-1 align-middle"><?php echo $row['book_title']; ?></td>
-                            <td class="px-2 py-1 align-middle"><?php echo $row['book_author']; ?></td>
-                            <td class="px-2 py-1 align-middle">
-                                <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="<?php echo $row['book_title']; ?>" width="100" height="auto">
-                            </td>
+                            <td class="px-2 py-1 align-middle"><?php echo $row['total_price']; ?></td>
+                            <td class="px-2 py-1 align-middle"><?php echo $row['name']; ?></td>
+                           
                             
-                            <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
-                            <td class="px-2 py-1 align-middle"><?php echo $row['publisher_name']; ?></td>
+                            <td class="px-2 py-1 align-middle"><?php echo $row['contact']; ?></td>
+                            <td class="px-2 py-1 align-middle"><?php echo $row['payment_method']; ?></td>
+                           
                             <td class="px-2 py-1 align-middle text-center">
                                 <div class="btn-group btn-group-sm">
                                     <a href="admin_edit.php?bookisbn=<?php echo $row['book_isbn']; ?>" class="btn btn-sm rounded-0 btn-primary" title="Edit">
@@ -102,15 +102,15 @@ endif;
             <div class="pagination">
             <?php
                 // Display pagination links
-                if($totalPages > 1){
-                    for ($i = 1; $i <= $totalPages; $i++) {
-                        if ($i == $currentPage) {
-                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\" class=\"active\">{$i}</a>";
-                        } else {
-                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\">{$i}</a>";
-                        }
-                    }
-                }
+                // if($totalPages > 1){
+                //     for ($i = 1; $i <= $totalPages; $i++) {
+                //         if ($i == $currentPage) {
+                //             echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\" class=\"active\">{$i}</a>";
+                //         } else {
+                //             echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\">{$i}</a>";
+                //         }
+                //     }
+                // }
 
 
 

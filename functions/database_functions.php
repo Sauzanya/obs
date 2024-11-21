@@ -258,38 +258,40 @@ function getOrderList($conn)
 {
     $query = "
         SELECT
-            order.book_isbn, 
-            order.book_title, 
-            order.book_author, 
-            order.book_price, 
-            order.publisher_name  
-            ord.name
+            orders.book_id, 
+            orders.total_price, 
+            orders.name,
+            orders.contact,
+            orders.payment_method,
+            books.book_title
+        
         FROM 
-            order
+            orders
         JOIN 
-            publisher 
+            books
         ON 
-            books.publisherid = publisher.publisherid 
+            books.book_isbn = orders.book_id 
+
         ORDER BY 
             books.book_isbn DESC
     ";
 
 
     $result = mysqli_query($conn, $query);
-    debug($query, 1);
+    // debug($query);
     // debug($result, 1);
 
 
-    if (!$result) {
-        error_log("Can't retrieve books and publishers: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to retrieve books and publishers.");
-    }
-
-    return $result;
-    // $books = [];
-    // while ($row = mysqli_fetch_assoc($result)) {
-    //     $books[] = $row; // Fetch all books with publisher names into an array
+    // if (!$result) {
+    //     error_log("Can't retrieve books and publishers: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+    //     exit("Failed to retrieve books and publishers.");
     // }
-    // return $books; // Return the array of books with publisher names
+
+    // return $result;
+    $orders = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $orders[] = $row; // Fetch all books with publisher names into an array
+    }
+    return $orders; // Return the array of books with publisher names
 }
 ?>

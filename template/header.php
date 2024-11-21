@@ -40,6 +40,7 @@ session_start();
             <?php if(isset($_SESSION['admin']) && $_SESSION['admin'] == true): ?>
                 <li class="nav-item"><a class="nav-link" href="admin_book.php"><span class="fa fa-th-list"></span> Book List</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_add.php"><span class="far fa-plus-square"></span> Add New Book</a></li>
+                <li class="nav-item"><a class="nav-link" href="admin_orderlist.php"><span class="far fa-plus-square"></span> Order List</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin_signout.php"><span class="fa fa-sign-out-alt"></span> Logout</a></li>
             <?php else: ?>
               <li class="nav-item"><a class="nav-link" href="publisher_list.php"><span class="fa fa-paperclip"></span> Publisher</a></li>
