@@ -1,86 +1,10 @@
 <?php
 require_once "./template/header.php";
 require_once "./functions/database_functions.php";
+require_once "./search_ALG/BinarySearchTree_home.php";
 
 // Connect to the database
 $conn = db_connect();
-
-class TreeNode {
-    public $title;
-    public $author;
-    public $isbn;
-    public $image;
-    public $left;
-    public $right;
-
-    public function __construct($title, $author, $isbn, $image) {
-        $this->title = $title;
-        $this->author = $author;
-        $this->isbn = $isbn;
-        $this->image = $image;
-        $this->left = null;
-        $this->right = null;
-    }
-}
-
-class BinarySearchTree {
-    public $root;
-
-    public function __construct() {
-        $this->root = null;
-    }
-
-    public function insert($title, $author, $isbn, $image) {
-        $newNode = new TreeNode($title, $author, $isbn, $image);
-        if ($this->root === null) {
-            $this->root = $newNode;
-        } else {
-            $this->insertNode($this->root, $newNode);
-        }
-    }
-
-    private function insertNode($node, $newNode) {
-        if (strcmp($newNode->title, $node->title) < 0) {
-            if ($node->left === null) {
-                $node->left = $newNode;
-            } else {
-                $this->insertNode($node->left, $newNode);
-            }
-        } else {
-            if ($node->right === null) {
-                $node->right = $newNode;
-            } else {
-                $this->insertNode($node->right, $newNode);
-            }
-        }
-    }
-
-    // public function search($title) {
-    //     return $this->searchNode($this->root, $title);
-    // }
-
-    // private function searchNode($node, $title) {
-    //     if ($node === null) {
-    //         return null;
-    //     }
-    //     if ($title === $node->title) {
-    //         return $node;
-    //     }
-    //     if (strcmp($title, $node->title) < 0) {
-    //         return $this->searchNode($node->left, $title);
-    //     } else {
-    //         return $this->searchNode($node->right, $title);
-    //     }
-    // }
-
-    public function inOrderTraversal($node, &$result) {
-        if ($node !== null) {
-            $this->inOrderTraversal($node->left, $result);
-            $result[] = $node;
-            $this->inOrderTraversal($node->right, $result);
-        }
-    }
-}
 
 // Get the search term from the user
 $searchTerm = $_GET['title'] ?? '';  // Assuming the search term is passed as a query parameter
@@ -91,6 +15,7 @@ $result = $conn->query($sql);
 
 // Build the BST from the fetched data
 $bst = new BinarySearchTree();
+
 if ($result->num_rows > 0) {
     while ($book = $result->fetch_assoc()) {
         $bst->insert($book['book_title'], $book['book_author'], $book['book_isbn'], $book['book_image']);
@@ -106,14 +31,20 @@ $offset = ($page - 1) * $limit;
 $allBooks = [];
 $bst->inOrderTraversal($bst->root, $allBooks);
 
-// Filter books based on the search term
+// // Filter books based on the search term
+// $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
+//     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
+// });
+
+
+// new code Filter books based on the search term
 $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
     if (preg_match('/^[a-zA-Z]$/', $searchTerm)) {
         // Check if the title starts with the search term (case-insensitive)
         return strcasecmp($book->title[0], $searchTerm) === 0;
     }
     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
-});
+})
 
 // Get the total number of results
 $totalResults = count($filteredBooks);

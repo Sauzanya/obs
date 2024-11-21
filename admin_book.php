@@ -4,18 +4,43 @@ require_once "./functions/admin.php";
 $title = "List book";
 require_once "./template/header.php";
 require_once "./functions/database_functions.php";
+require_once "./search_ALG/BST_admin.php";
 
 // Establish database connection
 $conn = db_connect();
 
 // Fetch all books using the updated getAll() function
-$books = getAll($conn);
+$result = getBooksAndPublishers($conn);
+$bst = new BinarySearchTree();
 
 // Check if the result is empty
-if (empty($books)) {
+if ($result->num_rows == 0) {
     echo "Error: No books found or an issue occurred while fetching the book list.";
     exit;  // Exit the script if no books are found
 }
+$books = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $bst->insert($row);
+    $books[] = $row;
+}
+
+$titleQuery = isset($_GET['title']) ? $_GET['title'] : '';
+$authorQuery = isset($_GET['author']) ? $_GET['author'] : '';
+
+if (!empty($titleQuery) || !empty($authorQuery)) {
+    $searchResults = $bst->search($bst->root, $titleQuery, $authorQuery);
+} else {
+    $searchResults = $books;
+}
+
+// Pagination
+$booksPerPage = 5;
+$totalBooks = count($searchResults);
+$totalPages = ceil($totalBooks / $booksPerPage);
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$startIndex = ($currentPage - 1) * $booksPerPage;
+$paginatedResults = array_slice($searchResults, $startIndex, $booksPerPage);
+
 ?>
 
 <h4 class="fw-bolder text-center">Book List</h4>
@@ -35,31 +60,41 @@ endif;
 <div class="card rounded-0">
     <div class="card-body">
         <div class="container-fluid">
+
+            <div class="container">
+                <form class="search-form" method="GET" action="">
+                    <input type="text" name="title" placeholder="Search by title" value="<?php echo isset($_GET['title']) ? $_GET['title'] : ''; ?>">
+                    <input type="text" name="author" placeholder="Search by author" value="<?php echo isset($_GET['author']) ? $_GET['author'] : ''; ?>">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
             <table class="table table-striped table-bordered">
-                <colgroup>
-                    <col width="10%">
+                <!-- <colgroup>
                     <col width="15%">
                     <col width="15%">
                     <col width="10%">
-                    <col width="15%">
                     <col width="10%">
                     <col width="15%">
                     <col width="10%">
-                </colgroup>
+                    <col width="15%">
+                    <col width="10%">
+                </colgroup> -->
                 <thead>
                     <tr>
                         <th>ISBN</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Image</th>
-                        <th>Description</th>
                         <th>Price</th>
                         <th>Publisher</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($books as $row): ?>
+                    <?php foreach ($paginatedResults as $row): 
+                        // debug($row, 1);
+                        ?>
                         <tr>
                             <td class="px-2 py-1 align-middle">
                                 <a href="book.php?bookisbn=<?php echo $row['book_isbn']; ?>" target="_blank">
@@ -71,9 +106,7 @@ endif;
                             <td class="px-2 py-1 align-middle">
                                 <img src="bootstrap/img/<?php echo $row['book_image']; ?>" alt="<?php echo $row['book_title']; ?>" width="100" height="auto">
                             </td>
-                            <td class="px-2 py-1 align-middle">
-                                <p class="text-truncate" style="width:15em"><?php echo $row['book_descr']; ?></p>
-                            </td>
+                            
                             <td class="px-2 py-1 align-middle"><?php echo $row['book_price']; ?></td>
                             <td class="px-2 py-1 align-middle"><?php echo $row['publisher_name']; ?></td>
                             <td class="px-2 py-1 align-middle text-center">
@@ -90,6 +123,28 @@ endif;
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <div class="pagination">
+            <?php
+                // Display pagination links
+                if($totalPages > 1){
+                    for ($i = 1; $i <= $totalPages; $i++) {
+                        if ($i == $currentPage) {
+                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\" class=\"active\">{$i}</a>";
+                        } else {
+                            echo "<a href=\"?title={$titleQuery}&author={$authorQuery}&page={$i}\">{$i}</a>";
+                        }
+                    }
+                }
+
+
+
+       
+    
+                
+            ?>
+        </div>
+
         </div>
     </div>
 </div>
