@@ -7,8 +7,8 @@ require "./template/header.php";
 // Define the exchange rate (if required, else skip this)
 // $exchange_rate = 130; // Example exchange rate (1 USD = 130 NPR)
 
-$_SESSION['total_items'] = 0;
-$_SESSION['total_price'] = 0;
+// $_SESSION['total_items'] = 0;
+// $_SESSION['total_price'] = 0;
 
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 ?>
