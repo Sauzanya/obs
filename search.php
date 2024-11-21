@@ -44,7 +44,7 @@ $filteredBooks = array_filter($allBooks, function($book) use ($searchTerm) {
         return strcasecmp($book->title[0], $searchTerm) === 0;
     }
     return stripos($book->title, $searchTerm) !== false || stripos($book->author, $searchTerm) !== false;
-})
+});
 
 // Get the total number of results
 $totalResults = count($filteredBooks);
