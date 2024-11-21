@@ -13,17 +13,20 @@
     }
 
     // Confirm deletion before proceeding
-    if (isset($_POST['confirm_delete'])) {
+    if (isset($_GET['order_id'])) {
         // Prepare and execute delete query using a prepared statement to prevent SQL injection
-        $query = "DELETE FROM orders WHERE order_id = ?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 's', $order_id);
+        
+        $sql1 = "DELETE FROM `order_items` WHERE `order_id` = '{$order_id}'";
+        $sql2 = "DELETE FROM `orders` WHERE `orderid` = '{$order_id}'";
+        $sql3 = "DELETE FROM `customers` WHERE `customerid` NOT IN (SELECT DISTINCT `customerid` FROM `orders`)";
 
-        $result = mysqli_stmt_execute($stmt);
+        $order_result1 = mysqli_query($conn, $sql1);
+        $order_result2 = mysqli_query($conn, $sql2);
+        $order_result3 = mysqli_query($conn, $sql3);
 
-        if ($result) {
+        if ($order_result3) {
             // Redirect to admin book page with success message
-            $_SESSION['book_success'] = "Order has been successfully deleted.";
+            $_SESSION['order_message'] = "Order has been successfully deleted.";
             header("Location: admin_orderlist.php");
             exit;
         } else {
@@ -32,6 +35,6 @@
             exit;
         }
     }
-
-    mysqli_stmt_close($stmt);
+echo 'test';
+    // mysqli_stmt_close($stmt);
 ?>

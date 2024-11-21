@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Nov 21, 2024 at 08:01 AM
+-- Generation Time: Nov 21, 2024 at 07:16 PM
 -- Server version: 5.7.44
 -- PHP Version: 8.2.8
 
@@ -61,10 +61,6 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `book_descr`, `book_price`, `publisherid`, `created_at`) VALUES
-('123', 'paniko gham', 'Amar Neupane', '', 'mhjgfsk', 256.00, 3, '2024-11-21 04:28:03'),
-('978-99933-527-10', 'Mayur Times', 'Narayan Wagle', 'mayur_times.jpg', 'Mayur Times is a gripping thriller set in the context of investigative journalism, diving into corruption and politics.', 20.00, 2, '2024-11-15 00:00:00'),
-('978-99933-527-11', 'Mad Country', 'Narayan Wagle', 'mad_country.jpg', 'Mad Country explores political turmoil and societal changes in Nepal, weaving personal struggles into larger national narratives.', 20.00, 2, '2024-11-15 00:00:00'),
-('978-99933-527-13', 'Seto Bagh', 'Diamond Shumsher Rana', 'seto_bagh.jpg', 'Seto Bagh narrates the story of the Rana regime in Nepal, focusing on intrigue, romance, and tragedy.', 20.00, 3, '2024-11-15 00:00:00'),
 ('978-99933-527-3', 'Basain', 'Shankar B. Thapa', 'basain.jpg', 'A poignant story of migration, loss, and the emotional struggles faced by people who leave their homes in rural Nepal for better opportunities.', 20.00, 2, '2024-11-15 00:00:00'),
 ('978-99933-527-4', 'Muna Madan', 'Laxmi Prasad Devkota', 'muna_madan.jpg', 'A timeless Nepali classic that portrays the love story of Muna and Madan, and their emotional and cultural journey.', 20.00, 1, '2024-11-15 00:00:00'),
 ('978-99933-527-6', 'Shirishko Phool', 'Parijat', 'shirishko_phool.jpg', 'This is a psychological novel about the struggles and alienation faced by a woman in a patriarchal society in Nepal.', 20.00, 1, '2024-11-15 00:00:00'),
@@ -74,7 +70,6 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 ('978-99933-528-0', 'Data Structures and Algorithms', 'R.K. Gupta', 'data_structures_algorithms.jpg', 'This book provides a comprehensive introduction to data structures and algorithms for BCA students.', 25.00, 6, '2024-11-15 00:00:00'),
 ('978-99933-528-1', 'Computer Networks', 'James Kurose', 'computer_networks.jpg', 'This book is an introduction to computer networks, providing detailed coverage of various networking technologies and protocols.', 30.00, 6, '2024-11-15 00:00:00'),
 ('978-99933-528-2', 'Operating System Concepts', 'Abraham Silberschatz', 'operating_system_concepts.jpg', 'A widely used textbook that covers the fundamental concepts of operating systems for BCA students.', 28.00, 3, '2024-11-15 00:00:00'),
-('978-99933-528-3', 'Database Management Systems', 'Ramez Elmasri', 'dbms.jpg', 'This book offers an in-depth understanding of database management systems, covering various database models, design techniques, and SQL.', 30.00, 1, '2024-11-15 00:00:00'),
 ('978-99933-528-4', 'Software Engineering', 'I. Sommerville', 'software_engineering.jpg', 'A detailed guide to the software engineering process, covering topics such as software development models, project management, and software testing.', 35.00, 3, '2024-11-15 00:00:00');
 
 -- --------------------------------------------------------
@@ -95,18 +90,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`customerid`, `name`, `address`, `contact`) VALUES
-(1, 'admin', 'hk', 'jgkj'),
-(2, 'admin', 'bbkbj', 'jgkj'),
-(3, 'admin', 'ughj', 'gjk'),
-(4, 'admin', 'hlk', 'ufy'),
-(5, 'Saujanya Poudel', 'gkjg', 'jdgfh'),
-(6, 'saujanya', 'fy', '986037689'),
-(7, 'sau', 'ujgl', '868'),
-(8, 'Saujanya Poudel', 'rgdh', '2345671890'),
-(9, 'ritu', 'sg', '3675231785'),
-(10, '12', 'hjfhgj', '3675231785'),
-(11, 'ywfduw', 'gjhdgsfj', '8674883932'),
-(12, 'Ritu', 'lalitpur', '9860309718');
+(20, 'test user', 'lalitpur', '2342423427');
 
 -- --------------------------------------------------------
 
@@ -117,37 +101,19 @@ INSERT INTO `customers` (`customerid`, `name`, `address`, `contact`) VALUES
 CREATE TABLE `orders` (
   `orderid` int(10) UNSIGNED NOT NULL,
   `customerid` int(10) UNSIGNED NOT NULL,
-  `book_id` varchar(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `contact` varchar(20) NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
   `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `payment_method` varchar(50) NOT NULL
+  `payment_method` varchar(50) NOT NULL,
+  `status` smallint(6) NOT NULL DEFAULT '0',
+  `remarks` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`orderid`, `customerid`, `book_id`, `name`, `address`, `contact`, `total_price`, `order_date`, `payment_method`) VALUES
-(1, 3, '978-99933-527-10', 'admin', 'ughj', 'gjk', 2600.00, '2024-11-20 15:21:38', 'cod'),
-(2, 3, '978-99933-527-10', 'admin', 'ughj', 'gjk', 2600.00, '2024-11-20 15:24:05', 'cod'),
-(3, 4, '978-99933-527-10', 'admin', 'hlk', 'ufy', 5200.00, '2024-11-20 15:24:23', 'cod'),
-(4, 4, '978-99933-527-10', 'admin', 'hlk', 'ufy', 5200.00, '2024-11-20 15:28:18', 'cod'),
-(5, 5, '978-99933-527-10', 'Saujanya Poudel', 'gkjg', 'jdgfh', 2600.00, '2024-11-20 15:35:11', 'cod'),
-(6, 6, '978-99933-527-10', 'saujanya', 'fy', '986037689', 5200.00, '2024-11-20 15:52:38', 'cod'),
-(7, 6, '978-99933-527-10', 'saujanya', 'fy', '986037689', 5200.00, '2024-11-20 15:57:07', 'cod'),
-(8, 6, '978-99933-527-10', 'saujanya', 'fy', '986037689', 5200.00, '2024-11-20 16:04:26', 'cod'),
-(9, 7, '978-99933-527-10', 'sau', 'ujgl', '868', 7800.00, '2024-11-20 16:06:20', 'cod'),
-(10, 8, '978-99933-527-10', 'Saujanya Poudel', 'rgdh', '2345671890', 7800.00, '2024-11-20 16:10:37', 'khalti'),
-(11, 9, '978-99933-527-10', 'ritu', 'sg', '3675231785', 7800.00, '2024-11-20 16:15:13', 'cod'),
-(12, 9, '978-99933-527-10', 'ritu', 'sg', '3675231785', 7800.00, '2024-11-20 16:17:46', 'cod'),
-(13, 9, '978-99933-527-10', 'ritu', 'sg', '3675231785', 7800.00, '2024-11-20 16:17:52', 'cod'),
-(14, 9, '978-99933-527-10', 'ritu', 'sg', '3675231785', 7800.00, '2024-11-20 16:17:58', 'cod'),
-(15, 10, '978-99933-527-10', '12', 'hjfhgj', '3675231785', 7800.00, '2024-11-20 16:18:30', 'cod'),
-(16, 11, '978-99933-527-10', 'ywfduw', 'gjhdgsfj', '8674883932', 20.00, '2024-11-21 03:54:48', 'cod'),
-(17, 12, '978-99933-527-10', 'Ritu', 'lalitpur', '9860309718', 20.00, '2024-11-21 04:14:22', 'cod');
+INSERT INTO `orders` (`orderid`, `customerid`, `total_price`, `order_date`, `payment_method`, `status`, `remarks`) VALUES
+(24, 20, 40.00, '2024-11-21 19:16:08', 'cod', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -162,6 +128,14 @@ CREATE TABLE `order_items` (
   `book_price` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `book_isbn`, `book_price`, `quantity`) VALUES
+(12, 24, '978-99933-527-4', 20.00, 1),
+(13, 24, '978-99933-527-3', 20.00, 1);
 
 -- --------------------------------------------------------
 
@@ -234,19 +208,19 @@ ALTER TABLE `publisher`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `orderid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `publisher`

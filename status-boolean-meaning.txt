@@ -1,0 +1,6 @@
+assign 0, Pending - the order is open but awaiting processing.
+assign 1, Processing - the order is being processed.
+assign 2, Completed - the order has been completed.
+assign 3, Canceled - the order has been cancelled.
+assign 4, Returned - the order has been returned.
+assign 5, Refunded - the order has been refunded.
