@@ -205,7 +205,7 @@ $conn = db_connect();  // Now this function should work
         return true;
     }
 
-    // Detect the payment method change and disable the button if "Khalti" is selected
+    // Detect the payment method change and disable the button if "Khalti" is selected 
     document.getElementById("paymentOptions").addEventListener("change", function() {
         var paymentMethod = document.getElementById("paymentOptions").value;
             var purchaseBtn = document.getElementById("purchaseBtn");

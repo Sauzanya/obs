@@ -81,16 +81,16 @@
                         ?>
                         <tr>
                             <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
-                            <td><?php echo "$" . $book['book_price']; ?></td>
+                            <td><?php echo "Rs." . $book['book_price']; ?></td>
                             <td><input type="text" value="<?php echo $qty; ?>" size="2" name="<?php echo $isbn; ?>"></td>
-                            <td><?php echo "$" . $qty * $book['book_price']; ?></td>
+                            <td><?php echo "Rs." . $qty * $book['book_price']; ?></td>
                         </tr>
                         <?php } ?>
                         <tr>
                             <th>&nbsp;</th>
                             <th>&nbsp;</th>
                             <th><?php echo $_SESSION['total_items']; ?></th>
-                            <th><?php echo "$" . $_SESSION['total_price']; ?></th>
+                            <th><?php echo "Rs." . $_SESSION['total_price']; ?></th>
                         </tr>
                     </table>
                 </form>
