@@ -221,6 +221,7 @@ function getAll($conn) {
     mysqli_stmt_close($stmt);
     return $books;
 }
+<<<<<<< Updated upstream
 
 
 function getBooksAndPublishers($conn) {
@@ -361,6 +362,24 @@ function getAdminOrderBookList($conn, $orderId, $customer_id)
         $orderBooks[] = $row; // Fetch all books with publisher names into an array
     }
     return $orderBooks; // Return the array of books with publisher names
+=======
+function selectTopSellingBooks($conn, $limit = 4) {
+    $query = "SELECT * FROM books ORDER BY sales_count DESC LIMIT ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    if (!$result) {
+        die("Error fetching top-selling books: " . mysqli_error($conn));
+    }
+    
+    $books = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $books[] = $row;
+    }
+    return $books;
+>>>>>>> Stashed changes
 }
 
 ?>
