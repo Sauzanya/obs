@@ -41,7 +41,7 @@ INSERT INTO `books` (`book_isbn`, `book_title`, `book_author`, `book_image`, `bo
 ('978-99933-528-2', 'Operating System Concepts', 'Abraham Silberschatz', 'operating_system_concepts.jpg', 'A widely used textbook that covers the fundamental concepts of operating systems for BCA students.', 28.00, 3, '2024-11-15 00:00:00'),
 ('978-99933-528-3', 'Database Management Systems', 'Ramez Elmasri', 'dbms.jpg', 'This book offers an in-depth understanding of database management systems, covering various database models, design techniques, and SQL.', 30.00, 1, '2024-11-15 00:00:00'),
 ('978-99933-528-4', 'Software Engineering', 'I. Sommerville', 'software_engineering.jpg', 'A detailed guide to the software engineering process, covering topics such as software development models, project management, and software testing.', 35.00, 3, '2024-11-15 00:00:00'),
-'9789993302100 ','Basanti','Diamond Shamsher Rana','vasanti.jpg','Basanti is a historical love story based on the novel by Diamond Shamsher.It depicts the story of a girl along with the accounts of the historical events during the time of Junga Bahadur Rana, the first Rana Prime Minister of Nepal.',350.00,5,'2024-11-16 00:00:00';
+('9789993302100 ','Basanti','Diamond Shamsher Rana','vasanti.jpg','Basanti is a historical love story based on the novel by Diamond Shamsher.It depicts the story of a girl along with the accounts of the historical events during the time of Junga Bahadur Rana, the first Rana Prime Minister of Nepal.',350.00,5,'2024-11-16 00:00:00');
 
 
 
