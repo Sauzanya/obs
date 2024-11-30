@@ -105,45 +105,50 @@ function insertOrderItems($order_id, $isbn, $book_price, $quantity) {
     return $result;
 }
 
-// Get or insert customer and return customer ID
 function getOrInsertCustomerId($name, $address, $contact) {
     $conn = db_connect();
-    $query = "SELECT customerid FROM customers WHERE 'name'= ? AND 'address' = ? AND contact = ?";
+
+    // Check if the customer already exists
+    $query = "SELECT customerid FROM customers WHERE 'name' = ? AND 'address' = ? AND contact = ?";
     $stmt = mysqli_prepare($conn, $query);
     if (!$stmt) {
-        error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Error preparing the SQL statement.");
+        error_log("Error preparing statement: " . mysqli_error($conn));
+        exit("Failed to prepare SQL statement.");
     }
 
+    // Bind parameters and execute the query
     mysqli_stmt_bind_param($stmt, "sss", $name, $address, $contact);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
-        error_log("Query failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        error_log("Error executing statement: " . mysqli_error($conn));
         exit("Error retrieving customer ID.");
     }
 
+    // If the customer exists, return the customer ID
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
         return $row['customerid'];
-    } else {
-        $insertQuery = "INSERT INTO customers (customer_id,'name', 'address', contact) VALUES (?,?, ?, ?)";
-        $insertStmt = mysqli_prepare($conn, $insertQuery);
-        if (!$insertStmt) {
-            error_log("Insert prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-            exit("Failed to prepare insert statement.");
-        }
+    }
 
-        mysqli_stmt_bind_param($insertStmt, "sss", $name, $address, $contact);
-        if (mysqli_stmt_execute($insertStmt)) {
-            $customerId = mysqli_insert_id($conn);
-            mysqli_stmt_close($insertStmt);
-            return $customerId;
-        } else {
-            error_log("Insert customer failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-            exit("Failed to insert customer.");
-        }
+    // If the customer does not exist, insert a new record
+    $insertQuery = "INSERT INTO customers (customer_id,'name', 'address', contact) VALUES (?,?, ?, ?)";
+    $insertStmt = mysqli_prepare($conn, $insertQuery);
+    if (!$insertStmt) {
+        error_log("Error preparing insert statement: " . mysqli_error($conn));
+        exit("Failed to prepare insert statement.");
+    }
+
+    // Bind parameters and execute the insert query
+    mysqli_stmt_bind_param($insertStmt, "sss", $name, $address, $contact);
+    if (mysqli_stmt_execute($insertStmt)) {
+        $customerId = mysqli_insert_id($conn); // Get the newly inserted customer ID
+        mysqli_stmt_close($insertStmt);
+        return $customerId;
+    } else {
+        error_log("Error inserting customer: " . mysqli_error($conn));
+        exit("Failed to insert customer.");
     }
 }
 
@@ -234,11 +239,11 @@ function selectTopSellingBooks($conn, $limit = 4) {
     }
     return $books;
 }
-function getBooksAndPublishers($conn) {
+function getBooksAndPublisher($conn) {
     $sql = "SELECT books.*, publisher.publisher_name 
             FROM books 
             INNER JOIN publisher
-            ON books.publisher_id = publisher.publisher_id";
+            ON books.publisherid = publisher.publisherid";
     $result = mysqli_query($conn, $sql);
 
     if (!$result) {
@@ -246,6 +251,91 @@ function getBooksAndPublishers($conn) {
     }
 
     return $result;
+}
+// In functions/admin.php or functions/database_functions.php
+function getOrderList($conn) {
+    $query = "SELECT * FROM orders"; // Adjust the table name and columns as needed
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
+
+    $orders = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $orders[] = $row;
+    }
+
+    return $orders;
+}
+
+// In functions/admin.php or functions/database_functions.php
+function getOrderById($conn, $order_id) {
+    $order_id = mysqli_real_escape_string($conn, $order_id);
+    $query = "SELECT * FROM orders WHERE orderid = '{$order_id}'";
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die("Query failed: " . mysqli_error($conn));
+    }
+
+    return mysqli_fetch_assoc($result);
+}
+
+function getAdminOrderBookList($conn, $order_id) {
+    // Define the query with placeholders
+    $query = "
+        SELECT 
+            oi.book_isbn,
+            oi.quantity,
+            b.book_isbn,
+            b.book_title,
+            b.book_author,
+            b.book_price,
+            p.publisher_name
+        FROM 
+            order_items oi
+        JOIN 
+            books b ON oi.book_isbn = b.book_isbn
+        JOIN 
+            publisher p ON b.publisherid = p.publisherid
+        WHERE 
+            oi.order_id = ?
+    ";
+
+    // Prepare the statement
+    $stmt = mysqli_prepare($conn, $query);
+    if (!$stmt) {
+        error_log("Error preparing statement: " . mysqli_error($conn));
+        exit("Error preparing the SQL statement.");
+    }
+
+    // Bind the parameter (assuming order_id is an integer)
+    mysqli_stmt_bind_param($stmt, "i", $order_id);
+
+    // Execute the query
+    if (!mysqli_stmt_execute($stmt)) {
+        error_log("Error executing statement: " . mysqli_error($conn));
+        exit("Error executing the SQL statement.");
+    }
+
+    // Get the result
+    $result = mysqli_stmt_get_result($stmt);
+    if (!$result) {
+        error_log("Error retrieving results: " . mysqli_error($conn));
+        exit("Error retrieving order book list.");
+    }
+
+    // Fetch results as an associative array
+    $bookList = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $bookList[] = $row;
+    }
+
+    // Clean up
+    mysqli_stmt_close($stmt);
+
+    return $bookList;
 }
 
 

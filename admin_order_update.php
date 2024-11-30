@@ -130,14 +130,14 @@
                         <td><?php echo $book['book_isbn']; ?></td>
                         <td><?php echo $book['publisher_name']; ?></td>
                         <td><?php echo $book['book_title'] . " by " . $book['book_author']; ?></td>
-                        <td><?php echo "$" . $book['book_price']; ?></td>
+                        <td><?php echo "Rs." . $book['book_price']; ?></td>
                         <td><?php echo $book['quantity']; ?></td>
-                        <td><?php echo "$" . $book['quantity'] * $book['book_price']; ?></td>
+                        <td><?php echo "Rs." . $book['quantity'] * $book['book_price']; ?></td>
                     </tr>
                     <?php } ?>
                     <tr>
                         <th colspan="5">&nbsp;</th>
-                        <th><?php echo "$" . $rowData['total_price']; ?></th>
+                        <th><?php echo "Rs." . $rowData['total_price']; ?></th>
                     </tr>
                 </table>
         </div>

@@ -10,7 +10,7 @@ require_once "./search_ALG/BST_admin.php";
 $conn = db_connect();
 
 // Fetch all books using the updated getAll() function
-$result = getBooksAndPublishers($conn);
+$result = getBooksAndPublisher($conn);
 $bst = new BinarySearchTree();
 
 // Check if the result is empty

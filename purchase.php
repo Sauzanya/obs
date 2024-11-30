@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     }
 
     // Insert the order into the database
-    $order_id = insertIntoOrders($customer_id, $total_price, $order_date, $name, $address, $contact, $payment_method);
+    $order_id = insertIntoOrders($conn,$customer_id, $total_price, $order_date, $name, $address, $contact, $payment_method);
 
     if (!$order_id) {
         $_SESSION['message'] = "Failed to process your order. Please try again.";
