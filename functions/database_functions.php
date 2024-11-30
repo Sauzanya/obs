@@ -234,5 +234,19 @@ function selectTopSellingBooks($conn, $limit = 4) {
     }
     return $books;
 }
+function getBooksAndPublishers($conn) {
+    $sql = "SELECT books.*, publisher.publisher_name 
+            FROM books 
+            INNER JOIN publisher
+            ON books.publisher_id = publisher.publisher_id";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        die("Error fetching books and publisher: " . mysqli_error($conn));
+    }
+
+    return $result;
+}
+
 
 ?>
