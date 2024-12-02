@@ -1,7 +1,8 @@
 <?php
 // Database connection function
 function db_connect() {
-    $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
+    // $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
+    $conn = mysqli_connect("localhost", "root", 'P@$$w0rd', "obs_db");
     if (!$conn) {
         error_log("Can't connect to the database: " . mysqli_connect_error(), 3, "/var/www/html/logs/error_log.log");
         exit("Database connection failed. Please try again later.");
@@ -54,40 +55,64 @@ function getBookByIsbn($conn, $isbn) {
     return $book;
 }
 
-// Insert a new order into the orders table
-function insertIntoOrders ($conn, $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method) {
+function insertIntoOrder($conn, $customerid, $total_price, $order_date, $payment_method) {
+  
     if (!$order_date) {
         $order_date = date('Y-m-d');
     }
+     // Prepare the SQL statement
+     $query = "INSERT INTO orders (customerid, total_price, order_date, payment_method) VALUES (?, ?, ?, ?)";
+     $stmt = mysqli_prepare($conn, $query);
+     if (!$stmt) {
+         error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+         exit("Error preparing the SQL statement.");
+     }
+ 
+     // Bind parameters: customerid (integer), total_price (double), order_date (string), payment_method (string)
+     mysqli_stmt_bind_param($stmt, "idss", $customerid, $total_price, $order_date, $payment_method);
+ 
+     // Execute the statement
+     $result = mysqli_stmt_execute($stmt);
+     if (!$result) {
+         error_log("Insert order failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+         exit("Failed to insert order. Check your inputs or database.");
+     }
+ 
+     // Retrieve the inserted order ID
+     $order_id = mysqli_insert_id($conn);
+ 
+     // Close the statement
+     mysqli_stmt_close($stmt);
+ 
+    return $order_id;
+}
 
-    $query = "INSERT INTO orders (customerid, total_price, order_date, 'name', 'address', 'contact', payment_method)
-        VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+// Insert items into the order_items table
+function insertOrderItem($order_id, $isbn, $book_price, $quantity) {
+    $conn = db_connect();
+    $query = "INSERT INTO order_items (order_id, book_isbn, book_price, quantity) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     if (!$stmt) {
         error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Error preparing the SQL statement: " . mysqli_error($conn));
+        exit("Error preparing the SQL statement.");
     }
-    else{
-        echo"statement prepared successfully.";
-    }
-
-    mysqli_stmt_bind_param($stmt, "idsssss", $customerid, $total_price, $order_date, $name, $address, $contact, $payment_method);
+    mysqli_stmt_bind_param($stmt, "isdi", $order_id, $isbn, $book_price, $quantity);
     $result = mysqli_stmt_execute($stmt);
     if (!$result) {
-        error_log("Insert order failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
-        exit("Failed to insert order.");
+        error_log("Insert order item failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
+        exit("Failed to insert order item.");
     }
-
-    $order_id = mysqli_insert_id($conn);
     mysqli_stmt_close($stmt);
-    return $order_id;
+    return $result;
 }
 
 // Insert items into the order_items table
 function insertOrderItems($order_id, $isbn, $book_price, $quantity) {
+    
     $conn = db_connect();
 
-    $query = "INSERT INTO order_items (order_id, isbn, price, quantity) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO order_items (order_id, book_isbn, book_price, quantity) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
     if (!$stmt) {
         error_log("Prepare failed: " . mysqli_error($conn), 3, "/var/www/html/logs/error_log.log");
@@ -109,7 +134,7 @@ function getOrInsertCustomerId($name, $address, $contact) {
     $conn = db_connect();
 
     // Check if the customer already exists
-    $query = "SELECT customerid FROM customers WHERE 'name' = ? AND 'address' = ? AND contact = ?";
+    $query = "SELECT customerid FROM customers WHERE name = ? AND address = ? AND contact = ?";
     $stmt = mysqli_prepare($conn, $query);
     if (!$stmt) {
         error_log("Error preparing statement: " . mysqli_error($conn));
@@ -133,11 +158,11 @@ function getOrInsertCustomerId($name, $address, $contact) {
     }
 
     // If the customer does not exist, insert a new record
-    $insertQuery = "INSERT INTO customers (customer_id,'name', 'address', contact) VALUES (?,?, ?, ?)";
+    $insertQuery = "INSERT INTO customers (name, address, contact) VALUES (?, ?, ?)";
     $insertStmt = mysqli_prepare($conn, $insertQuery);
     if (!$insertStmt) {
         error_log("Error preparing insert statement: " . mysqli_error($conn));
-        exit("Failed to prepare insert statement.");
+        exit("Failed to prepareeeeeeeeeeeeeeeeeee insert statement.");
     }
 
     // Bind parameters and execute the insert query
