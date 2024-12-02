@@ -1,8 +1,8 @@
 <?php
 // Database connection function
 function db_connect() {
-    // $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
-    $conn = mysqli_connect("localhost", "root", 'P@$$w0rd', "obs_db");
+    $conn = mysqli_connect("db", "root", "rootpassword", "obs_db");
+    // $conn = mysqli_connect("localhost", "root", 'P@$$w0rd', "obs_db");
     if (!$conn) {
         error_log("Can't connect to the database: " . mysqli_connect_error(), 3, "/var/www/html/logs/error_log.log");
         exit("Database connection failed. Please try again later.");
