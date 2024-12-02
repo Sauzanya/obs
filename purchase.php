@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_btn'])) {
 
     // Payment method validation (required)
     if (empty($payment)) {
-        // $errors[] = "Please select a payment method.";
+        $errors[] = "Please select a payment method.";
     }
 
     // If validation fails, redirect with errors
